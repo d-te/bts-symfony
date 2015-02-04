@@ -1,0 +1,3 @@
+dte_bts_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: DteBtsBundle:Default:index }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Issue
  *
- * @ORM\Table(name="issue", indexes={@ORM\Index(name="IDX_FK_ISSUE_RESOLUTION_ID", columns={"resolution_id"}), @ORM\Index(name="IDX_FK_ISSUE_STATUS_ID", columns={"status_id"}), @ORM\Index(name="IDX_FK_PRIORITY_ID", columns={"priority_id"}), @ORM\Index(name="IDX_FK_ISSUE_ASSIGNEE_ID", columns={"assignee_id"}), @ORM\Index(name="IDX_FK_ISSUE_REPORTER_ID", columns={"reporter_id"})})
+ * @ORM\Table(name="issue", indexes={@ORM\Index(name="IDX_12AD233E6BF700BD", columns={"status_id"}), @ORM\Index(name="IDX_12AD233E59EC7D60", columns={"assignee_id"}), @ORM\Index(name="IDX_12AD233E497B19F9", columns={"priority_id"}), @ORM\Index(name="IDX_12AD233E12A1C43A", columns={"resolution_id"}), @ORM\Index(name="IDX_12AD233EE1CFE6F5", columns={"reporter_id"}), @ORM\Index(name="project_id", columns={"project_id"})})
  * @ORM\Entity
  */
 class Issue
@@ -71,6 +71,26 @@ class Issue
     private $id;
 
     /**
+     * @var \Dte\BtsBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
+     * })
+     */
+    private $reporter;
+
+    /**
+     * @var \Dte\BtsBundle\Entity\Project
+     *
+     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\Project")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     * })
+     */
+    private $project;
+
+    /**
      * @var \Dte\BtsBundle\Entity\IssueStatus
      *
      * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\IssueStatus")
@@ -109,16 +129,6 @@ class Issue
      * })
      */
     private $resolution;
-
-    /**
-     * @var \Dte\BtsBundle\Entity\User
-     *
-     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="reporter_id", referencedColumnName="id")
-     * })
-     */
-    private $reporter;
 
 
 
@@ -294,6 +304,52 @@ class Issue
     }
 
     /**
+     * Set reporter
+     *
+     * @param \Dte\BtsBundle\Entity\User $reporter
+     * @return Issue
+     */
+    public function setReporter(\Dte\BtsBundle\Entity\User $reporter = null)
+    {
+        $this->reporter = $reporter;
+
+        return $this;
+    }
+
+    /**
+     * Get reporter
+     *
+     * @return \Dte\BtsBundle\Entity\User
+     */
+    public function getReporter()
+    {
+        return $this->reporter;
+    }
+
+    /**
+     * Set project
+     *
+     * @param \Dte\BtsBundle\Entity\Project $project
+     * @return Issue
+     */
+    public function setProject(\Dte\BtsBundle\Entity\Project $project = null)
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * Get project
+     *
+     * @return \Dte\BtsBundle\Entity\Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    /**
      * Set status
      *
      * @param \Dte\BtsBundle\Entity\IssueStatus $status
@@ -383,28 +439,5 @@ class Issue
     public function getResolution()
     {
         return $this->resolution;
-    }
-
-    /**
-     * Set reporter
-     *
-     * @param \Dte\BtsBundle\Entity\User $reporter
-     * @return Issue
-     */
-    public function setReporter(\Dte\BtsBundle\Entity\User $reporter = null)
-    {
-        $this->reporter = $reporter;
-
-        return $this;
-    }
-
-    /**
-     * Get reporter
-     *
-     * @return \Dte\BtsBundle\Entity\User
-     */
-    public function getReporter()
-    {
-        return $this->reporter;
     }
 }

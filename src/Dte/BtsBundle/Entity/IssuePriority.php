@@ -22,6 +22,13 @@ class IssuePriority
     /**
      * @var integer
      *
+     * @ORM\Column(name="order", type="integer", nullable=false)
+     */
+    private $order;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -51,6 +58,29 @@ class IssuePriority
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     * @return IssuePriority
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 
     /**

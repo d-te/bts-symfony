@@ -2,6 +2,9 @@
 
 namespace Dte\BtsBundle\Entity;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var string
@@ -22,9 +25,9 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
+     * @ORM\Column(name="username", type="string", length=255, nullable=false)
      */
-    private $fullname;
+    private $username;
 
     /**
      * @var string
@@ -49,7 +52,20 @@ class User
      */
     private $id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     *
+     */
+    private $roles;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+        $this->salt  = md5(uniqid(null, true));
+    }
 
     /**
      * Set email
@@ -75,26 +91,26 @@ class User
     }
 
     /**
-     * Set fullname
+     * Set username
      *
-     * @param string $fullname
+     * @param string $username
      * @return User
      */
-    public function setFullname($fullname)
+    public function setUsername($username)
     {
-        $this->fullname = $fullname;
+        $this->username = $username;
 
         return $this;
     }
 
     /**
-     * Get fullname
+     * Get username
      *
      * @return string
      */
-    public function getFullname()
+    public function getUsername()
     {
-        return $this->fullname;
+        return $this->username;
     }
 
     /**
@@ -151,5 +167,56 @@ class User
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get user roles
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles->toArray();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt,
+        ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt
+        ) = unserialize($serialized);
     }
 }

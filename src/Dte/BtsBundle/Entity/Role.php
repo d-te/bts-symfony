@@ -2,6 +2,9 @@
 
 namespace Dte\BtsBundle\Entity;
 
+use Symfony\Component\Security\Core\Role\RoleInterface;
+
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="role", uniqueConstraints={@ORM\UniqueConstraint(name="role", columns={"role"})})
  * @ORM\Entity
  */
-class Role
+class Role implements RoleInterface
 {
     /**
      * @var string
@@ -35,7 +38,18 @@ class Role
      */
     private $id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
+     */
+    private $users;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     /**
      * Set name

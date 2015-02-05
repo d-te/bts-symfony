@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Issue
  *
- * @ORM\Table(name="issue", indexes={@ORM\Index(name="reporter_id", columns={"reporter_id"}), @ORM\Index(name="assignee_id", columns={"assignee_id"}), @ORM\Index(name="priority_id", columns={"priority_id"}), @ORM\Index(name="status_id", columns={"status_id"}), @ORM\Index(name="resolution_id", columns={"resolution_id"})})
+ * @ORM\Table(name="issue", indexes={@ORM\Index(name="IDX_FK_ISSUE_RESOLUTION_ID", columns={"resolution_id"}), @ORM\Index(name="IDX_FK_ISSUE_STATUS_ID", columns={"status_id"}), @ORM\Index(name="IDX_FK_PRIORITY_ID", columns={"priority_id"}), @ORM\Index(name="IDX_FK_ISSUE_ASSIGNEE_ID", columns={"assignee_id"}), @ORM\Index(name="IDX_FK_ISSUE_REPORTER_ID", columns={"reporter_id"})})
  * @ORM\Entity
  */
 class Issue
@@ -71,16 +71,6 @@ class Issue
     private $id;
 
     /**
-     * @var \Dte\BtsBundle\Entity\IssueResolution
-     *
-     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\IssueResolution")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="resolution_id", referencedColumnName="id")
-     * })
-     */
-    private $resolution;
-
-    /**
      * @var \Dte\BtsBundle\Entity\IssueStatus
      *
      * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\IssueStatus")
@@ -89,6 +79,16 @@ class Issue
      * })
      */
     private $status;
+
+    /**
+     * @var \Dte\BtsBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
+     * })
+     */
+    private $assignee;
 
     /**
      * @var \Dte\BtsBundle\Entity\IssuePriority
@@ -101,14 +101,14 @@ class Issue
     private $priority;
 
     /**
-     * @var \Dte\BtsBundle\Entity\User
+     * @var \Dte\BtsBundle\Entity\IssueResolution
      *
-     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\IssueResolution")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="assignee_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="resolution_id", referencedColumnName="id")
      * })
      */
-    private $assignee;
+    private $resolution;
 
     /**
      * @var \Dte\BtsBundle\Entity\User
@@ -294,29 +294,6 @@ class Issue
     }
 
     /**
-     * Set resolution
-     *
-     * @param \Dte\BtsBundle\Entity\IssueResolution $resolution
-     * @return Issue
-     */
-    public function setResolution(\Dte\BtsBundle\Entity\IssueResolution $resolution = null)
-    {
-        $this->resolution = $resolution;
-
-        return $this;
-    }
-
-    /**
-     * Get resolution
-     *
-     * @return \Dte\BtsBundle\Entity\IssueResolution
-     */
-    public function getResolution()
-    {
-        return $this->resolution;
-    }
-
-    /**
      * Set status
      *
      * @param \Dte\BtsBundle\Entity\IssueStatus $status
@@ -337,6 +314,29 @@ class Issue
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set assignee
+     *
+     * @param \Dte\BtsBundle\Entity\User $assignee
+     * @return Issue
+     */
+    public function setAssignee(\Dte\BtsBundle\Entity\User $assignee = null)
+    {
+        $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    /**
+     * Get assignee
+     *
+     * @return \Dte\BtsBundle\Entity\User
+     */
+    public function getAssignee()
+    {
+        return $this->assignee;
     }
 
     /**
@@ -363,26 +363,26 @@ class Issue
     }
 
     /**
-     * Set assignee
+     * Set resolution
      *
-     * @param \Dte\BtsBundle\Entity\User $assignee
+     * @param \Dte\BtsBundle\Entity\IssueResolution $resolution
      * @return Issue
      */
-    public function setAssignee(\Dte\BtsBundle\Entity\User $assignee = null)
+    public function setResolution(\Dte\BtsBundle\Entity\IssueResolution $resolution = null)
     {
-        $this->assignee = $assignee;
+        $this->resolution = $resolution;
 
         return $this;
     }
 
     /**
-     * Get assignee
+     * Get resolution
      *
-     * @return \Dte\BtsBundle\Entity\User
+     * @return \Dte\BtsBundle\Entity\IssueResolution
      */
-    public function getAssignee()
+    public function getResolution()
     {
-        return $this->assignee;
+        return $this->resolution;
     }
 
     /**

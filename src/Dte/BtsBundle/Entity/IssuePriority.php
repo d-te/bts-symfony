@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class IssuePriority
 {
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="label", type="integer", nullable=false)
+     * @ORM\Column(name="label", type="string", length=20, nullable=false)
      */
     private $label;
 
@@ -33,7 +33,7 @@ class IssuePriority
     /**
      * Set label
      *
-     * @param integer $label
+     * @param string $label
      * @return IssuePriority
      */
     public function setLabel($label)
@@ -46,7 +46,7 @@ class IssuePriority
     /**
      * Get label
      *
-     * @return integer
+     * @return string
      */
     public function getLabel()
     {

@@ -3,9 +3,27 @@
 namespace Dte\BtsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class UserControllerTest extends WebTestCase
 {
+
+    private $client = null;
+
+    public function setUp()
+    {
+        $this->client = static::createClient();
+    }
+
+    public function testProfileWithoutAuth()
+    {
+        $this->client->request('GET', '/user/profile');
+
+        $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
+
+        $this->assertRegExp('/\/login$/', $this->client->getResponse()->headers->get('location'));
+    }
+
     /*
     public function testCompleteScenario()
     {

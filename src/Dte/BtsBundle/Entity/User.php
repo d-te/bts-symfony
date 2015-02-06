@@ -75,7 +75,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-        $this->salt  = md5(uniqid(null, true));
     }
 
     /**

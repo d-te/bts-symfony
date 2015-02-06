@@ -30,10 +30,14 @@
                 <li {% if app.request.uri == url("dte_bts_homepage") %} class="active" {% endif %}><a href="{{ url("dte_bts_homepage") }}">Home</a></li>
                 <li><a href="#">Projects</a></li>
                 <li><a href="#">Issues</a></li>
-                <li><a href="#">Users</a></li>
+                <li {% if app.request.uri == url("user") %} class="active" {% endif %}><a href="{{ url("user") }}">Users</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
+
+                <li {% if app.request.uri == url("user_profile") %} class="active" {% endif %}>
+                    <a href="{{ url("user_profile") }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;{{ app.user.getUsername() }}</a>
+                </li>
                 <li><a href="{{ url("dte_bts_logout") }}">Log out</a></li>
                 {% endif %}
               </ul>

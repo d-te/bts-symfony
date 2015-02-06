@@ -4,4 +4,7 @@ dte_bts_homepage:
 dte_bts_pages:
     resource: @DteBtsBundle/Controller/DefaultController.php
     type:     annotation
+dte_bts_users:
+    resource: @DteBtsBundle/Controller/UserController.php
+    type:     annotation
 

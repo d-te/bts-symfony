@@ -31,7 +31,7 @@ class DefaultController extends Controller
     {
         if ($request->attributes->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContextInterface::AUTHENTICATION_ERROR);
-        }  elseif (null !== $request->getSession() && $request->getSession()->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
+        } elseif (null !== $request->getSession() && $request->getSession()->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
             $error = $request->getSession()->get(SecurityContextInterface::AUTHENTICATION_ERROR);
             $request->getSession()->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
         } else {
@@ -59,5 +59,4 @@ class DefaultController extends Controller
     {
         // The security layer will intercept this request
     }
-
 }

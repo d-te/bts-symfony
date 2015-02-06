@@ -12,6 +12,9 @@ use Doctrine\ORM\NoResultException;
 
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function loadUserByUsername($username)
     {
         $q = $this
@@ -24,8 +27,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getQuery();
 
         try {
-            // The Query::getSingleResult() method throws an exception
-            // if there is no record matching the criteria.
             $user = $q->getSingleResult();
         } catch (NoResultException $e) {
             $message = sprintf(
@@ -38,6 +39,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $user;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function refreshUser(UserInterface $user)
     {
         $class = get_class($user);
@@ -53,6 +57,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->find($user->getId());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsClass($class)
     {
         return $this->getEntityName() === $class

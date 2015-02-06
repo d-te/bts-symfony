@@ -1,3 +1,7 @@
 dte_bts_homepage:
     path:     /
     defaults: { _controller: DteBtsBundle:Default:index }
+dte_bts_pages:
+    resource: @DteBtsBundle/Controller/DefaultController.php
+    type:     annotation
+

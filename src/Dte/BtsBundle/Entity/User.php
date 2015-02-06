@@ -2,6 +2,7 @@
 
 namespace Dte\BtsBundle\Entity;
 
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,8 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Dte\BtsBundle\Entity\UserRepository")
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface, \Serializable, EquatableInterface
 {
     /**
      * @var string
@@ -54,9 +56,18 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
-     *
+     * @ORM\JoinTable(name="user_roles",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
+     *      )
      */
     private $roles;
+
+    /**
+     * @var string
+     *
+     */
+    private $salt;
 
     /**
      * Constructor
@@ -218,5 +229,25 @@ class User implements UserInterface, \Serializable
             $this->password,
             $this->salt
         ) = unserialize($serialized);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isEqualTo(UserInterface $user)
+    {
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->salt !== $user->getSalt()) {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        return true;
     }
 }

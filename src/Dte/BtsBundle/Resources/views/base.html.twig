@@ -1,0 +1,33 @@
+{% extends "DteBtsBundle::layout.html.twig" %}
+
+{% block head %}
+    <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/dtebts/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/dtebts/css/bootstrap-theme.min.css') }}" />
+    <script src="{{ asset('bundles/dtebts/js/bootstrap.min.js') }}"></script>
+{% endblock %}
+
+{% block title 'Bug tracking system' %}
+
+{% block body %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-message">
+            <em>Notice</em>: {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    {% block content_header %}
+        <ul id="menu">
+            {% block content_header_more %}
+                <li><a href="{{ path('dte_bts_homepage') }}">Bug tracking system</a></li>
+            {% endblock %}
+        </ul>
+
+        <div style="clear: both"></div>
+    {% endblock %}
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+{% endblock %}

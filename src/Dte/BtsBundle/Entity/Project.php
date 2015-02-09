@@ -42,8 +42,6 @@ class Project
      */
     private $id;
 
-
-
     /**
      * Set label
      *

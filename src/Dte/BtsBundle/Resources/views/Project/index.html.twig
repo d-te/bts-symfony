@@ -1,0 +1,36 @@
+{% extends 'DteBtsBundle::base.html.twig' %}
+
+{% block title 'Bug tracking system - Project list' %}
+
+{% block content %}
+    <h1>Project list</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code</th>
+                <th>Label</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.code }}</a></td>
+                <td>{{ entity.label }}</td>
+                <td>
+                    <a href="{{ path('project_show', { 'id': entity.id }) }}">show</a>
+                    <br />
+                    <a href="{{ path('project_edit', { 'id': entity.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row">
+        <a href="{{ path('project_new') }}" class="btn btn-default">Create a new entry</a>
+    </div>
+    {% endblock %}

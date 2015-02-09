@@ -7,4 +7,7 @@ dte_bts_pages:
 dte_bts_users:
     resource: @DteBtsBundle/Controller/UserController.php
     type:     annotation
+dte_bts_projects:
+    resource: @DteBtsBundle/Controller/ProjectController.php
+    type:     annotation
 

@@ -29,7 +29,7 @@
             <div class="collapse navbar-collapse">
               <ul class="nav navbar-nav">
                 <li {% if app.request.uri == url("dte_bts_homepage") %} class="active" {% endif %}><a href="{{ url("dte_bts_homepage") }}">Home</a></li>
-                <li><a href="#">Projects</a></li>
+                <li{% if app.request.uri == url("project") %} class="active" {% endif %}><a href="{{ url("project") }}">Projects</a></li>
                 <li><a href="#">Issues</a></li>
                 <li {% if app.request.uri == url("user") %} class="active" {% endif %}><a href="{{ url("user") }}">Users</a></li>
               </ul>

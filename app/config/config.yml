@@ -26,6 +26,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form:
+        resources:
+            - BraincraftedBootstrapBundle:Form:bootstrap.html.twig
 
 # Assetic Configuration
 assetic:
@@ -75,3 +78,18 @@ doctrine_migrations:
     namespace: Application\Migrations
     table_name: migration_versions
     name: Application Migrations
+# BootstrapBundle Configuration
+braincrafted_bootstrap:
+    output_dir:
+    assets_dir: %kernel.root_dir%/../vendor/twbs/bootstrap
+    less_filter: none # "less", "lessphp", "sass" or "none"
+    fonts_dir: %kernel.root_dir%/../web/fonts
+    auto_configure:
+        assetic: false
+        twig: true
+        knp_menu: false
+        knp_paginator: false
+    customize:
+        variables_file: ~
+        bootstrap_output: %kernel.root_dir%/Resources/less/bootstrap.less
+        bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig

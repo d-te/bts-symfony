@@ -37,7 +37,14 @@
                 {% if app.user %}
 
                 <li {% if app.request.uri == url("user_profile") %} class="active" {% endif %}>
-                    <a href="{{ url("user_profile") }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;{{ app.user.getUsername() }}</a>
+                    <a href="{{ url("user_profile") }}">
+                        {% if app.user.getAvatar() %}
+                        <img src="{{app.user.getAvatar()}}" width="24" height="24">
+                        {% else %}
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        {% endif %}
+                        &nbsp;&nbsp;{{ app.user.getFullname() }}
+                    </a>
                 </li>
                 <li><a href="{{ url("dte_bts_logout") }}">Log out</a></li>
                 {% endif %}

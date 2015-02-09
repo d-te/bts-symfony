@@ -7,12 +7,10 @@
 
     {{ form(edit_form) }}
 
-        <ul class="record_actions">
-        <li>
-            <a href="{{ path('user') }}">
-                Back to the list
-            </a>
-        </li>
-        <li>{{ form(delete_form) }}</li>
-    </ul>
+    <div class="row">
+        <a href="{{ path('user') }}">Back to the list</a>
+        <br />
+        <span>{{ form(delete_form) }}</span>
+    </div>
+
 {% endblock %}

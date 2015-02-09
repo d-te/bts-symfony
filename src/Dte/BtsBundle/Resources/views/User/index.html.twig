@@ -5,7 +5,7 @@
 {% block content %}
     <h1>User list</h1>
 
-    <table class="records_list">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Email</th>
@@ -25,25 +25,16 @@
                 <td>{{ entity.password }}</td>
                 <td>{{ entity.id }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('user_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('user_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    <a href="{{ path('user_show', { 'id': entity.id }) }}">show</a>
+                    <br />
+                    <a href="{{ path('user_edit', { 'id': entity.id }) }}">edit</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-        <ul>
-        <li>
-            <a href="{{ path('user_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
+    <div class="row">
+        <a href="{{ path('user_new') }}" class="btn btn-default">Create a new entry</a>
+    </div>
     {% endblock %}

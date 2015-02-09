@@ -19,7 +19,7 @@ class UserEditType extends AbstractType
             ->add('username', 'text', array('required' => true, 'label' => 'Nickname'))
             ->add('fullname', 'text', array('required' => true))
             ->add('password', 'password', array('required' => false))
-            ->add('avatar', 'url')
+            ->add('avatar', 'url', array('required' => false))
         ;
     }
 

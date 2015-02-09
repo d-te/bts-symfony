@@ -30,6 +30,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      *     message = "The email '{{ value }}' is not a valid email.",
      *     checkMX = true
      * )
+     * @Assert\Length(max = 255)
      */
     private $email;
 
@@ -38,6 +39,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      *
      * @ORM\Column(name="username", type="string", length=255, nullable=false, unique=true)
      * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $username;
 
@@ -46,6 +48,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      *
      * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $fullname;
 
@@ -54,6 +57,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      *
      * @ORM\Column(name="avatar", type="string", length=255, nullable=false)
      * @Assert\Url()
+     * @Assert\Length(max = 255)
      */
     private $avatar;
 

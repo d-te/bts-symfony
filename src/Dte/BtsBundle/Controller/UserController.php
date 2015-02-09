@@ -50,6 +50,14 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $plainPassword = $entity->getPassword();
+
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($entity);
+
+            $password = $encoder->encodePassword($plainPassword, $entity->getSalt());
+            $entity->setPassword($password);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -189,11 +197,25 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
+        $oldPassword = $entity->getPassword();
+
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm   = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $plainPassword = $entity->getPassword();
+
+            if (!empty($plainPassword)) {
+                $factory = $this->get('security.encoder_factory');
+                $encoder = $factory->getEncoder($entity);
+
+                $password = $encoder->encodePassword($plainPassword, $entity->getSalt());
+                $entity->setPassword($password);
+            } else {
+                $entity->setPassword($oldPassword);
+            }
+
             $em->flush();
 
             return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));

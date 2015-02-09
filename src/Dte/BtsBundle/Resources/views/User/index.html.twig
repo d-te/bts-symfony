@@ -8,22 +8,20 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Email</th>
                 <th>Username</th>
                 <th>Avatar</th>
-                <th>Password</th>
-                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
+                <td>{{ entity.id }}</td>
                 <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.email }}</a></td>
                 <td>{{ entity.username }}</td>
-                <td>{{ entity.avatar }}</td>
-                <td>{{ entity.password }}</td>
-                <td>{{ entity.id }}</td>
+                <td><img src="{{ entity.avatar }}" width="32" ></td>
                 <td>
                     <a href="{{ path('user_show', { 'id': entity.id }) }}">show</a>
                     <br />

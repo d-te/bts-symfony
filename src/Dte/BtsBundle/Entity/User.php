@@ -2,8 +2,10 @@
 
 namespace Dte\BtsBundle\Entity;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,27 +16,44 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Dte\BtsBundle\Entity\UserRepository")
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
  */
 class User implements UserInterface, \Serializable, EquatableInterface
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=255, nullable=false)
+     * @ORM\Column(name="username", type="string", length=255, nullable=false, unique=true)
+     * @Assert\NotBlank()
      */
     private $username;
 
     /**
      * @var string
      *
+     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     */
+    private $fullname;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="avatar", type="string", length=255, nullable=false)
+     * @Assert\Url()
      */
     private $avatar;
 
@@ -121,6 +140,29 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function getUsername()
     {
         return $this->username;
+    }
+
+    /**
+     * Set fullname
+     *
+     * @param string $fullname
+     * @return User
+     */
+    public function setFullname($fullname)
+    {
+        $this->fullname = $fullname;
+
+        return $this;
+    }
+
+    /**
+     * Get fullname
+     *
+     * @return string
+     */
+    public function getFullname()
+    {
+        return $this->fullname;
     }
 
     /**

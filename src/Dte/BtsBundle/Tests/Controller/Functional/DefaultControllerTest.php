@@ -1,6 +1,6 @@
 <?php
 
-namespace Dte\BtsBundle\Tests\Controller;
+namespace Dte\BtsBundle\Tests\Functional\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;

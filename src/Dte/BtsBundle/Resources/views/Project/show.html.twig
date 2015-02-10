@@ -32,10 +32,12 @@
                 </tr>
             </thead>
             <tbody>
+                {% for member in entity.getMembers() %}
                 <tr>
-                    <td><a href="{{ path('user_show', { 'id': 1 }) }}">username TO REMOVE</a></td>
-                    <td>issues list </td>
+                    <td><a href="{{ path('user_show', { 'id': member.getId() }) }}">{{ member.getFullname() }}</a></td>
+                    <td> - </td>
                 </tr>
+                {% endfor %}
             </tbody>
 
         </table>

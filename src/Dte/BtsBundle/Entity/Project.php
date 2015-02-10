@@ -55,7 +55,7 @@ class Project
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="projects")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="projects", cascade={"persist"})
      * @ORM\JoinTable(name="project_members",
      *      joinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
@@ -158,5 +158,25 @@ class Project
     public function getMembers()
     {
         return $this->members->toArray();
+    }
+
+    /**
+     * Add project`s member
+     *
+     */
+    public function addMember(User $member)
+    {
+        $this->members->add($member);
+
+        return $this;
+    }
+
+    /**
+     * Remove project`s member
+     *
+     */
+    public function removeMember(User $member)
+    {
+        $this->members->removeElement($member);
     }
 }

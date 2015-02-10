@@ -15,12 +15,25 @@ class ProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label')
-            ->add('summary')
-            ->add('code')
+            ->add('code', 'text', array('required' => true))
+            ->add('label', 'text', array('required' => true))
+            ->add('summary', 'text', array('required' => true))
+            ->add('members', 'bootstrap_collection', array(
+                'type'               => 'entity',
+                'allow_add'          => true,
+                'allow_delete'       => true,
+                'add_button_text'    => 'Add member',
+                'delete_button_text' => 'Delete member',
+                'sub_widget_col'     => 4,
+                'button_col'         => 3,
+                'options'            => array(
+                    'class' => 'DteBtsBundle:User',
+                    'property' => 'fullname'
+                )
+            ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

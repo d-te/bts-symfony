@@ -10,4 +10,7 @@ dte_bts_users:
 dte_bts_projects:
     resource: @DteBtsBundle/Controller/ProjectController.php
     type:     annotation
+dte_bts_issues:
+    resource: @DteBtsBundle/Controller/IssueController.php
+    type:     annotation
 

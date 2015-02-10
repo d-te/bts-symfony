@@ -1,0 +1,49 @@
+{% extends 'DteBtsBundle::base.html.twig' %}
+
+{% block title 'Bug tracking system - Issue list' %}
+
+{% block content %}
+    <h1>Issue list</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Summary</th>
+                <th>Code</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.summary }}</a></td>
+                <td>{{ entity.code }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.type }}</td>
+                <td>{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.id }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('issue_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('issue_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row">
+        <a href="{{ path('issue_new') }}" class="btn btn-default">Create a new entry</a>
+    </div>
+    {% endblock %}

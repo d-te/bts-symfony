@@ -1,0 +1,46 @@
+{% extends 'DteBtsBundle::base.html.twig' %}
+
+{% block title 'Bug tracking system - Issue' %}
+
+{% block content %}
+    <h1>Issue</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Summary</th>
+                <td>{{ entity.summary }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ entity.code }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ entity.description }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ entity.type }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ entity.created|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{{ entity.updated|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <a href="{{ path('issue') }}">Back to the list</a>
+        <br />
+        <span>{{ form(delete_form) }}</span>
+    </div>
+{% endblock %}

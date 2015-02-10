@@ -2,13 +2,19 @@
 
 namespace Dte\BtsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Project
  *
+ *
  * @ORM\Table(name="project")
  * @ORM\Entity
+ * @UniqueEntity("code")
  */
 class Project
 {
@@ -16,6 +22,8 @@ class Project
      * @var string
      *
      * @ORM\Column(name="label", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $label;
 
@@ -23,13 +31,17 @@ class Project
      * @var string
      *
      * @ORM\Column(name="summary", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $summary;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=255, nullable=false)
+     * @ORM\Column(name="code", type="string", length=255, nullable=false, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $code;
 
@@ -41,6 +53,23 @@ class Project
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="projects")
+     * @ORM\JoinTable(name="project_members",
+     *      joinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      )
+     */
+    private $members;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+    }
 
     /**
      * Set label
@@ -119,5 +148,15 @@ class Project
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get project members
+     *
+     * @return array
+     */
+    public function getMembers()
+    {
+        return $this->members->toArray();
     }
 }

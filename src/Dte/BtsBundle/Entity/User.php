@@ -2,13 +2,13 @@
 
 namespace Dte\BtsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * User
@@ -93,11 +93,17 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $salt;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Project", mappedBy="members")
+     */
+    private $projects;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->roles = new ArrayCollection();
+        $this->roles    = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     /**
@@ -241,6 +247,16 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function getSalt()
     {
         return $this->salt;
+    }
+
+    /**
+     * Get user projects
+     *
+     * @return array
+     */
+    public function getProjects()
+    {
+        return $this->projects->toArray();
     }
 
     /**

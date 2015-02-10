@@ -39,4 +39,11 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Code', $project->getCode());
     }
+
+    public function testMembersGetter()
+    {
+        $project = new Project();
+
+        $this->assertEquals(array(), $project->getMembers());
+    }
 }

@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -20,6 +21,13 @@ class UserType extends AbstractType
             ->add('fullname', 'text', array('required' => true))
             ->add('password', 'password', array('required' => true))
             ->add('avatar', 'url', array('required' => false))
+            ->add('roles', 'entity', array(
+                'required' => true,
+                'property' => 'name',
+                'class'    => 'DteBtsBundle:Role',
+                'multiple' => true,
+                'expanded' => true,
+            ))
         ;
     }
 

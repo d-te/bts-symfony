@@ -311,4 +311,24 @@ class User implements UserInterface, \Serializable, EquatableInterface
 
         return true;
     }
+
+    /**
+     * Add user's roles
+     *
+     */
+    public function addRole(Role $role)
+    {
+        $this->roles->add($role);
+
+        return $this;
+    }
+
+    /**
+     * Remove user`s role
+     *
+     */
+    public function removeRole(Role $role)
+    {
+        $this->roles->removeElement($role);
+    }
 }

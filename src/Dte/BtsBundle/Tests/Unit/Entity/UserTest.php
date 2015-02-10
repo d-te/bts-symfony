@@ -3,6 +3,7 @@
 namespace Dte\BtsBundle\Tests\Unit\Entity;
 
 use Dte\BtsBundle\Entity\User;
+use Dte\BtsBundle\Entity\Role;
 
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -147,5 +148,35 @@ class UserTest extends \PHPUnit_Framework_TestCase
             array('user2', 'user1@dev.com', false),
             array('user1', 'user2@dev.com', false),
         );
+    }
+
+    public function testAddRoleFunction()
+    {
+        $user = new User();
+
+        $this->assertCount(0, $user->getRoles());
+
+        $role = new Role();
+
+        $user->addRole($role);
+
+        $this->assertCount(1, $user->getRoles());
+    }
+
+    public function testRemoveRoleFunction()
+    {
+        $user = new User();
+
+        $this->assertCount(0, $user->getRoles());
+
+        $role = new Role();
+
+        $user->addRole($role);
+
+        $this->assertCount(1, $user->getRoles());
+
+        $user->removeRole($role);
+
+        $this->assertCount(0, $user->getRoles());
     }
 }

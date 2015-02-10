@@ -14,14 +14,14 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $user = new User();
 
-        $this->assertTrue($user instanceOf UserInterface);
+        $this->assertTrue($user instanceof UserInterface);
     }
 
     public function testImplementsEquatableInterface()
     {
         $user = new User();
 
-        $this->assertTrue($user instanceOf EquatableInterface);
+        $this->assertTrue($user instanceof EquatableInterface);
     }
 
     public function testEmailSetterGetter()

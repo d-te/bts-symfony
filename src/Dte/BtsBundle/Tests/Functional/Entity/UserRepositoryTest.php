@@ -32,7 +32,7 @@ class ProductRepositoryFunctionalTest extends WebTestCase
     {
         $repository = $this->em->getRepository('DteBtsBundle:User');
 
-        $this->assertTrue($repository instanceOf UserProviderInterface);
+        $this->assertTrue($repository instanceof UserProviderInterface);
     }
 
     /**

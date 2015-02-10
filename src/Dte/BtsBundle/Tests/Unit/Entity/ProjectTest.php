@@ -3,6 +3,7 @@
 namespace Dte\BtsBundle\Tests\Unit\Entity;
 
 use Dte\BtsBundle\Entity\Project;
+use Dte\BtsBundle\Entity\User;
 
 class ProjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,5 +46,35 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $project = new Project();
 
         $this->assertEquals(array(), $project->getMembers());
+    }
+
+    public function testAddMemberFunction()
+    {
+        $project = new Project();
+
+        $this->assertCount(0, $project->getMembers());
+
+        $user = new User();
+
+        $project->addMember($user);
+
+        $this->assertCount(1, $project->getMembers());
+    }
+
+    public function testRemoveMemberFunction()
+    {
+        $project = new Project();
+
+        $this->assertCount(0, $project->getMembers());
+
+        $user = new User();
+
+        $project->addMember($user);
+
+        $this->assertCount(1, $project->getMembers());
+
+        $project->removeMember($user);
+
+        $this->assertCount(0, $project->getMembers());
     }
 }

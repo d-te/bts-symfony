@@ -13,7 +13,7 @@ class RoleTest extends \PHPUnit_Framework_TestCase
     {
         $role = new Role();
 
-        $this->assertTrue($role instanceOf RoleInterface);
+        $this->assertTrue($role instanceof RoleInterface);
     }
 
     public function testNameSetterGetter()

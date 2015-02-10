@@ -45,6 +45,9 @@ class Issue
      * @var \Dte\BtsBundle\Entity\Issue
      *
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * })
      */
     private $parent;
 

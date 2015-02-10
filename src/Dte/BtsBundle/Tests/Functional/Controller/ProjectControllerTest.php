@@ -3,9 +3,26 @@
 namespace Dte\BtsBundle\Tests\Functional\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProjectControllerTest extends WebTestCase
 {
+
+    private $client = null;
+
+    public function setUp()
+    {
+        $this->client = static::createClient();
+    }
+
+    public function testProjectWithoutAuth()
+    {
+        $this->client->request('GET', '/project');
+
+        $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
+
+        $this->assertRegExp('/\/login$/', $this->client->getResponse()->headers->get('location'));
+    }
     /*
     public function testCompleteScenario()
     {

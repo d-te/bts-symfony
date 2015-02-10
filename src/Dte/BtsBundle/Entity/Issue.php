@@ -463,4 +463,14 @@ class Issue
     {
         return $this->resolution;
     }
+
+    /**
+     * Return label for dropdown lists
+     *
+     * @return array
+     */
+    public function getSelectLabel()
+    {
+        return sprintf('( %s ) %s',  $this->getCode(), $this->getSummary());
+    }
 }

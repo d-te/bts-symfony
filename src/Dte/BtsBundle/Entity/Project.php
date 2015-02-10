@@ -179,4 +179,14 @@ class Project
     {
         $this->members->removeElement($member);
     }
+
+    /**
+     * Return label for dropdown lists
+     *
+     * @return array
+     */
+    public function getSelectLabel()
+    {
+        return sprintf('( %s ) %s',  $this->getCode(), $this->getLabel());
+    }
 }

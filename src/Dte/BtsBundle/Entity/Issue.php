@@ -3,6 +3,7 @@
 namespace Dte\BtsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Issue
@@ -41,11 +42,16 @@ class Issue
     private $type;
 
     /**
-     * @var integer
+     * @var \Dte\BtsBundle\Entity\Issue
      *
-     * @ORM\Column(name="parent_id", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
      */
-    private $parentId;
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     */
+    private $children;
 
     /**
      * @var \DateTime
@@ -130,7 +136,13 @@ class Issue
      */
     private $resolution;
 
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     /**
      * Set summary
@@ -225,26 +237,34 @@ class Issue
     }
 
     /**
-     * Set parentId
+     * Set parent
      *
-     * @param integer $parentId
+     * @param \Dte\BtsBundle\Entity\Issue $parent
      * @return Issue
      */
-    public function setParentId($parentId)
+    public function setParent(\Dte\BtsBundle\Entity\Issue $parent)
     {
-        $this->parentId = $parentId;
+        $this->parent = $parent;
 
         return $this;
     }
 
     /**
-     * Get parentId
+     * Get parent
      *
-     * @return integer
+     * @return \Dte\BtsBundle\Entity\Issue
      */
-    public function getParentId()
+    public function getParent()
     {
-        return $this->parentId;
+        return $this->parent;
+    }
+
+    /**
+     *  Get children
+     */
+    public function getChildren()
+    {
+        return $this->children->toArray();
     }
 
     /**

@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="project")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Dte\BtsBundle\Entity\ProjectRepository")
  * @UniqueEntity("code")
  */
 class Project

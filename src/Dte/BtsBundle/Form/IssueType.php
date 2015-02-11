@@ -8,9 +8,26 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class IssueType extends AbstractType
 {
+
+    /**
+     * @param SecurityContext
+     */
+    private $securityContext;
+
+    /**
+     *  Constructor
+     *
+     * @param SecurityContext $securityContext
+     */
+    public function __construct(SecurityContext $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -20,18 +37,26 @@ class IssueType extends AbstractType
         $isCreateContext = ($options['form_context'] === 'create');
         $isEditContext   = ($options['form_context'] === 'edit');
 
+        $user = $this->securityContext->getToken()->getUser();
+
         $builder
-            ->add('project', 'entity', array( //TODO only member`s porjects
+            ->add('project', 'entity', array(
                 'required'      => true,
                 'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Project',
                 'empty_value'   => 'Select a project',
-                'query_builder' => function(EntityRepository $em) {
-                    return $em->createQueryBuilder('p')->orderBy('p.id', 'DESC');
+                'query_builder' => function(EntityRepository $em) use ($user) {
+                    return $em->findByMemberQueryBuilder($user);
                 },
-            ))
-            ->add('code', 'text', array('required' => false)) // autogenrated, not editable
-            ->add('summary', 'textarea', array('required' => true))
+            ));
+
+        if ($isCreateContext) {
+            $builder
+                ->add('code', 'text', array('required' => false, 'disabled' => true));
+        }
+
+        $builder
+            ->add('summary', 'text', array('required' => true))
             ->add('description', 'textarea', array('required' => false))
             ->add('type', 'choice', array(
                 'choices'       => array(
@@ -42,14 +67,11 @@ class IssueType extends AbstractType
                 ),
                 'data' => 2,
             ))
-            ->add('parent', 'entity', array( //TODO only stories types, not editable for some types
+            ->add('parent', 'entity', array( // Only stories from selected project (ajax)
                 'required'      => false,
                 'property'      => 'label',
                 'class'         => 'DteBtsBundle:Issue',
                 'empty_value'   => 'Select an parent issue',
-                'query_builder' => function(EntityRepository $em) {
-                    return $em->createQueryBuilder('i')->orderBy('i.id', 'DESC');
-                },
             ))
             ->add('status', 'entity', array(
                 'required'      => true,
@@ -69,24 +91,25 @@ class IssueType extends AbstractType
                 },
                 'data' => 3,
             ))
-            ->add('assignee', 'entity', array( //TODO only project Members
+            ->add('assignee', 'entity', array( //TODO only members from selected project (ajax)
                 'required'      => false,
                 'property'      => 'fullname',
                 'class'         => 'DteBtsBundle:User',
                 'empty_value'   => 'Select a assignee',
-                'query_builder' => function(EntityRepository $em) {
-                    return $em->createQueryBuilder('u')->orderBy('u.fullname', 'ASC');
-                },
             ))
-            ->add('resolution', 'entity', array( //TODO only to resolve|reopen actions
+        ;
+
+        if ($isEditContext) {
+            $builder
+                ->add('resolution', 'entity', array(
                 'required'      => false,
                 'property'      => 'label',
                 'class'         => 'DteBtsBundle:IssueResolution',
+                'empty_value'   => 'Select a resolution',
                 'query_builder' => function(EntityRepository $em) {
                     return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
-                },
-            ))
-        ;
+                }));
+        }
     }
 
     /**

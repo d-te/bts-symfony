@@ -71,7 +71,7 @@ class IssueController extends Controller
      */
     private function createCreateForm(Issue $entity)
     {
-        $form = $this->createForm(new IssueType(), $entity, array(
+        $form = $this->createForm(new IssueType($this->get('security.context')), $entity, array(
             'action' => $this->generateUrl('issue_create'),
             'method' => 'POST',
         ));

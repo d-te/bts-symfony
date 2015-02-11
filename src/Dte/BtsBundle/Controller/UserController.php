@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\Form\UserType;
-use Dte\BtsBundle\Form\UserEditType;
 
 /**
  * User controller.
@@ -81,8 +80,9 @@ class UserController extends Controller
     private function createCreateForm(User $entity)
     {
         $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_create'),
-            'method' => 'POST',
+            'action'      => $this->generateUrl('user_create'),
+            'method'      => 'POST',
+            'form_context' => 'create',
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -138,7 +138,9 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", name="user_edit", requirements={
+     *     "id": "\d+"
+     * }))
      * @Method("GET")
      * @Template()
      */
@@ -171,9 +173,10 @@ class UserController extends Controller
     */
     private function createEditForm(User $entity)
     {
-        $form = $this->createForm(new UserEditType(), $entity, array(
-            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+        $form = $this->createForm(new UserType(), $entity, array(
+            'action'      => $this->generateUrl('user_update', array('id' => $entity->getId())),
+            'method'      => 'PUT',
+            'form_context' => 'edit',
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
@@ -284,5 +287,48 @@ class UserController extends Controller
         return array(
             'entity'      => $user
         );
+    }
+
+    /**
+     * User Profile edit action.
+     *
+     * @Route("/profile/edit", name="user_profile_edit")
+     * @Method("GET")
+     * @Template()
+     */
+    public function profileEditAction()
+    {
+        $entity = $this->get('security.context')->getToken()->getUser();
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $editForm = $this->createProfileForm($entity);
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+        );
+    }
+
+    /**
+    * Creates a form to edit a User profile.
+    *
+    * @param User $entity The entity
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
+    private function createProfileForm(User $entity)
+    {
+        $form = $this->createForm(new UserType(), $entity, array(
+            'action'      => $this->generateUrl('user_update', array('id' => $entity->getId())),
+            'method'      => 'PUT',
+            'form_context' => 'profile',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Update'));
+
+        return $form;
     }
 }

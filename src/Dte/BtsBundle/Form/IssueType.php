@@ -42,6 +42,7 @@ class IssueType extends AbstractType
         $builder
             ->add('project', 'entity', array(
                 'required'      => true,
+                'disabled'      => $isEditContext,
                 'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Project',
                 'empty_value'   => 'Select a project',
@@ -50,16 +51,15 @@ class IssueType extends AbstractType
                 },
             ));
 
-        if ($isCreateContext) {
+        if ($isEditContext) {
             $builder
                 ->add('code', 'text', array('required' => false, 'disabled' => true));
         }
 
         $builder
-            ->add('summary', 'text', array('required' => true))
-            ->add('description', 'textarea', array('required' => false))
             ->add('type', 'choice', array(
-                'choices'       => array(
+                'disabled' => $isEditContext,
+                'choices'  => array(
                     1 => 'Bug',
                     2 => 'Task',
                     3 => 'Story',
@@ -67,11 +67,14 @@ class IssueType extends AbstractType
                 ),
                 'data' => 2,
             ))
-            ->add('parent', 'entity', array( // Only stories from selected project (ajax)
+            ->add('summary', 'text', array('required' => true))
+            ->add('description', 'textarea', array('required' => false))
+            ->add('parent', 'entity', array(
                 'required'      => false,
-                'property'      => 'label',
+                'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Issue',
                 'empty_value'   => 'Select an parent issue',
+                'choices'       => array(), //TODO Load for editContext|
             ))
             ->add('status', 'entity', array(
                 'required'      => true,
@@ -80,7 +83,6 @@ class IssueType extends AbstractType
                 'query_builder' => function(EntityRepository $em) {
                     return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
                 },
-
             ))
             ->add('priority', 'entity', array(
                 'required'      => true,
@@ -91,11 +93,12 @@ class IssueType extends AbstractType
                 },
                 'data' => 3,
             ))
-            ->add('assignee', 'entity', array( //TODO only members from selected project (ajax)
+            ->add('assignee', 'entity', array(
                 'required'      => false,
                 'property'      => 'fullname',
                 'class'         => 'DteBtsBundle:User',
                 'empty_value'   => 'Select a assignee',
+                //'choices'       => array(), //TODO Load data for editContext|
             ))
         ;
 

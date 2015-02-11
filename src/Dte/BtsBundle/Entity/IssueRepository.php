@@ -8,26 +8,19 @@ class IssueRepository extends EntityRepository
 {
 
     /**
-     * Load list of projects by member
+     * Load list of stories by project
      */
-    public function findStoriesByMember(User $user)
-    {
-        return $this->findStoriesByMemberQueryBuilder($user)->getQuery()->getResult();
-    }
-
-    /**
-     * Load list of projects by member
-     */
-    public function findStoriesByMemberQueryBuilder(User $user)
+    public function findStoriesByProject(Project $project)
     {
         $q = $this
             ->createQueryBuilder('i')
             ->select('i')
-            ->leftJoin('i.projects', 'p')
-            ->leftJoin('p.members', 'm')
-            ->where('m.id = :user')
-            ->setParameter('user', $user->getId());
+            ->leftJoin('i.project', 'p')
+            ->where('i.project = :project AND i.type = :type')
+            ->setParameter('project', $project->getId())
+            ->setParameter('type', 3)
+            ->getQuery();
 
-        return $q;
+        return $q->getResult();
     }
 }

@@ -2,13 +2,15 @@
 
 namespace Dte\BtsBundle\Controller;
 
+use Dte\BtsBundle\Entity\Project;
+use Dte\BtsBundle\Form\ProjectType;
+
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Dte\BtsBundle\Entity\Project;
-use Dte\BtsBundle\Form\ProjectType;
 
 /**
  * Project controller.
@@ -35,6 +37,7 @@ class ProjectController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Project entity.
      *
@@ -169,6 +172,7 @@ class ProjectController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Project entity.
      *
@@ -202,6 +206,7 @@ class ProjectController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Project entity.
      *
@@ -243,5 +248,55 @@ class ProjectController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    /**
+     * Get project's members
+     *
+     * @Route("/{id}/members", name="project_members_api")
+     * @Method("GET")
+     */
+    public function getMembersAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $project = $em->getRepository('DteBtsBundle:Project')->find($id);
+
+        if ($project) {
+            $members = array();
+
+            foreach ($project->getMembers() as $user) {
+                $members[] = array('id' => $user->getId(), 'label' => $user->getFullname());
+            }
+
+            return new JsonResponse($members);
+        } else {
+            return new JsonResponse(array('error' => 'Unable to find Project entity.'), 404);
+        }
+    }
+
+    /**
+     * Get project's stories
+     *
+     * @Route("/{id}/stories", name="project_stories_api")
+     * @Method("GET")
+     */
+    public function getStoriesAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $project = $em->getRepository('DteBtsBundle:Project')->find($id);
+
+        if ($project) {
+            $issues = $em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($project);
+
+            $stories = array();
+
+            foreach ($issues as $issue) {
+                $stories[] = array('id' => $issue->getId(), 'label' => $issue->getSelectLabel());
+            }
+
+            return new JsonResponse($stories);
+        } else {
+            return new JsonResponse(array('error' => 'Unable to find Project entity.'), 404);
+        }
     }
 }

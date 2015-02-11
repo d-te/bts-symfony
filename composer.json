@@ -23,7 +23,8 @@
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
         "braincrafted/bootstrap-bundle": "~2.0",
-        "leafo/lessphp": "*"
+        "leafo/lessphp": "*",
+        "stof/doctrine-extensions-bundle": "*"
     },
     "scripts": {
         "post-install-cmd": [

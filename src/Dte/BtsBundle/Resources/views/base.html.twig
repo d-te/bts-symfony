@@ -35,6 +35,9 @@
                 <li {% if app.request.uri == url("issue") %} class="active" {% endif %}><a href="{{ url("issue") }}">Issues</a></li>
                 <li {% if app.request.uri == url("user") %} class="active" {% endif %}><a href="{{ url("user") }}">Users</a></li>
               </ul>
+
+              <a class="btn btn-primary navbar-btn" href="{{ path("issue_new") }}" role="button">Create issue</a>
+
               <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
 

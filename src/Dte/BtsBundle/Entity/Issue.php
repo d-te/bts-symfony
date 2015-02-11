@@ -5,6 +5,8 @@ namespace Dte\BtsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Issue
  *
@@ -59,6 +61,7 @@ class Issue
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime", nullable=false)
      */
     private $created;
@@ -66,6 +69,7 @@ class Issue
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated", type="datetime", nullable=false)
      */
     private $updated;

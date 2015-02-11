@@ -39,6 +39,17 @@ class IssueType extends AbstractType
 
         $user = $this->securityContext->getToken()->getUser();
 
+        $members = array();
+        $stories = array();
+
+        if ($isEditContext) {
+            $em = $this->getDoctrine()->getManager();
+            $project = $em->getRepository('DteBtsBundle:Project')->find($id);
+
+            $members = $project->getMembers();
+            $stories = $em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($project);
+        }
+
         $builder
             ->add('project', 'entity', array(
                 'required'      => true,
@@ -74,7 +85,7 @@ class IssueType extends AbstractType
                 'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Issue',
                 'empty_value'   => 'Select an parent issue',
-                'choices'       => array(), //TODO Load for editContext|
+                'choices'       => $stories,
             ))
             ->add('status', 'entity', array(
                 'required'      => true,
@@ -98,7 +109,7 @@ class IssueType extends AbstractType
                 'property'      => 'fullname',
                 'class'         => 'DteBtsBundle:User',
                 'empty_value'   => 'Select a assignee',
-                //'choices'       => array(), //TODO Load data for editContext|
+                'choices'       => $members,
             ))
         ;
 

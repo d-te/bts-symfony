@@ -471,6 +471,6 @@ class Issue
      */
     public function getSelectLabel()
     {
-        return sprintf('( %s ) %s',  $this->getCode(), $this->getSummary());
+        return sprintf('( %s ) %s', $this->getCode(), $this->getSummary());
     }
 }

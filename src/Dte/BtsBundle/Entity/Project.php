@@ -187,6 +187,6 @@ class Project
      */
     public function getSelectLabel()
     {
-        return sprintf('( %s ) %s',  $this->getCode(), $this->getLabel());
+        return sprintf('( %s ) %s', $this->getCode(), $this->getLabel());
     }
 }

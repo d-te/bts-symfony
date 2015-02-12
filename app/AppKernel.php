@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Dte\BtsBundle\DteBtsBundle(),
 
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

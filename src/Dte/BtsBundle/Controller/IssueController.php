@@ -126,6 +126,7 @@ class IssueController extends Controller
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'types'       => IssueTaskType::getItems(),
         );
     }
 

@@ -48,7 +48,7 @@ class IssueType extends AbstractType
         $builder
             ->add('project', 'entity', array(
                 'required'      => true,
-                'disabled'      => $isEditContext,
+                'read_only'     => $isEditContext,
                 'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Project',
                 'empty_value'   => 'Select a project',
@@ -59,20 +59,20 @@ class IssueType extends AbstractType
 
         if ($isEditContext) {
             $builder
-                ->add('code', 'text', array('required' => false, 'disabled' => true));
+                ->add('code', 'text', array('required' => false, 'read_only' => true));
         }
 
         $builder
             ->add('type', 'choice', array(
-                'disabled' => $isEditContext,
-                'choices'  => IssueTaskType::getItems(),
-                'data' => 2,
+                'read_only' => $isEditContext,
+                'choices'   => IssueTaskType::getItems(),
+                //'data'      => 2,
             ))
             ->add('summary', 'text', array('required' => true))
             ->add('description', 'textarea', array('required' => false))
             ->add('parent', 'entity', array(
                 'required'      => false,
-                'disabled'      => ($issue->getType() !== IssueTaskType::SUBTASK_TYPE),
+                'read_only'     => ($issue->getType() !== IssueTaskType::SUBTASK_TYPE),
                 'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Issue',
                 'empty_value'   => 'Select an parent issue',
@@ -80,7 +80,7 @@ class IssueType extends AbstractType
             ))
             ->add('status', 'entity', array(
                 'required'      => true,
-                'read_only'      => $isCreateContext,
+                'read_only'     => $isCreateContext,
                 'property'      => 'label',
                 'class'         => 'DteBtsBundle:IssueStatus',
                 'query_builder' => function(EntityRepository $em) {
@@ -94,7 +94,6 @@ class IssueType extends AbstractType
                 'query_builder' => function(EntityRepository $em) {
                     return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
                 },
-                'data' => 3,
             ))
             ->add('assignee', 'entity', array(
                 'required'      => false,

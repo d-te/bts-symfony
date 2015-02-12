@@ -180,6 +180,7 @@ class IssueController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Issue entity.
      *
@@ -213,6 +214,7 @@ class IssueController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Issue entity.
      *
@@ -254,5 +256,33 @@ class IssueController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    /**
+     * Deletes a Issue entity.
+     *
+     * @Route("/{id}/{status}", name="issue_change_status")
+     * @Method("GET")
+     */
+    public function changeStatusAction(Request $request, $id, $status)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Issue entity.');
+        }
+
+        $status = $em->getRepository('DteBtsBundle:IssueStatus')->find($status);
+
+        if (!$status) {
+            throw $this->createNotFoundException('Unable to find status.');
+        }
+
+        $entity->setStatus($status);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('issue_show', array('id' => $id)));
     }
 }

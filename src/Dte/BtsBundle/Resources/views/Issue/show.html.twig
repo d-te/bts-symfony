@@ -9,12 +9,27 @@
         <div class="col-md-12">
             <h4><a href="{{ path('project_show', { 'id': entity.project.id }) }}">{{ entity.project.selectLabel }}</a></h4>
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             <strong>({{ entity.code }})&nbsp;</strong>{{ entity.summary }} &nbsp;&nbsp;
             <a href="{{ path('issue_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;Edit</a>
             <br/>
             <br/>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <strong>Actions:</strong>
+            <div class="btn-group" role="group" aria-label="...">
+                <a type="button" class="btn btn-default {% if entity.status.id == 1 %} active disabled {% endif %}" href="{{ path('issue_change_status', { 'id': entity.id, 'status': '1'}) }}">Open</a>
+                <a type="button" class="btn btn-default {% if entity.status.id == 2 %} active disabled {% endif %}" href="{{ path('issue_change_status', { 'id': entity.id, 'status': '2'}) }}">In progress</a>
+                <a type="button" class="btn btn-default {% if entity.status.id == 3 %} active disabled {% endif %}" href="{{ path('issue_change_status', { 'id': entity.id, 'status': '3'}) }}">Close</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">&nbsp;</div>
     </div>
     <table class="table table-striped">
         <colgroup>

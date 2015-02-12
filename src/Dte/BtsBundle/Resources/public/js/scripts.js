@@ -12,7 +12,7 @@
             $('#dte_btsbundle_issue_type').on('change', function(e) {
                 var type = $('#dte_btsbundle_issue_type').find(':selected').val();
 
-                if (type !== '3') {
+                if (type !== '4') {
                     $('#dte_btsbundle_issue_parent').find(':selected').removeAttr('selected');
                     $('#dte_btsbundle_issue_parent').attr('disabled', 'disabled');
                 } else {

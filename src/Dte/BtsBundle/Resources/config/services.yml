@@ -8,3 +8,4 @@ services:
         class: Dte\BtsBundle\EventListener\IssueSubscriber
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+        arguments: ["@service_container"]

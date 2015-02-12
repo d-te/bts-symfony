@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -39,22 +41,7 @@ class IssueType extends AbstractType
 
         $user = $this->securityContext->getToken()->getUser();
 
-        $members = array();
-        $stories = array();
-
-        if ($isCreateContext) {
-            $builder->add('reporter', 'hidden', array('data' => $user));
-        } else {
-            $builder->add('reporter', 'hidden');
-        }
-
-        if ($isEditContext) {
-            $em = $this->getDoctrine()->getManager();
-            $project = $em->getRepository('DteBtsBundle:Project')->find($id);
-
-            $members = $project->getMembers();
-            $stories = $em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($project);
-        }
+        $issue = $options['data'];
 
         $builder
             ->add('project', 'entity', array(
@@ -88,13 +75,15 @@ class IssueType extends AbstractType
             ->add('description', 'textarea', array('required' => false))
             ->add('parent', 'entity', array(
                 'required'      => false,
+                'disabled'      => ($issue->getType() !== 4),
                 'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Issue',
                 'empty_value'   => 'Select an parent issue',
-                'choices'       => $stories,
+                'choices'       => $options['stories'],
             ))
             ->add('status', 'entity', array(
                 'required'      => true,
+                'disabled'      => $isCreateContext,
                 'property'      => 'label',
                 'class'         => 'DteBtsBundle:IssueStatus',
                 'query_builder' => function(EntityRepository $em) {
@@ -115,7 +104,7 @@ class IssueType extends AbstractType
                 'property'      => 'fullname',
                 'class'         => 'DteBtsBundle:User',
                 'empty_value'   => 'Select a assignee',
-                'choices'       => $members,
+                'choices'       => $options['members'],
             ))
         ;
 
@@ -140,6 +129,8 @@ class IssueType extends AbstractType
         $resolver->setDefaults(array(
             'data_class'   => 'Dte\BtsBundle\Entity\Issue',
             'form_context' => 'default',
+            'members'      => array(),
+            'stories'      => array(),
         ));
     }
 

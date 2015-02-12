@@ -72,8 +72,9 @@ class IssueController extends Controller
     private function createCreateForm(Issue $entity)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $entity, array(
-            'action' => $this->generateUrl('issue_create'),
-            'method' => 'POST',
+            'action'       => $this->generateUrl('issue_create'),
+            'method'       => 'POST',
+            'form_context' => 'create',
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -160,9 +161,14 @@ class IssueController extends Controller
     */
     private function createEditForm(Issue $entity)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $entity, array(
-            'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
+            'action'       => $this->generateUrl('issue_update', array('id' => $entity->getId())),
+            'method'       => 'PUT',
+            'form_context' => 'edit',
+            'members'      => $entity->getProject()->getMembers(),
+            'stories'      => $em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($entity->getProject()),
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));

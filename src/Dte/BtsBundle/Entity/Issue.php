@@ -40,7 +40,7 @@ class Issue
     /**
      * @var boolean
      *
-     * @ORM\Column(name="type", type="boolean", nullable=false)
+     * @ORM\Column(name="type", type="integer", nullable=false)
      */
     private $type;
 
@@ -446,10 +446,20 @@ class Issue
     /**
      * Return label for dropdown lists
      *
-     * @return array
+     * @return string
      */
     public function getSelectLabel()
     {
         return sprintf('( %s ) %s', $this->getCode(), $this->getSummary());
+    }
+
+    /**
+     * Generate issue code by project code and id
+     *
+     * @return string
+     */
+    public function generateCode()
+    {
+        return sprintf('%s-%d', $this->getProject()->getCode(), $this->getId());
     }
 }

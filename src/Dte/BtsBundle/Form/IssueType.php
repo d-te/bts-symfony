@@ -2,6 +2,8 @@
 
 namespace Dte\BtsBundle\Form;
 
+use Dte\BtsBundle\Entity\IssueTaskType;
+
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\AbstractType;
@@ -63,19 +65,14 @@ class IssueType extends AbstractType
         $builder
             ->add('type', 'choice', array(
                 'disabled' => $isEditContext,
-                'choices'  => array(
-                    1 => 'Bug',
-                    2 => 'Task',
-                    3 => 'Story',
-                    4 => 'Subtask',
-                ),
+                'choices'  => IssueTaskType::getItems(),
                 'data' => 2,
             ))
             ->add('summary', 'text', array('required' => true))
             ->add('description', 'textarea', array('required' => false))
             ->add('parent', 'entity', array(
                 'required'      => false,
-                'disabled'      => ($issue->getType() !== 4),
+                'disabled'      => ($issue->getType() !== IssueTaskType::SUBTASK_TYPE),
                 'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Issue',
                 'empty_value'   => 'Select an parent issue',
@@ -83,7 +80,7 @@ class IssueType extends AbstractType
             ))
             ->add('status', 'entity', array(
                 'required'      => true,
-                'disabled'      => $isCreateContext,
+                'read_only'      => $isCreateContext,
                 'property'      => 'label',
                 'class'         => 'DteBtsBundle:IssueStatus',
                 'query_builder' => function(EntityRepository $em) {

@@ -6,37 +6,41 @@
     <h1>Issue list</h1>
 
     <table class="table table-striped">
+        <colgroup>
+            <col class="col-md-1">
+            <col class="col-md-6">
+            <col class="col-md-1">
+            <col class="col-md-1">
+            <col class="col-md-1">
+            <col class="col-md-1">
+            <col class="col-md-1">
+        </colgroup>
         <thead>
             <tr>
-                <th>Summary</th>
                 <th>Code</th>
-                <th>Description</th>
+                <th>Summary</th>
                 <th>Type</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>Id</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Assignee</th>
+                <th>Modified</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.summary }}</a></td>
-                <td>{{ entity.code }}</td>
-                <td>{{ entity.description }}</td>
-                <td>{{ entity.type }}</td>
-                <td>{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td><a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.code }}</a></td>
+                <td>{{ entity.summary }}</td>
+                <td>{{ types[entity.type] }}</td>
+                <td>{{ entity.getStatus().getLabel() }}</td>
+                <td>{{ entity.getPriority().getLabel() }}</td>
+                <td>{% if entity.getAssignee() %}<a href="{{ path('user_show', { 'id': entity.getAssignee().getId() }) }}">{{ entity.getAssignee().getFullname() }}</a> {% else %} - {% endif %}</td>
                 <td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ entity.id }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('issue_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('issue_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    <a href="{{ path('issue_show', { 'id': entity.id }) }}">show</a>
+                    <br/>
+                    <a href="{{ path('issue_edit', { 'id': entity.id }) }}">edit</a>
                 </td>
             </tr>
         {% endfor %}

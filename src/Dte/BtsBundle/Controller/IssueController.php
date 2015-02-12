@@ -2,13 +2,16 @@
 
 namespace Dte\BtsBundle\Controller;
 
+use Dte\BtsBundle\Entity\Issue;
+use Dte\BtsBundle\Entity\IssueTaskType;
+use Dte\BtsBundle\Form\IssueType;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Dte\BtsBundle\Entity\Issue;
-use Dte\BtsBundle\Form\IssueType;
 
 /**
  * Issue controller.
@@ -33,6 +36,7 @@ class IssueController extends Controller
 
         return array(
             'entities' => $entities,
+            'types'    => IssueTaskType::getItems(),
         );
     }
     /**

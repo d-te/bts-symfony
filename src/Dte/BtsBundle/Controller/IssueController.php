@@ -71,7 +71,7 @@ class IssueController extends Controller
      */
     private function createCreateForm(Issue $entity)
     {
-        $form = $this->createForm(new IssueType($this->get('security.context')), $entity, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_issue', $entity, array(
             'action' => $this->generateUrl('issue_create'),
             'method' => 'POST',
         ));
@@ -160,7 +160,7 @@ class IssueController extends Controller
     */
     private function createEditForm(Issue $entity)
     {
-        $form = $this->createForm(new IssueType(), $entity, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_issue', $entity, array(
             'action' => $this->generateUrl('issue_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

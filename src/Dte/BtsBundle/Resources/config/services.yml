@@ -1,4 +1,10 @@
 services:
-#    dte_bts.example:
-#        class: Dte\BtsBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    form.type.dte_btsbundle_issue:
+        class: Dte\BtsBundle\Form\IssueType
+        tags:
+            - {name: form.type, alias: dte_btsbundle_issue}
+        arguments: ["@security.context"]
+    dte_bts_issue.subscriber:
+        class: Dte\BtsBundle\EventListener\IssueSubscriber
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

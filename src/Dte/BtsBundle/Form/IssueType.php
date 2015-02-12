@@ -42,6 +42,12 @@ class IssueType extends AbstractType
         $members = array();
         $stories = array();
 
+        if ($isCreateContext) {
+            $builder->add('reporter', 'hidden', array('data' => $user));
+        } else {
+            $builder->add('reporter', 'hidden');
+        }
+
         if ($isEditContext) {
             $em = $this->getDoctrine()->getManager();
             $project = $em->getRepository('DteBtsBundle:Project')->find($id);

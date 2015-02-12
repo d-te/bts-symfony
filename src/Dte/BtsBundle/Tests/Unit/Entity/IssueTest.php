@@ -56,32 +56,6 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $entity->getType());
     }
 
-    public function testCreatedSetterGetter()
-    {
-        $entity = new Issue();
-
-        $this->assertNull($entity->getCreated());
-
-        $date = new \DateTime();
-
-        $entity->setCreated($date);
-
-        $this->assertEquals($date, $entity->getCreated());
-    }
-
-    public function testUpdatedSetterGetter()
-    {
-        $entity = new Issue();
-
-        $this->assertNull($entity->getUpdated());
-
-        $date = new \DateTime();
-
-        $entity->setUpdated($date);
-
-        $this->assertEquals($date, $entity->getUpdated());
-    }
-
     public function testReporterSetterGetter()
     {
         $entity = new Issue();

@@ -14,9 +14,9 @@
 
                 if (type !== '4') {
                     $('#dte_btsbundle_issue_parent').find(':selected').removeAttr('selected');
-                    $('#dte_btsbundle_issue_parent').attr('disabled', 'disabled');
+                    $('#dte_btsbundle_issue_parent').attr('readonly', 'readonly');
                 } else {
-                    $('#dte_btsbundle_issue_parent').removeAttr('disabled');
+                    $('#dte_btsbundle_issue_parent').removeAttr('readonly');
                 }
             });
 

@@ -2,13 +2,15 @@
 
 namespace Dte\BtsBundle\Controller;
 
+use Dte\BtsBundle\Entity\User;
+use Dte\BtsBundle\Form\UserType;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Dte\BtsBundle\Entity\User;
-use Dte\BtsBundle\Form\UserType;
 
 /**
  * User controller.

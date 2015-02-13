@@ -9,12 +9,17 @@
         <tr>
             <td>
                 <strong><a href="{{ path('user_show', { 'id': entity.user.id }) }}">{{ entity.user.fullname }}</a>&nbsp;({% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %})</strong><br/>
+                <div id="comment-body-textblock-{{ entity.id }}">
                 {{ entity.body }}
+                </div>
+                <div id="comment-body-formblock-{{ entity.id }}" class="hidden">
+                    {{ form(edit_forms[entity.id], { 'id': "comment-form-" ~ entity.id, 'class': "comment-form", 'data-comment-id': entity.id }) }}
+                </div>
             </td>
             <td>
-                <a href="#">edit</a>
+                <a class="edit_comment_button" href="#" data-comment-id="{{ entity.id }}">edit</a>
                 <br />
-                <a href="#">delete</a>
+                <a class="delete_comment_button" href="#" data-comment-id="{{ entity.id }}">delete</a>
             </td>
         </tr>
     {% endfor %}

@@ -64,27 +64,58 @@
 
                 var body = $('#dte_btsbundle_comment_body').val();
                 if ('' !== body) {
-                    addComment();
+                    addComment(form.serialize());
 
-                    clearForm();
-                    disableForm();
+                    clearAddForm();
+                    disableAddForm();
                 }
 
                 return false;
             });
 
-            function clearForm()
+            function registerFormsEvents() {
+                $('.edit_comment_button').click(function(e){
+                    e.preventDefault();
+
+                    var commentId = $(this).attr('data-comment-id');
+
+                    showEditForm(commentId);
+
+                    return false;
+                });
+
+                $('.comment-form').submit(function(e) {
+                    e.preventDefault();
+
+                    var commentId = $(this).attr('data-comment-id');
+
+                    var body = $(this).find('textarea[name="dte_btsbundle_comment[body]"]').val();
+                    if ('' !== body) {
+                        updateComment(commentId, this.serialize());
+                    }
+
+                    return false;
+                });
+            }
+
+            function showEditForm(commentId)
+            {
+                $('#comment-body-textblock-' + commentId).addClass('hidden');
+                $('#comment-body-formblock-' + commentId).removeClass('hidden');
+            }
+
+            function clearAddForm()
             {
                 $('#dte_btsbundle_comment_body').val('');
             }
 
-            function disableForm()
+            function disableAddForm()
             {
                 $('#dte_btsbundle_comment_button').attr('disabled', 'disabled');
                 $('#dte_btsbundle_comment_body').attr('disabled', 'disabled');
             }
 
-            function enableForm()
+            function enableAddForm()
             {
                 $('#dte_btsbundle_comment_button').removeAttr('disabled');
                 $('#dte_btsbundle_comment_body').removeAttr('disabled');
@@ -94,18 +125,32 @@
             {
                 $.get(url, function(data) {
                     $('#comments').html(data);
+
+                    registerFormsEvents();
                 });
             }
 
-            function addComment()
+            function addComment(data)
             {
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: form.serialize(),
+                    data: data,
                     success: function() {
                         refresh();
-                        enableForm();
+                        enableAddForm();
+                    },
+                });
+            }
+
+            function updateComment(data)
+            {
+                $.ajax({
+                    type: "PUT",
+                    url: url,
+                    data: data,
+                    success: function() {
+                        refresh();
                     },
                 });
             }

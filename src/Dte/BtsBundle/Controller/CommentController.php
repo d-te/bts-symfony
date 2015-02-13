@@ -42,8 +42,15 @@ class CommentController extends Controller
 
         $entities = $issue->getComments();
 
+        $forms = array();
+
+        foreach ($entities as $entity) {
+            $forms[$entity->getId()] = $this->createEditForm($entity, $issue)->createView();
+        }
+
         return array(
-            'entities' => $entities,
+            'entities'   => $entities,
+            'edit_forms' => $forms,
         );
     }
 
@@ -85,6 +92,7 @@ class CommentController extends Controller
      * Creates a form to create a Comment entity.
      *
      * @param Comment $entity The entity
+     * @param Issue $entity Issue
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -95,7 +103,7 @@ class CommentController extends Controller
             'method' => 'POST',
         ));
 
-        //$form->add('submit', 'submit', array('label' => 'Comment'));
+        $form->add('submit', 'submit', array('label' => 'Comment'));
 
         return $form;
     }
@@ -104,17 +112,23 @@ class CommentController extends Controller
     * Creates a form to edit a Comment entity.
     *
     * @param Comment $entity The entity
+    * @param Issue $entity Issue
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Comment $entity)
+    private function createEditForm(Comment $entity, Issue $issue)
     {
         $form = $this->createForm(new CommentType(), $entity, array(
-            'action' => '',
+            'action' => $this->generateUrl('issue_comment_create', array('issue_id' => $issue->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('buttons', 'form_actions', [
+            'buttons' => [
+                'save'   => ['type' => 'submit', 'options' => ['label' => 'Update']],
+                'cancel' => ['type' => 'button', 'options' => ['label' => 'Cancel']],
+            ]
+        ]);
 
         return $form;
     }
@@ -124,33 +138,31 @@ class CommentController extends Controller
      *
      * @Route("/{id}", name="Comment_update")
      * @Method("PUT")
-     * @Template("DteBtsBundle:Comment:edit.html.twig")
      */
     public function updateAction(Request $request, $issue_id, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
+        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+        if (!$issue) {
+            throw $this->createNotFoundException('Unable to find Issue entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
+
+        $form = $this->createCreateForm($entity, $issue);
+        $form->handleRequest($request);
+
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('Comment_edit', array('id' => $id)));
         }
 
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
+        return new JsonResponse(array('saved'));
     }
 
     /**
@@ -161,6 +173,14 @@ class CommentController extends Controller
      */
     public function deleteAction(Request $request, $issue_id, $id)
     {
+         $em = $this->getDoctrine()->getManager();
+
+        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
+
+        if (!$issue) {
+            throw $this->createNotFoundException('Unable to find Issue entity.');
+        }
+
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -176,6 +196,6 @@ class CommentController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('Comment'));
+       return new JsonResponse(array('deleted'));
     }
 }

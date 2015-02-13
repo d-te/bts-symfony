@@ -59,8 +59,7 @@
                     {% for subtask in entity.children %}
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{ path('issue_show', { 'id': subtask.id }) }}">{{ subtask.selectLabel }}</a>
-                            <a href="#" class="btn btn-default btn-xs">Remove subtask</a>
+                            <a href="{{ path('issue_show', { 'id': subtask.id }) }}">{{ subtask.selectLabel }}</a> &nbsp;({{ subtask.status.label }})&nbsp; - {{ subtask.priority.label }}
                         </div>
                     </div>
                     {% endfor %}

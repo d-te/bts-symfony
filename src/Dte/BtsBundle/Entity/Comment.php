@@ -4,6 +4,8 @@ namespace Dte\BtsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Comment
  *
@@ -22,6 +24,7 @@ class Comment
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime", nullable=false)
      */
     private $created;
@@ -48,14 +51,12 @@ class Comment
     /**
      * @var \Dte\BtsBundle\Entity\Issue
      *
-     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\Issue")
+     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\Issue", inversedBy="comments")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
      * })
      */
     private $issue;
-
-
 
     /**
      * Set body
@@ -78,19 +79,6 @@ class Comment
     public function getBody()
     {
         return $this->body;
-    }
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     * @return Comment
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
     }
 
     /**

@@ -2,8 +2,10 @@
 
 namespace Dte\BtsBundle\Controller;
 
+use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssueTaskType;
+use Dte\BtsBundle\Form\CommentType;
 use Dte\BtsBundle\Form\IssueType;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -70,15 +72,12 @@ class IssueController extends Controller
      * Creates a form to create a Issue entity.
      *
      * @param Issue $entity The entity
-     * @param Issue $story parent story
-     * @param Issue $project project
+     * @param boolean $isSubtask creation of subtask from story
      *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createCreateForm(Issue $entity, $isSubtask = false)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $entity, array(
             'action'       => $this->generateUrl('issue_create'),
             'method'       => 'POST',
@@ -87,6 +86,27 @@ class IssueController extends Controller
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
+
+        return $form;
+    }
+
+    /**
+     * Creates a form to create/edit Comment.
+     *
+     * @param Issue $entity The entity
+     * @param Issue $story parent story
+     * @param Issue $project project
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCommentForm(Comment $entity, Issue $issue)
+    {
+        $form = $this->createForm(new CommentType(), $entity, array(
+            'action' => $this->generateUrl('issue_comment_create', array('issue_id' => $issue->getId())),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Comment'));
 
         return $form;
     }
@@ -142,12 +162,14 @@ class IssueController extends Controller
             throw $this->createNotFoundException('Unable to find Issue entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm  = $this->createDeleteForm($id);
+        $commentForm = $this->createCommentForm(new Comment(), $entity);
 
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-            'types'       => IssueTaskType::getItems(),
+            'entity'       => $entity,
+            'comment_form' => $commentForm->createView(),
+            'delete_form'  => $deleteForm->createView(),
+            'types'        => IssueTaskType::getItems(),
         );
     }
 
@@ -280,7 +302,7 @@ class IssueController extends Controller
     /**
      * Change a issue's status
      *
-     * @Route("/{id}/{status}", name="issue_change_status")
+     * @Route("/{id}/{status}", name="issue_change_status", requirements={"status": "1|2|3"})
      * @Method("GET")
      */
     public function changeStatusAction(Request $request, $id, $status)

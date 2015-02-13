@@ -13,4 +13,7 @@ dte_bts_projects:
 dte_bts_issues:
     resource: @DteBtsBundle/Controller/IssueController.php
     type:     annotation
+dte_bts_comments:
+    resource: @DteBtsBundle/Controller/CommentController.php
+    type:     annotation
 

@@ -1,0 +1,23 @@
+{% block body %}
+<table class="table table-striped">
+    <colgroup>
+        <col class="col-md-11">
+        <col class="col-md-1">
+    </colgroup>
+    <tbody>
+    {% for entity in entities %}
+        <tr>
+            <td>
+                <strong><a href="{{ path('user_show', { 'id': entity.user.id }) }}">{{ entity.user.fullname }}</a>&nbsp;({% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %})</strong><br/>
+                {{ entity.body }}
+            </td>
+            <td>
+                <a href="#">edit</a>
+                <br />
+                <a href="#">delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

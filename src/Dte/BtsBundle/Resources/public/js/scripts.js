@@ -1,3 +1,4 @@
+/*issue form*/
 (function ($) {
     $(document).ready(function() {
 
@@ -44,6 +45,71 @@
                          .text(value.label));
                 });
             }
+        }
+    });
+})(jQuery);
+
+/*comments*/
+(function ($) {
+    $(document).ready(function() {
+        if ($('form[name="dte_btsbundle_comment"]').length > 0) {
+            var form    = $('form[name="dte_btsbundle_comment"]');
+            var issueId = parseInt($('#comments').attr('data-issue-id'));
+            var url     = '/issue/' + issueId + '/comment/';
+
+            refresh();
+
+            form.submit(function(e) {
+                e.preventDefault();
+
+                var body = $('#dte_btsbundle_comment_body').val();
+                if ('' !== body) {
+                    addComment();
+
+                    clearForm();
+                    disableForm();
+                }
+
+                return false;
+            });
+
+            function clearForm()
+            {
+                $('#dte_btsbundle_comment_body').val('');
+            }
+
+            function disableForm()
+            {
+                $('#dte_btsbundle_comment_button').attr('disabled', 'disabled');
+                $('#dte_btsbundle_comment_body').attr('disabled', 'disabled');
+            }
+
+            function enableForm()
+            {
+                $('#dte_btsbundle_comment_button').removeAttr('disabled');
+                $('#dte_btsbundle_comment_body').removeAttr('disabled');
+            }
+
+            function refresh()
+            {
+                $.get(url, function(data) {
+                    $('#comments').html(data);
+                });
+            }
+
+            function addComment()
+            {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(){
+                        refresh();
+                        enableForm();
+                    },
+                });
+            }
+
         }
     });
 })(jQuery);

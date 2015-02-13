@@ -145,11 +145,20 @@ class Issue
     private $resolution;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="issue")
+     * @ORM\OrderBy({"id" = "desc"})
+     */
+    private $comments;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -273,6 +282,14 @@ class Issue
     public function getChildren()
     {
         return $this->children->toArray();
+    }
+
+    /**
+     *  Get comments
+     */
+    public function getComments()
+    {
+        return $this->comments->toArray();
     }
 
     /**
@@ -461,5 +478,25 @@ class Issue
     public function generateCode()
     {
         return sprintf('%s-%d', $this->getProject()->getCode(), $this->getId());
+    }
+
+    /**
+     * Add comment
+     *
+     */
+    public function addComment(Comment $comment)
+    {
+        $this->comments->add($comment);
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeElement($comment);
     }
 }

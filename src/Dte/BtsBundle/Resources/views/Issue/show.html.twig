@@ -99,6 +99,32 @@
         </tbody>
     </table>
 
+    <div role="tabpanel">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#comments_pane" aria-controls="comments_pane" role="tab" data-toggle="tab">Comments</a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="comments_pane">
+            <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    {{ form(comment_form) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+            </div>
+            <div id="comments" class="row" data-issue-id="{{ entity.id }}">
+            </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
         <a href="{{ path('issue') }}">Back to the list</a>
         <br />

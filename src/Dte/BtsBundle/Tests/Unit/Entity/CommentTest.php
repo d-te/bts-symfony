@@ -20,19 +20,6 @@ class CommentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Body', $comment->getBody());
     }
 
-    public function testCreatedSetterGetter()
-    {
-        $comment = new Comment();
-
-        $this->assertNull($comment->getCreated());
-
-        $date = new \DateTime();
-
-        $comment->setCreated($date);
-
-        $this->assertEquals($date, $comment->getCreated());
-    }
-
     public function testIssueSetterGetter()
     {
         $comment = new Comment();

@@ -278,7 +278,7 @@ class IssueController extends Controller
     }
 
     /**
-     * Deletes a Issue entity.
+     * Change a issue's status
      *
      * @Route("/{id}/{status}", name="issue_change_status")
      * @Method("GET")

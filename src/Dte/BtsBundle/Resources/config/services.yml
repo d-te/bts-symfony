@@ -3,7 +3,7 @@ services:
         class: Dte\BtsBundle\Form\IssueType
         tags:
             - {name: form.type, alias: dte_btsbundle_issue}
-        arguments: ["@security.context"]
+        arguments: ["@security.context", "@doctrine"]
     dte_bts_issue.subscriber:
         class: Dte\BtsBundle\EventListener\IssueSubscriber
         tags:

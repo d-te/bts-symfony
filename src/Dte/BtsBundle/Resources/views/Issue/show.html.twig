@@ -51,12 +51,18 @@
                 <td><a href="{{ path('issue_show', { 'id': entity.parent.id }) }}">{{ entity.parent.selectLabel }}</a></td>
             </tr>
             {% endif %}
-            {% if entity.children %}
+            {% if entity.type == 3 %}
             <tr>
                 <th>Subtasks</th>
                 <td>
+                    <a class="btn btn-default btn-xs" href="{{ path('issue_new', {'story': entity.id}) }}">Add Subtask</a>
                     {% for subtask in entity.children %}
-                    <a href="{{ path('issue_show', { 'id': subtask.id }) }}">{{ subtask.selectLabel }}</a><br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="{{ path('issue_show', { 'id': subtask.id }) }}">{{ subtask.selectLabel }}</a>
+                            <a href="#" class="btn btn-default btn-xs">Remove subtask</a>
+                        </div>
+                    </div>
                     {% endfor %}
                 </td>
             </tr>

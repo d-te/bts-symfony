@@ -2,14 +2,18 @@
 
 namespace Dte\BtsBundle\Form;
 
+use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssueTaskType;
+use Dte\BtsBundle\Entity\Project;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -18,18 +22,25 @@ class IssueType extends AbstractType
 {
 
     /**
-     * @param SecurityContext
+     * @var SecurityContext
      */
     private $securityContext;
+
+    /**
+     *  @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
 
     /**
      *  Constructor
      *
      * @param SecurityContext $securityContext
      */
-    public function __construct(SecurityContext $securityContext)
+    public function __construct(SecurityContext $securityContext, Doctrine $doctrine)
     {
         $this->securityContext = $securityContext;
+
+        $this->em = $doctrine->getManager();
     }
 
     /**
@@ -43,12 +54,12 @@ class IssueType extends AbstractType
 
         $user = $this->securityContext->getToken()->getUser();
 
-        $issue = $options['data'];
+        $isSubtask = $options['isSubtask'];
 
         $builder
             ->add('project', 'entity', array(
                 'required'      => true,
-                'read_only'     => $isEditContext,
+                'read_only'     => $isEditContext || ($isCreateContext && $isSubtask),
                 'property'      => 'selectLabel',
                 'class'         => 'DteBtsBundle:Project',
                 'empty_value'   => 'Select a project',
@@ -62,47 +73,71 @@ class IssueType extends AbstractType
                 ->add('code', 'text', array('required' => false, 'read_only' => true));
         }
 
-        $builder
-            ->add('type', 'choice', array(
-                'read_only' => $isEditContext,
-                'choices'   => IssueTaskType::getItems(),
-                //'data'      => 2,
-            ))
-            ->add('summary', 'text', array('required' => true))
-            ->add('description', 'textarea', array('required' => false))
-            ->add('parent', 'entity', array(
-                'required'      => false,
-                'read_only'     => ($issue->getType() !== IssueTaskType::SUBTASK_TYPE),
-                'property'      => 'selectLabel',
-                'class'         => 'DteBtsBundle:Issue',
-                'empty_value'   => 'Select an parent issue',
-                'choices'       => $options['stories'],
-            ))
-            ->add('status', 'entity', array(
-                'required'      => true,
-                'read_only'     => $isCreateContext,
-                'property'      => 'label',
-                'class'         => 'DteBtsBundle:IssueStatus',
-                'query_builder' => function(EntityRepository $em) {
-                    return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
-                },
-            ))
-            ->add('priority', 'entity', array(
-                'required'      => true,
-                'property'      => 'label',
-                'class'         => 'DteBtsBundle:IssuePriority',
-                'query_builder' => function(EntityRepository $em) {
-                    return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
-                },
-            ))
-            ->add('assignee', 'entity', array(
-                'required'      => false,
-                'property'      => 'fullname',
-                'class'         => 'DteBtsBundle:User',
-                'empty_value'   => 'Select a assignee',
-                'choices'       => $options['members'],
-            ))
-        ;
+        $formModifier = function (FormInterface $form, Issue $issue = null, Project $project = null) use ($isCreateContext, $isEditContext, $isSubtask, $options) {
+            $members = (null !== $project) ? $project->getMembers() : array();
+            $stories = (null !== $project) ? $this->em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($project) : array();
+
+            $form
+                ->add('type', 'choice', array(
+                    'read_only' => $isEditContext || ($isCreateContext && $isSubtask),
+                    'choices'   => IssueTaskType::getItems(),
+                ))
+                ->add('summary', 'text', array('required' => true))
+                ->add('description', 'textarea', array('required' => false))
+                ->add('parent', 'entity', array(
+                    'required'      => false,
+                    'read_only'     => ($issue->getType() !== IssueTaskType::SUBTASK_TYPE || ($isCreateContext && $isSubtask)),
+                    'property'      => 'selectLabel',
+                    'class'         => 'DteBtsBundle:Issue',
+                    'empty_value'   => 'Select an parent issue',
+                    'choices'       => $stories,
+                ))
+                ->add('status', 'entity', array(
+                    'required'      => true,
+                    'read_only'     => $isCreateContext,
+                    'property'      => 'label',
+                    'class'         => 'DteBtsBundle:IssueStatus',
+                    'query_builder' => function(EntityRepository $em) {
+                        return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
+                    },
+                ))
+                ->add('priority', 'entity', array(
+                    'required'      => true,
+                    'property'      => 'label',
+                    'class'         => 'DteBtsBundle:IssuePriority',
+                    'query_builder' => function(EntityRepository $em) {
+                        return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
+                    },
+                ))
+                ->add('assignee', 'entity', array(
+                    'required'      => false,
+                    'property'      => 'fullname',
+                    'class'         => 'DteBtsBundle:User',
+                    'empty_value'   => 'Select a assignee',
+                    'choices'       => $members,
+                ))
+            ;
+        };
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier) {
+                $issue = $event->getData();
+
+                $formModifier($event->getForm(), $issue, $issue->getProject());
+            }
+        );
+
+        $builder->get('project')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formModifier) {
+                $project = $event->getForm()->getData();
+                $issue   = $event->getForm()->getParent()->getData();
+
+                $formModifier($event->getForm()->getParent(), $issue, $project);
+            }
+        );
+
 
         if ($isEditContext) {
             $builder
@@ -127,6 +162,7 @@ class IssueType extends AbstractType
             'form_context' => 'default',
             'members'      => array(),
             'stories'      => array(),
+            'isSubtask'    => false,
         ));
     }
 

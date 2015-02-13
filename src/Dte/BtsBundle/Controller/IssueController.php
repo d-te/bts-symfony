@@ -70,15 +70,20 @@ class IssueController extends Controller
      * Creates a form to create a Issue entity.
      *
      * @param Issue $entity The entity
+     * @param Issue $story parent story
+     * @param Issue $project project
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Issue $entity)
+    private function createCreateForm(Issue $entity, $isSubtask = false)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $entity, array(
             'action'       => $this->generateUrl('issue_create'),
             'method'       => 'POST',
             'form_context' => 'create',
+            'isSubtask'    => $isSubtask,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -93,10 +98,26 @@ class IssueController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        $entity = new Issue();
-        $form   = $this->createCreateForm($entity);
+        $entity  = new Issue();
+        $isSubtask = false;
+
+        if (intval($request->get('story')) > 0) {
+            $em = $this->getDoctrine()->getManager();
+
+            $story   = $em->getRepository('DteBtsBundle:Issue')->find(intval($request->get('story')));
+
+            if ($story && $story->getType() === IssueTaskType::STORY_TYPE) {
+                $entity->setParent($story);
+                $entity->setProject($story->getProject());
+                $entity->setType(IssueTaskType::SUBTASK_TYPE);
+
+                $isSubtask = true;
+            }
+        }
+
+        $form   = $this->createCreateForm($entity, $isSubtask);
 
         return array(
             'entity' => $entity,
@@ -172,8 +193,6 @@ class IssueController extends Controller
             'action'       => $this->generateUrl('issue_update', array('id' => $entity->getId())),
             'method'       => 'PUT',
             'form_context' => 'edit',
-            'members'      => $entity->getProject()->getMembers(),
-            'stories'      => $em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($entity->getProject()),
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));

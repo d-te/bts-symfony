@@ -103,7 +103,7 @@
                     type: "POST",
                     url: url,
                     data: form.serialize(),
-                    success: function(){
+                    success: function() {
                         refresh();
                         enableForm();
                     },

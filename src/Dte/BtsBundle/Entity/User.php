@@ -106,6 +106,15 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $activities;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Issue", inversedBy="collaborators")
+     * @ORM\JoinTable(name="issue_collaborators",
+     *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      )
+     */
+
+    private $collaborators;
+    /**
      * Constructor
      */
     public function __construct()
@@ -113,6 +122,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
         $this->roles      = new ArrayCollection();
         $this->projects   = new ArrayCollection();
         $this->activities = new ArrayCollection();
+        $this->issues     = new ArrayCollection();
     }
 
     /**

@@ -161,13 +161,23 @@ class Issue
     private $activities;
 
     /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="issues")
+     * @ORM\JoinTable(name="issue_collaborators",
+     *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
+     *      )
+     */
+    private $collaborators;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->children   = new ArrayCollection();
-        $this->comments   = new ArrayCollection();
-        $this->activities = new ArrayCollection();
+        $this->children      = new ArrayCollection();
+        $this->comments      = new ArrayCollection();
+        $this->activities    = new ArrayCollection();
+        $this->collaborators = new ArrayCollection();
     }
 
     /**
@@ -307,6 +317,14 @@ class Issue
     public function getActivities()
     {
         return $this->activities->toArray();
+    }
+
+    /**
+     *  Get collaborators
+     */
+    public function getCollaborators()
+    {
+        return $this->collaborators->toArray();
     }
 
     /**
@@ -515,5 +533,25 @@ class Issue
     public function removeComment(Comment $comment)
     {
         $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Add collaborator
+     *
+     */
+    public function addCollaborator(User $user)
+    {
+        $this->collaborators->add($user);
+
+        return $this;
+    }
+
+    /**
+     * Remove collaborator
+     *
+     */
+    public function removeCollaborator(User $user)
+    {
+        $this->collaborators->removeElement($user);
     }
 }

@@ -104,6 +104,7 @@
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#comments_pane" aria-controls="comments_pane" role="tab" data-toggle="tab">Comments</a></li>
         <li role="presentation"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">Activities</a></li>
+        <li role="presentation"><a href="#collaborators_pane" aria-controls="collaborators_pane" role="tab" data-toggle="tab">Collaborators</a></li>
       </ul>
 
       <!-- Tab panes -->
@@ -148,6 +149,28 @@
                         <td>{{ activity.message }}</td>
                     </tr>
                 {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="collaborators_pane">
+            <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+            </div>
+            <table class="table table-striped">
+                <colgroup>
+                    <col class="col-md-6">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in entity.getCollaborators() %}
+                    <tr>
+                        <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.fullname }}</a></td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

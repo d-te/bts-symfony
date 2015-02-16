@@ -84,6 +84,16 @@
                     return false;
                 });
 
+                $('.delete_comment_button').click(function(e){
+                    e.preventDefault();
+
+                    var commentId = $(this).attr('data-comment-id');
+
+                    $('#comment-body-formblock-delete-' + commentId).find('form').submit();
+
+                    return false;
+                });
+
                 $('.comment-form').submit(function(e) {
                     e.preventDefault();
 
@@ -93,6 +103,16 @@
                     if ('' !== body) {
                         updateComment(commentId, $(this).serialize());
                     }
+
+                    return false;
+                });
+
+                $('.comment-form-delete').submit(function(e) {
+                    e.preventDefault();
+
+                    var commentId = $(this).attr('data-comment-id');
+
+                    deleteComment(commentId, $(this).serialize());
 
                     return false;
                 });
@@ -147,6 +167,18 @@
             {
                 $.ajax({
                     type: 'PUT',
+                    url: url +  commentId,
+                    data: data,
+                    success: function() {
+                        refresh();
+                    },
+                });
+            }
+
+            function deleteComment(commentId,data)
+            {
+                 $.ajax({
+                    type: 'DELETE',
                     url: url +  commentId,
                     data: data,
                     success: function() {

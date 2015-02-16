@@ -261,7 +261,9 @@ class IssueController extends Controller
     /**
      * Deletes a Issue entity.
      *
-     * @Route("/{id}", name="issue_delete")
+     * @Route("/{id}", name="issue_delete", requirements={
+     *     "id": "\d+"
+     * }))
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)

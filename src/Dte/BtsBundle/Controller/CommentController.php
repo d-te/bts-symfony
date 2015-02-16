@@ -44,15 +44,19 @@ class CommentController extends Controller
 
         $entities = $issue->getComments();
 
-        $forms = array();
+        $forms = array(
+            'edit'   => array(),
+            'delete' => array(),
+        );
 
         foreach ($entities as $entity) {
-            $forms[$entity->getId()] = $this->createEditForm($entity, $issue)->createView();
+            $forms['edit'][$entity->getId()]   = $this->createEditForm($entity, $issue)->createView();
+            $forms['delete'][$entity->getId()] = $this->createDeleteForm($entity->getId(), $issue->getId())->createView();
         }
 
         return array(
             'entities'   => $entities,
-            'edit_forms' => $forms,
+            'forms' => $forms,
         );
     }
 
@@ -172,24 +176,23 @@ class CommentController extends Controller
     /**
      * Deletes a Comment entity.
      *
-     * @Route("/{id}", name="Comment_delete")
+     * @Route("/{id}", name="issue_comment_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $issue_id, $id)
     {
-         $em = $this->getDoctrine()->getManager();
-
-        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
-
-        if (!$issue) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
-        }
-
-        $form = $this->createDeleteForm($id);
+        $form = $this->createDeleteForm($id, $issue_id);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
+
+            if (!$issue) {
+                throw $this->createNotFoundException('Unable to find Issue entity.');
+            }
+
             $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
 
             if (!$entity) {
@@ -200,6 +203,23 @@ class CommentController extends Controller
             $em->flush();
         }
 
-       return new JsonResponse(array('deleted'));
+        return new JsonResponse(array('deleted'));
+    }
+
+    /**
+     * Creates a form to delete a Comment entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id, $issue_id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('issue_comment_delete', array('id' => $id, 'issue_id' => $issue_id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm()
+        ;
     }
 }

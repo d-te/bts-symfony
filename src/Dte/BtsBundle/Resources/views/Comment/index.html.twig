@@ -13,7 +13,10 @@
                 {{ entity.body }}
                 </div>
                 <div id="comment-body-formblock-{{ entity.id }}" class="hidden">
-                    {{ form(edit_forms[entity.id], { 'id': "comment-form-" ~ entity.id, 'attr': {'class': 'comment-form', 'data-comment-id': entity.id }}) }}
+                    {{ form(forms['edit'][entity.id], { 'id': "comment-form-" ~ entity.id, 'attr': {'class': 'comment-form', 'data-comment-id': entity.id }}) }}
+                </div>
+                <div id="comment-body-formblock-delete-{{ entity.id }}" class="hidden">
+                    {{ form(forms['delete'][entity.id], { 'id': "comment-form-delete-" ~ entity.id, 'attr': {'class': 'comment-form-delete', 'data-comment-id': entity.id }}) }}
                 </div>
             </td>
             <td>

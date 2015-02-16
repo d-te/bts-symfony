@@ -1,6 +1,8 @@
 <?php
 
-namespace Dte\BtsBundle\Entity;
+namespace Dte\BtsBundle\Entity\Repository;
+
+use Dte\BtsBundle\Entity\Project;
 
 use Doctrine\ORM\EntityRepository;
 

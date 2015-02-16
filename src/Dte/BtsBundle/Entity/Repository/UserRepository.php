@@ -1,6 +1,6 @@
 <?php
 
-namespace Dte\BtsBundle\Entity;
+namespace Dte\BtsBundle\Entity\Repository;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;

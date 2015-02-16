@@ -69,7 +69,7 @@ class NotificationSubscriber implements EventSubscriber
                     ->setFrom($noreplyEmail)
                     ->setSubject($subject)
                     ->setTo($collaborator->getEmail())
-                    ->setBody($body);
+                    ->setBody($body, 'text/html');
 
                 $this->mailer->send($message);
             }

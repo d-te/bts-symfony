@@ -18,7 +18,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
  * Comment controller.
  *
- * @Route("/issue/{issue_id}/comment")
+ * @Route("/issue/{issue_id}/comment", requirements={
+ *     "issue_id": "\d+"
+ * }))
  */
 class CommentController extends Controller
 {
@@ -136,7 +138,9 @@ class CommentController extends Controller
     /**
      * Edits an existing Comment entity.
      *
-     * @Route("/{id}", name="Comment_update")
+     * @Route("/{id}", name="issue_comment_update", requirements={
+     *     "id": "\d+"
+     * }))
      * @Method("PUT")
      */
     public function updateAction(Request $request, $issue_id, $id)
@@ -151,15 +155,15 @@ class CommentController extends Controller
 
         $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
 
-        $form = $this->createCreateForm($entity, $issue);
-        $form->handleRequest($request);
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Comment entity.');
+        }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity, $issue);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
-
         }
 
         return new JsonResponse(array('saved'));

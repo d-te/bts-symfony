@@ -225,7 +225,9 @@ class IssueController extends Controller
     /**
      * Edits an existing Issue entity.
      *
-     * @Route("/{id}", name="issue_update")
+     * @Route("/{id}", name="issue_update", requirements={
+     *     "id": "\d+"
+     * }))
      * @Method("PUT")
      * @Template("DteBtsBundle:Issue:edit.html.twig")
      */

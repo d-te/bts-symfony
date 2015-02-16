@@ -91,7 +91,7 @@
 
                     var body = $(this).find('textarea[name="dte_btsbundle_comment[body]"]').val();
                     if ('' !== body) {
-                        updateComment(commentId, this.serialize());
+                        updateComment(commentId, $(this).serialize());
                     }
 
                     return false;
@@ -133,7 +133,7 @@
             function addComment(data)
             {
                 $.ajax({
-                    type: "POST",
+                    type: 'POST',
                     url: url,
                     data: data,
                     success: function() {
@@ -143,11 +143,11 @@
                 });
             }
 
-            function updateComment(data)
+            function updateComment(commentId, data)
             {
                 $.ajax({
-                    type: "PUT",
-                    url: url,
+                    type: 'PUT',
+                    url: url +  commentId,
                     data: data,
                     success: function() {
                         refresh();

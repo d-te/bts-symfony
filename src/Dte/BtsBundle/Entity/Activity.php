@@ -4,6 +4,8 @@ namespace Dte\BtsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Activity
  *
@@ -48,7 +50,13 @@ class Activity
      */
     private $user;
 
-
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created", type="datetime", nullable=false)
+     */
+    private $created;
 
     /**
      * Set message
@@ -127,5 +135,15 @@ class Activity
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
     }
 }

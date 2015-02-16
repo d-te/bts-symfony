@@ -73,8 +73,9 @@
                 return false;
             });
 
-            function registerFormsEvents() {
-                $('.edit_comment_button').click(function(e){
+            function registerFormsEvents()
+            {
+                $('.edit_comment_button').click(function(e) {
                     e.preventDefault();
 
                     var commentId = $(this).attr('data-comment-id');
@@ -84,7 +85,7 @@
                     return false;
                 });
 
-                $('.delete_comment_button').click(function(e){
+                $('.delete_comment_button').click(function(e) {
                     e.preventDefault();
 
                     var commentId = $(this).attr('data-comment-id');
@@ -175,9 +176,9 @@
                 });
             }
 
-            function deleteComment(commentId,data)
+            function deleteComment(commentId, data)
             {
-                 $.ajax({
+                $.ajax({
                     type: 'DELETE',
                     url: url +  commentId,
                     data: data,
@@ -186,7 +187,6 @@
                     },
                 });
             }
-
         }
     });
 })(jQuery);

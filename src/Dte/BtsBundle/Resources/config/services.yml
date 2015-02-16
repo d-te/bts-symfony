@@ -9,3 +9,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         arguments: ["@service_container"]
+    dte_bts_activity.manager:
+        class: Dte\BtsBundle\Manager\ActivityManager
+        arguments: ["@service_container"]
+    dte_bts_activity.subscriber:
+        class: Dte\BtsBundle\EventListener\ActivitySubscriber
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        arguments: ["@dte_bts_activity.manager"]

@@ -106,14 +106,10 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $activities;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Issue", inversedBy="collaborators")
-     * @ORM\JoinTable(name="issue_collaborators",
-     *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
-     *      )
+     * @ORM\ManyToMany(targetEntity="Issue", mappedBy="collaborators")
      */
+    private $issues;
 
-    private $collaborators;
     /**
      * Constructor
      */

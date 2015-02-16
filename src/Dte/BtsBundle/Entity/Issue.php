@@ -554,4 +554,13 @@ class Issue
     {
         $this->collaborators->removeElement($user);
     }
+
+    /**
+     * Remove collaborator
+     *
+     */
+    public function hasCollaborator(User $user)
+    {
+        return $this->collaborators->contains($user);
+    }
 }

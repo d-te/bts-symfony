@@ -3,7 +3,9 @@ namespace Dte\BtsBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 
+use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\Project;
 
@@ -17,11 +19,34 @@ class IssueSubscriber implements EventSubscriber
     private $container;
 
     /**
+     * @var array
+     */
+    private $collaborators = [];
+
+    /**
      * Constructor
      */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * get current User
+     * @var User
+     */
+    public function getUser()
+    {
+        return $this->container->get('security.context')->getToken()->getUser();
+    }
+
+    /**
+     * get current EntityManager
+     * @var EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->container->get('doctrine')->getEntityManager();
     }
 
     /**
@@ -32,6 +57,8 @@ class IssueSubscriber implements EventSubscriber
         return array(
             'prePersist',
             'postPersist',
+            'preUpdate',
+            'postFlush',
         );
     }
 
@@ -40,7 +67,16 @@ class IssueSubscriber implements EventSubscriber
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        $this->addIssueCode($args);
+        $entity = $args->getEntity();
+        $em     = $args->getEntityManager();
+
+        if ($entity instanceof Issue) {
+            $this->addIssueCode($entity);
+            $this->addIssueReporterCollaborator($entity);
+            $this->addIssueAssigneeCollaborator($entity);
+        } else if ($entity instanceof Comment) {
+            $this->addCommentCollaborator($entity);
+        }
     }
 
     /**
@@ -48,44 +84,107 @@ class IssueSubscriber implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $this->addIssueReporterAndAssignee($args);
+        $entity = $args->getEntity();
+        $em     = $args->getEntityManager();
+
+        if ($entity instanceof Issue) {
+            $this->addIssueReporterAndAssignee($entity);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function preUpdate(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        $em     = $args->getEntityManager();
+
+        if ($entity instanceof Issue) {
+            if ($args->hasChangedField('assignee')) {
+                $this->addIssueAssigneeCollaborator($entity);
+            }
+        }
+    }
+
+    /**
+     * Add collaborator from reporter field
+     *
+     * @param Issue $issue
+     */
+    public function addIssueReporterCollaborator(Issue $issue)
+    {
+        $this->collaborators[] = array('issue' => $issue, 'user' => $issue->getReporter());
+    }
+
+    /**
+     * Add collaborator from assignee field
+     *
+     * @param Issue $issue
+     */
+    public function addIssueAssigneeCollaborator(Issue $issue)
+    {
+        if (null !== $issue->getAssignee() && $issue->getAssignee()->getId() !== $issue->getReporter()->getId()) {
+            $this->collaborators[] = array('issue' => $issue, 'user' => $issue->getAssignee());
+        }
+    }
+
+    /**
+     * Add collaborator by Comment
+     *
+     * @param Comment $comment
+     */
+    public function addCommentCollaborator(Comment $comment)
+    {
+        $this->collaborators[] = array('issue' => $comment->getIssue(), 'user' => $comment->getUser());
     }
 
     /**
      * Generate issue code
      *
-     * @param LifecycleEventArgs $args
+     * @param Issue $issue
      */
-    public function addIssueCode(LifecycleEventArgs $args)
+    public function addIssueCode(Issue $issue)
     {
-        $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
-
-        if ($entity instanceof Issue) {
-            $entity->setCode($entity->generateCode());
-
-            $em->flush();
-        }
+        $em = $this->getEntityManager();
+        $issue->setCode($issue->generateCode());
+        $em->flush();
     }
 
     /**
      * Add issue reporter
      *
-     * @param LifecycleEventArgs $args
+     * @param Issue $issue
      */
-    public function addIssueReporterAndAssignee(LifecycleEventArgs $args)
+    public function addIssueReporterAndAssignee(Issue $issue)
     {
-        $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
+        $user = $this->getUser();
 
-        if ($entity instanceof Issue) {
-            $user = $this->container->get('security.context')->getToken()->getUser();
+        $issue->setReporter($user);
 
-            $entity->setReporter($user);
+        if (!$issue->getAssignee()) {
+            $issue->setAssignee($user);
+        }
+    }
 
-            if (!$entity->getAssignee()) {
-                $entity->setAssignee($user);
+    /**
+     * @inheritDoc
+     */
+    public function postFlush(PostFlushEventArgs $args)
+    {
+        if (!empty($this->collaborators)) {
+            $em = $this->getEntityManager();
+
+            foreach ($this->collaborators as $item) {
+                $item['issue']->getCollaborators();
+
+                if (!$item['issue']->hasCollaborator($item['user'])) {
+                    $item['issue']->addCollaborator($item['user']);
+                }
             }
+
+            $this->collaborators = [];
+            $em->flush();
         }
     }
 }

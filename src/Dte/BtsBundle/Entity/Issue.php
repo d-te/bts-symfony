@@ -153,12 +153,21 @@ class Issue
     private $comments;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Activity", mappedBy="issue")
+     * @ORM\OrderBy({"id" = "desc"})
+     */
+    private $activities;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->children = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->children   = new ArrayCollection();
+        $this->comments   = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     /**
@@ -290,6 +299,14 @@ class Issue
     public function getComments()
     {
         return $this->comments->toArray();
+    }
+
+    /**
+     *  Get activities
+     */
+    public function getActivities()
+    {
+        return $this->activities->toArray();
     }
 
     /**

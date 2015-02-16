@@ -98,12 +98,21 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $projects;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Activity", mappedBy="user")
+     * @ORM\OrderBy({"id" = "desc"})
+     */
+    private $activities;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->roles    = new ArrayCollection();
-        $this->projects = new ArrayCollection();
+        $this->roles      = new ArrayCollection();
+        $this->projects   = new ArrayCollection();
+        $this->activities = new ArrayCollection();
     }
 
     /**
@@ -257,6 +266,16 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function getProjects()
     {
         return $this->projects->toArray();
+    }
+
+    /**
+     * Get user activities
+     *
+     * @return array
+     */
+    public function getActivities()
+    {
+        return $this->activities->toArray();
     }
 
     /**

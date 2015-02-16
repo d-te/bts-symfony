@@ -103,6 +103,7 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#comments_pane" aria-controls="comments_pane" role="tab" data-toggle="tab">Comments</a></li>
+        <li role="presentation"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">Activities</a></li>
       </ul>
 
       <!-- Tab panes -->
@@ -122,7 +123,39 @@
             <div id="comments" class="row" data-issue-id="{{ entity.id }}">
             </div>
         </div>
+        <div role="tabpanel" class="tab-pane" id="activities_pane">
+            <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+            </div>
+            <table class="table table-striped">
+                <colgroup>
+                    <col class="col-md-2">
+                    <col class="col-md-2">
+                    <col class="col-md-8">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for activity in entity.activities %}
+                    <tr>
+                        <td>{% if activity.created %}{{ activity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td><a href="{{ path('user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a></td>
+                        <td>{{ activity.message }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
       </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1">&nbsp;</div>
     </div>
 
     <div class="row">

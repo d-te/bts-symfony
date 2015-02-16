@@ -1,6 +1,3 @@
-# Doctrine Migrations Configuration
-doctrine_migrations:
-    dir_name: %kernel.root_dir%/DoctrineMigrations
-    namespace: Application\Migrations
-    table_name: migration_versions
-    name: Application Migrations
+dte_bts:
+    notification:
+        noreply_email: noreply@dte-bts.dev

@@ -1,0 +1,6 @@
+<html>
+<body>
+    <p>Issue <a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a> has been updated by user <a href="{{ path('user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a> with message:</p>
+    <p>{{ activity.message }}</p>
+</body>
+</html

@@ -17,3 +17,8 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         arguments: ["@dte_bts_activity.manager"]
+    dte_bts_notification.subscriber:
+        class: Dte\BtsBundle\EventListener\NotificationSubscriber
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        arguments: ["@service_container"]

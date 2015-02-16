@@ -65,11 +65,19 @@ class Project
     private $members;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Issue", mappedBy="project")
+     */
+    private $issues;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->members = new ArrayCollection();
+        $this->issues  = new ArrayCollection();
     }
 
     /**
@@ -179,6 +187,16 @@ class Project
     public function removeMember(User $member)
     {
         $this->members->removeElement($member);
+    }
+
+    /**
+     * Get project issues
+     *
+     * @return array
+     */
+    public function getIssues()
+    {
+        return $this->issues->toArray();
     }
 
     /**

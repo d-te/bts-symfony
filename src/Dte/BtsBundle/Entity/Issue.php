@@ -97,7 +97,7 @@ class Issue
     /**
      * @var \Dte\BtsBundle\Entity\Project
      *
-     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\Project")
+     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\Project", inversedBy="issues")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="project_id", referencedColumnName="id")
      * })

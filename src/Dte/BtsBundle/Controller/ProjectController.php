@@ -120,10 +120,13 @@ class ProjectController extends Controller
             throw $this->createNotFoundException('Unable to find Project entity.');
         }
 
+        $activities = $em->getRepository('DteBtsBundle:Activity')->findActivitiesByProject($entity);
+
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
+            'activities'  => $activities,
             'delete_form' => $deleteForm->createView(),
         );
     }

@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="activity", indexes={@ORM\Index(name="IDX_AC74095A5E7AA58C", columns={"issue_id"}), @ORM\Index(name="IDX_AC74095AA76ED395", columns={"user_id"})})
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Dte\BtsBundle\Entity\Repository\ActivityRepository")
  */
 class Activity
 {
@@ -33,7 +34,7 @@ class Activity
     /**
      * @var \Dte\BtsBundle\Entity\Issue
      *
-     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\Issue")
+     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\Issue", inversedBy="activities")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="issue_id", referencedColumnName="id")
      * })
@@ -43,7 +44,7 @@ class Activity
     /**
      * @var \Dte\BtsBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Dte\BtsBundle\Entity\User", inversedBy="activities")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })

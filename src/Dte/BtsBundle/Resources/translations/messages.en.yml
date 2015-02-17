@@ -1,0 +1,68 @@
+bts:
+    brand_name: Bug tracking system
+    page:
+        main:
+            menu_label:             Home
+            head_title:             Bts - Home page
+            action:
+                new_issue:          Create issue
+                logout:             Log Out
+            tablist:
+                activities:         Activities
+                issues:             Opened issues
+        login:
+            head_title:             Bts - Login page
+            page_title:             Login
+            action:
+                login:              Login
+        project:
+            menu_label:             Projects
+        issue:
+            menu_label:             Issues
+        user:
+            menu_label:             Users
+    entity:
+        activity:
+            id.label:               Id
+            message.label:          Message
+            issue.label:            Issue
+            user.label:             User
+            created.label:          Date
+        comment:
+            id.label:               Id
+            body.label:             Body
+            issue.label:            Issue
+            user.label:             User
+            created.label:          Date
+        issue:
+            id.label:               Id
+            summary.label:          Summary
+            code.label:             Code
+            description.label:      Description
+            type.label:             Type
+            parent.label:           Parent
+            children.label:         Children
+            created.label:          Created
+            updated.label:          Updated
+            reporter.label:         Reporter
+            assignee.label:        Assignee
+            status.label:           Status
+            priority.label:         Priority
+            resolution.label:       Resolution
+            comments.label:         Comments
+            activities.label:       Activities
+            collaborators.label:    Collaborators
+        project:
+            id.label:               Id
+            label.label:            Label
+            summary.label:          Summary
+            code.label:             Code
+            members.label:          Members
+        user:
+            id.label:               Id
+            username.label:         Username
+            fullname.label:         Fullname
+            avatar.label:           Avatar
+            email.label:            Email
+            password.label:         Password
+            roles.label:            Roles

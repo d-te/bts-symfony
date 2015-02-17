@@ -4,8 +4,8 @@
 	<div role="tabpanel">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">Activities</a></li>
-        <li role="presentation"><a href="#issues_pane" aria-controls="issues_pane" role="tab" data-toggle="tab">Opened issues</a></li>
+        <li role="presentation" class="active"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">{{ 'bts.page.main.tablist.activities'|trans }}</a></li>
+        <li role="presentation"><a href="#issues_pane" aria-controls="issues_pane" role="tab" data-toggle="tab">{{ 'bts.page.main.tablist.issues'|trans }}</a></li>
       </ul>
 
       <!-- Tab panes -->
@@ -23,10 +23,10 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>User</th>
-                        <th>Issue</th>
-                        <th>Message</th>
+                        <th>{{ 'bts.entity.activity.created.label'|trans }}</th>
+                        <th>{{ 'bts.entity.activity.user.label'|trans }}</th>
+                        <th>{{ 'bts.entity.activity.issue.label'|trans }}</th>
+                        <th>{{ 'bts.entity.activity.message.label'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,10 +54,10 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>Code</th>
-                        <th>Summary</th>
-                        <th>Status</th>
-                        <th>Assignee</th>
+                        <th>{{ 'bts.entity.issue.code.label'|trans }}</th>
+                        <th>{{ 'bts.entity.issue.summary.label'|trans }}</th>
+                        <th>{{ 'bts.entity.issue.status.label'|trans }}</th>
+                        <th>{{ 'bts.entity.issue.assignee.label'|trans }}</th>
                     </tr>
                 </thead>
                 <tbody>

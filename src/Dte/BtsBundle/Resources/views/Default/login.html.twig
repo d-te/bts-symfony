@@ -1,9 +1,13 @@
 {% extends "DteBtsBundle::base.html.twig" %}
 
+{% block title %}
+    {{ 'bts.page.login.head_title'|trans }}
+{% endblock %}
+
 {% block content %}
     <div class="row">
 
-        <h1>Login</h1>
+        <h1>{{ 'bts.page.login.page_title'|trans }}</h1>
 
         {% if error %}
             <div class="error">{{ error.message }}</div>
@@ -11,14 +15,14 @@
 
         <form action="{{ path("dte_bts_security_check") }}" method="post" id="login" class="form-horizontal">
             <div class="form-group">
-                <label for="username" class="col-sm-2 control-label">Username</label>
+                <label for="username" class="col-sm-2 control-label">{{ 'bts.entity.user.username.label'|trans }}</label>
                 <div class="col-sm-6">
                     <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" />
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="password" class="col-sm-2 control-label">Password</label>
+                <label for="password" class="col-sm-2 control-label">{{ 'bts.entity.user.password.label'|trans }}</label>
                 <div class="col-sm-6">
                     <input type="password" id="password" name="_password" class="form-control" />
                 </div>
@@ -26,7 +30,7 @@
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-6">
-                    <button type="submit" class="btn btn-default">Login</button>
+                    <button type="submit" class="btn btn-default">{{ 'bts.page.login.action.login'|trans }}</button>
                 </div>
             </div>
         </form>

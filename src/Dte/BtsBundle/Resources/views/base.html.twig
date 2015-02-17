@@ -36,7 +36,9 @@
                 <li {% if app.request.uri == url("dte_bts_homepage") %} class="active" {% endif %}><a href="{{ url("dte_bts_homepage") }}">{{ 'bts.page.main.menu_label'|trans }}</a></li>
                 <li {% if app.request.uri == url("project") %} class="active" {% endif %}><a href="{{ url("project") }}">{{ 'bts.page.project.menu_label'|trans }}</a></li>
                 <li {% if app.request.uri == url("issue") %} class="active" {% endif %}><a href="{{ url("issue") }}">{{ 'bts.page.issue.menu_label'|trans }}</a></li>
+                {% if (is_granted('ROLE_ADMIN')) %}
                 <li {% if app.request.uri == url("user") %} class="active" {% endif %}><a href="{{ url("user") }}">{{ 'bts.page.user.menu_label'|trans }}</a></li>
+                {% endif %}
               </ul>
 
               <a class="btn btn-primary navbar-btn" href="{{ path("issue_new") }}" role="button">{{ 'bts.page.main.action.new_issue'|trans }}</a>

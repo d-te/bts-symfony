@@ -4,11 +4,13 @@ namespace Dte\BtsBundle\Controller;
 
 use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\Form\UserType;
+use Dte\BtsBundle\Security\Voter\UserVoter;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -29,6 +31,10 @@ class UserController extends Controller
      */
     public function indexAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('DteBtsBundle:User')->findAll();
@@ -46,6 +52,10 @@ class UserController extends Controller
      */
     public function createAction(Request $request)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entity = new User();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -101,6 +111,10 @@ class UserController extends Controller
      */
     public function newAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entity = new User();
         $form   = $this->createCreateForm($entity);
 
@@ -159,6 +173,10 @@ class UserController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
         }
 
+        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
@@ -203,6 +221,10 @@ class UserController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $oldPassword = $entity->getPassword();
@@ -250,6 +272,11 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('DteBtsBundle:User')->find($id);
 
+
+            if (false === $this->get('security.context')->isGranted('delete', $entity)) {
+                throw new AccessDeniedException('Unauthorised access!');
+            }
+
             if (!$entity) {
                 throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
             }
@@ -289,6 +316,10 @@ class UserController extends Controller
     {
         $user = $this->get('security.context')->getToken()->getUser();
 
+        if (false === $this->get('security.context')->isGranted('profile', $user)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         return array(
             'entity'      => $user
         );
@@ -307,6 +338,10 @@ class UserController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('profile', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $editForm = $this->createProfileForm($entity);

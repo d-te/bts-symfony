@@ -22,3 +22,8 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         arguments: ["@service_container"]
+    security.access.user_voter:
+        class:      Dte\BtsBundle\Security\Voter\UserVoter
+        public:     false
+        tags:
+           - { name: security.voter }

@@ -24,5 +24,7 @@ class DteBtsExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $container->setParameter('dte_bts.noreply_email', $config['noreply_email']);
     }
 }

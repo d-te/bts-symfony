@@ -1,3 +1,2 @@
 dte_bts:
-    notification:
-        noreply_email: noreply@dte-bts.dev
+    noreply_email: noreply@dte-bts.dev

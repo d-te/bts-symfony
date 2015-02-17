@@ -58,9 +58,8 @@ class NotificationSubscriber implements EventSubscriber
     {
         $collaborators = $activity->getIssue()->getCollaborators();
 
-        //$noreplyEmail = $this->container->get('dte_bts.notification.noreply_email'); //TODO temporary
-        $noreplyEmail = 'noreply@dte-bts.dev';
-        $subject      = sprintf('[BTS] %s updated', $activity->getIssue()->getCode());
+        $noreplyEmail = $this->container->getParameter('dte_bts.noreply_email');
+        $subject      = sprintf('[BTS] [%s] notification', $activity->getIssue()->getCode());
         $body         = $this->container->get('templating')->render('DteBtsBundle:Emails:notification.html.twig', array('activity' => $activity));
 
         foreach ($collaborators as $collaborator) {

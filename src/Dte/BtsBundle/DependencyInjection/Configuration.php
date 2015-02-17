@@ -21,11 +21,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('notification')
-                    ->children()
-                        ->scalarNode('noreply_email')->end()
-                    ->end()
-                ->end() // notification
+                ->scalarNode('noreply_email')->defaultValue('noreply@dte-bts.dev')->end()
             ->end()
         ;
 

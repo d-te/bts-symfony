@@ -1,14 +1,12 @@
 {% extends 'DteBtsBundle::base.html.twig' %}
 
-{% block title 'Bug tracking system - User creation' %}
+{% block title %}
+    {{ 'bts.page.user_create.head_title'|trans }}
+{% endblock %}
 
 {% block content %}
-    <h1>User creation</h1>
+    <h1>{{ 'bts.page.user_create.page_title'|trans }}</h1>
 
     {{ form(form) }}
-
-    <div class="row">
-        <a href="{{ path('user') }}">Back to the list</a>
-    </div>
 
 {% endblock %}

@@ -1,9 +1,11 @@
 {% extends 'DteBtsBundle::base.html.twig' %}
 
-{% block title 'Bug tracking system - Profile edit' %}
+{% block title %}
+    {{ 'bts.page.user_profile_edit.head_title'|trans }}
+{% endblock %}
 
 {% block content %}
-    <h1>Profile edit</h1>
+    <h1>{{ 'bts.page.user_profile_edit.page_title'|trans }}</h1>
 
     {{ form(edit_form) }}
 

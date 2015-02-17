@@ -21,17 +21,34 @@ class UserType extends AbstractType
         $isProfileContext = ($options['form_context'] === 'profile');
 
         $builder
-            ->add('email', 'email', array('required' => true, 'read_only' => ($isEditContext || $isProfileContext) ))
-            ->add('username', 'text', array('required' => true, 'label' => 'Nickname'))
-            ->add('fullname', 'text', array('required' => true))
-            ->add('password', 'password', array('required' => $isCreateContext))
-            ->add('avatar', 'url', array('required' => false))
+            ->add('email', 'email', array(
+                'required'  => true,
+                'read_only' => ($isEditContext || $isProfileContext),
+                'label'     => 'bts.entity.user.email.label',
+            ))
+            ->add('username', 'text', array(
+                'required' => true,
+                'label'    => 'bts.entity.user.username.label',
+            ))
+            ->add('fullname', 'text', array(
+                'required' => true,
+                'label'    => 'bts.entity.user.fullname.label',
+            ))
+            ->add('password', 'password', array(
+                'required' => $isCreateContext,
+                'label'    => 'bts.entity.user.password.label',
+            ))
+            ->add('avatar', 'url', array(
+                'required' => false,
+                'label'    => 'bts.entity.user.avatar.label',
+            ))
         ;
 
         if (!$isProfileContext) {
             $builder
                 ->add('roles', 'entity', array(
                     'required' => true,
+                    'label'     => 'bts.entity.user.roles.label',
                     'property' => 'name',
                     'class'    => 'DteBtsBundle:Role',
                     'multiple' => true,

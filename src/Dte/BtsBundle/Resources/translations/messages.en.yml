@@ -49,6 +49,31 @@ bts:
             menu_label:             Issues
         user:
             menu_label:             Users
+            head_title:             Bts - Users
+            page_title:             Users
+            no_avatar_label:        No avatar image
+            action:
+                create:             Create a new user
+            error:
+                not_found:          Unable to find User entity.
+            tablist:
+                activities:         Activities
+                issues:             Opened issues
+        user_create:
+            head_title:             Bts - User creation
+            page_title:             user creation
+        user_edit:
+            head_title:             Bts - User edit
+            page_title:             user edit
+        user_show:
+            head_title:             Bts - User
+            page_title:             User
+        user_profile:
+            head_title:             Bts - User profile
+            page_title:             User profile
+        user_profile_edit:
+            head_title:             Bts - User profile edit
+            page_title:             User profile edit
     entity:
         activity:
             id.label:               Id

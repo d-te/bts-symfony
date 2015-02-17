@@ -87,7 +87,7 @@ class UserController extends Controller
             'form_context' => 'create',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'bts.default.action.create'));
 
         return $form;
     }
@@ -126,7 +126,7 @@ class UserController extends Controller
         $entity = $em->getRepository('DteBtsBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
         }
 
         $openedIssues = $em->getRepository('DteBtsBundle:Issue')->findOpenedIssuesAssignedToUser($entity);
@@ -156,7 +156,7 @@ class UserController extends Controller
         $entity = $em->getRepository('DteBtsBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -184,7 +184,7 @@ class UserController extends Controller
             'form_context' => 'edit',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'bts.default.action.update'));
 
         return $form;
     }
@@ -202,7 +202,7 @@ class UserController extends Controller
         $entity = $em->getRepository('DteBtsBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
         }
 
         $oldPassword = $entity->getPassword();
@@ -251,7 +251,7 @@ class UserController extends Controller
             $entity = $em->getRepository('DteBtsBundle:User')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
             }
 
             $em->remove($entity);
@@ -273,7 +273,7 @@ class UserController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('user_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
             ->getForm()
         ;
     }
@@ -306,7 +306,7 @@ class UserController extends Controller
         $entity = $this->get('security.context')->getToken()->getUser();
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
         }
 
         $editForm = $this->createProfileForm($entity);

@@ -1,18 +1,29 @@
 {% extends 'DteBtsBundle::base.html.twig' %}
 
-{% block title 'Bug tracking system - User list' %}
+{% block title %}
+    {{ 'bts.page.user.head_title'|trans }}
+{% endblock %}
 
 {% block content %}
-    <h1>User list</h1>
+    <h1>{{ 'bts.page.user.page_title'|trans }}</h1>
 
     <table class="table table-striped">
+        <colgroup>
+            <col class="col-md-1">
+            <col class="col-md-3">
+            <col class="col-md-3">
+            <col class="col-md-3">
+            <col class="col-md-1">
+            <col class="col-md-1">
+        </colgroup>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Avatar</th>
-                <th>Actions</th>
+                <th>{{ 'bts.entity.user.id.label'|trans }}</th>
+                <th>{{ 'bts.entity.user.email.label'|trans }}</th>
+                <th>{{ 'bts.entity.user.username.label'|trans }}</th>
+                <th>{{ 'bts.entity.user.fullname.label'|trans }}</th>
+                <th>{{ 'bts.entity.user.avatar.label'|trans }}</th>
+                <th>{{ 'bts.default.actions.label'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -21,11 +32,12 @@
                 <td>{{ entity.id }}</td>
                 <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.email }}</a></td>
                 <td>{{ entity.username }}</td>
-                <td><img src="{{ entity.avatar }}" width="32" ></td>
+                <td>{{ entity.fullname }}</td>
+                <td>{% if entity.avatar %} <img src="{{ entity.avatar }}" width="32" >{% else %} - {% endif %}</td>
                 <td>
-                    <a href="{{ path('user_show', { 'id': entity.id }) }}">show</a>
+                    <a href="{{ path('user_show', { 'id': entity.id }) }}">{{ 'bts.default.action.show'|trans }}</a>
                     <br />
-                    <a href="{{ path('user_edit', { 'id': entity.id }) }}">edit</a>
+                    <a href="{{ path('user_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
                 </td>
             </tr>
         {% endfor %}
@@ -33,6 +45,6 @@
     </table>
 
     <div class="row">
-        <a href="{{ path('user_new') }}" class="btn btn-default">Create a new entry</a>
+        <a href="{{ path('user_new') }}" class="btn btn-default">{{ 'bts.page.user.action.create'|trans }}</a>
     </div>
     {% endblock %}

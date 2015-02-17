@@ -27,6 +27,7 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">Activities</a></li>
+        <li role="presentation"><a href="#issues_pane" aria-controls="issues_pane" role="tab" data-toggle="tab">Opened issues</a></li>
       </ul>
 
       <!-- Tab panes -->
@@ -58,7 +59,34 @@
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="issues_pane">
+            <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+            </div>
+            <table class="table table-striped">
+                <colgroup>
+                    <col class="col-md-1">
+                    <col class="col-md-10">
+                    <col class="col-md-1">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Summary</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for issue in openedIssues %}
+                    <tr>
+                        <td><a href="{{ path('issue_show', { 'id': issue.id }) }}">{{ issue.code }}</a></td>
+                        <td>{{ issue.summary }}</td>
+                        <td>{{ issue.status.label }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
       </div>
     </div>
 

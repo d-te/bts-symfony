@@ -88,10 +88,10 @@ bts:
                 issues:             Opened issues
         user_create:
             head_title:             Bts - User creation
-            page_title:             user creation
+            page_title:             User creation
         user_edit:
             head_title:             Bts - User edit
-            page_title:             user edit
+            page_title:             User edit
         user_show:
             head_title:             Bts - User
             page_title:             User

@@ -85,7 +85,7 @@ class IssueController extends Controller
             'isSubtask'    => $isSubtask,
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'bts.default.action.create'));
 
         return $form;
     }
@@ -106,7 +106,7 @@ class IssueController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Comment'));
+        $form->add('submit', 'submit', array('label' => 'bts.page.issue.action.comment'));
 
         return $form;
     }
@@ -159,7 +159,7 @@ class IssueController extends Controller
         $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
         $deleteForm  = $this->createDeleteForm($id);
@@ -187,7 +187,7 @@ class IssueController extends Controller
         $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -217,7 +217,7 @@ class IssueController extends Controller
             'form_context' => 'edit',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'bts.default.action.update'));
 
         return $form;
     }
@@ -238,7 +238,7 @@ class IssueController extends Controller
         $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -276,7 +276,7 @@ class IssueController extends Controller
             $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Issue entity.');
+                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
             }
 
             $em->remove($entity);
@@ -298,7 +298,7 @@ class IssueController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('issue_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
             ->getForm()
         ;
     }
@@ -316,13 +316,13 @@ class IssueController extends Controller
         $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
         $status = $em->getRepository('DteBtsBundle:IssueStatus')->find($status);
 
         if (!$status) {
-            throw $this->createNotFoundException('Unable to find status.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_status'));
         }
 
         $entity->setStatus($status);

@@ -8,6 +8,7 @@ bts:
             create:             Create
             update:             Update
             delete:             Delete
+            cancel:             Cancel
     page:
         main:
             menu_label:             Home
@@ -47,6 +48,32 @@ bts:
             page_title:             Project
         issue:
             menu_label:             Issues
+            head_title:             Bts - Issues
+            page_title:             Issues
+            action:
+                create:             Create a new issue
+                comment:            Comment
+                open:               Open
+                in_progress:        In progress
+                close:              Close
+                add_subtask:        Add Subtask
+            error:
+                not_found:          Unable to find Issue entity.
+                not_found_status:   Unable to find Issue status.
+                not_found_comment:  Unable to find Comment entity.
+            tablist:
+                activities:         Activities
+                comments:           Comments
+                collaborators:      Collaborators
+        issue_create:
+            head_title:             Bts - Issue creation
+            page_title:             Issue creation
+        issue_edit:
+            head_title:             Bts - Issue edit
+            page_title:             Issue edit
+        issue_show:
+            head_title:             Bts - Issue
+            page_title:             Issue
         user:
             menu_label:             Users
             head_title:             Bts - Users
@@ -89,19 +116,24 @@ bts:
             created.label:          Date
         issue:
             id.label:               Id
+            project.label:          Project
+            project.empty_value:    Select a project
             summary.label:          Summary
             code.label:             Code
             description.label:      Description
             type.label:             Type
-            parent.label:           Parent
-            children.label:         Children
+            parent.label:           Story
+            parent.empty_value:     Select a parent story
+            children.label:         Subtasks
             created.label:          Created
             updated.label:          Updated
             reporter.label:         Reporter
             assignee.label:         Assignee
+            assignee.empty_value:   Select a assignee
             status.label:           Status
             priority.label:         Priority
             resolution.label:       Resolution
+            resolution.empty_value: Select a resolution
             comments.label:         Comments
             activities.label:       Activities
             collaborators.label:    Collaborators

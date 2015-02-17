@@ -20,9 +20,9 @@
                 </div>
             </td>
             <td>
-                <a class="edit_comment_button" href="#" data-comment-id="{{ entity.id }}">edit</a>
+                <a class="edit_comment_button" href="#" data-comment-id="{{ entity.id }}">{{ 'bts.default.action.edit'|trans }}</a>
                 <br />
-                <a class="delete_comment_button" href="#" data-comment-id="{{ entity.id }}">delete</a>
+                <a class="delete_comment_button" href="#" data-comment-id="{{ entity.id }}">{{ 'bts.default.action.delete'|trans }}</a>
             </td>
         </tr>
     {% endfor %}

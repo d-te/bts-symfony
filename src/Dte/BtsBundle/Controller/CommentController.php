@@ -39,7 +39,7 @@ class CommentController extends Controller
         $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
 
         if (!$issue) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
         $entities = $issue->getComments();
@@ -73,7 +73,7 @@ class CommentController extends Controller
         $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
 
         if (!$issue) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
         $user = $this->get('security.context')->getToken()->getUser();
@@ -109,7 +109,7 @@ class CommentController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Comment'));
+        $form->add('submit', 'submit', array('label' => 'bts.page.issue.action.comment'));
 
         return $form;
     }
@@ -131,8 +131,8 @@ class CommentController extends Controller
 
         $form->add('buttons', 'form_actions', [
             'buttons' => [
-                'save'   => ['type' => 'submit', 'options' => ['label' => 'Update']],
-                'cancel' => ['type' => 'button', 'options' => ['label' => 'Cancel']],
+                'save'   => ['type' => 'submit', 'options' => ['label' => 'bts.default.action.update']],
+                'cancel' => ['type' => 'button', 'options' => ['label' => 'bts.default.action.cancel']],
             ]
         ]);
 
@@ -154,13 +154,13 @@ class CommentController extends Controller
         $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
 
         if (!$issue) {
-            throw $this->createNotFoundException('Unable to find Issue entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
         $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_comment'));
         }
 
         $editForm = $this->createEditForm($entity, $issue);
@@ -190,13 +190,13 @@ class CommentController extends Controller
             $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
 
             if (!$issue) {
-                throw $this->createNotFoundException('Unable to find Issue entity.');
+                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
             }
 
             $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Comment entity.');
+                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_comment'));
             }
 
             $em->remove($entity);
@@ -218,7 +218,7 @@ class CommentController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('issue_comment_delete', array('id' => $id, 'issue_id' => $issue_id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
             ->getForm()
         ;
     }

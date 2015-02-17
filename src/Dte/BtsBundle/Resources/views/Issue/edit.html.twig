@@ -1,15 +1,15 @@
 {% extends 'DteBtsBundle::base.html.twig' %}
 
-{% block title 'Bug tracking system - Issue edit' %}
+{% block title %}
+    {{ 'bts.page.issue_edit.head_title'|trans }}
+{% endblock %}
 
 {% block content %}
-    <h1>Issue edit</h1>
+    <h1>{{ 'bts.page.issue_edit.page_title'|trans }}</h1>
 
     {{ form(edit_form) }}
 
 	<div class="row">
-        <a href="{{ path('issue') }}">Back to the list</a>
-        <br />
         <span>{{ form(delete_form) }}</span>
     </div>
 {% endblock %}

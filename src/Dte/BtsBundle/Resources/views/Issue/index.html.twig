@@ -1,9 +1,11 @@
 {% extends 'DteBtsBundle::base.html.twig' %}
 
-{% block title 'Bug tracking system - Issue list' %}
+{% block title %}
+    {{ 'bts.page.issue.head_title'|trans }}
+{% endblock %}
 
 {% block content %}
-    <h1>Issue list</h1>
+    <h1>{{ 'bts.page.issue.page_title'|trans }}</h1>
 
     <table class="table table-striped">
         <colgroup>
@@ -17,14 +19,14 @@
         </colgroup>
         <thead>
             <tr>
-                <th>Code</th>
-                <th>Summary</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Priority</th>
-                <th>Assignee</th>
-                <th>Modified</th>
-                <th>Actions</th>
+                <th>{{ 'bts.entity.issue.code.label'|trans }}</th>
+                <th>{{ 'bts.entity.issue.summary.label'|trans }}</th>
+                <th>{{ 'bts.entity.issue.type.label'|trans }}</th>
+                <th>{{ 'bts.entity.issue.status.label'|trans }}</th>
+                <th>{{ 'bts.entity.issue.priority.label'|trans }}</th>
+                <th>{{ 'bts.entity.issue.assignee.label'|trans }}</th>
+                <th>{{ 'bts.entity.issue.updated.label'|trans }}</th>
+                <th>{{ 'bts.default.actions.label'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -33,14 +35,14 @@
                 <td><a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.code }}</a></td>
                 <td>{{ entity.summary }}</td>
                 <td>{{ types[entity.type] }}</td>
-                <td>{{ entity.getStatus().getLabel() }}</td>
-                <td>{{ entity.getPriority().getLabel() }}</td>
-                <td>{% if entity.getAssignee() %}<a href="{{ path('user_show', { 'id': entity.getAssignee().getId() }) }}">{{ entity.getAssignee().getFullname() }}</a> {% else %} - {% endif %}</td>
+                <td>{{ entity.status.label }}</td>
+                <td>{{ entity.priority.label }}</td>
+                <td>{% if entity.assignee %}<a href="{{ path('user_show', { 'id': entity.assignee.id }) }}">{{ entity.assignee.fullname }}</a> {% else %} - {% endif %}</td>
                 <td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
-                    <a href="{{ path('issue_show', { 'id': entity.id }) }}">show</a>
+                    <a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ 'bts.default.action.show'|trans }}</a>
                     <br/>
-                    <a href="{{ path('issue_edit', { 'id': entity.id }) }}">edit</a>
+                    <a href="{{ path('issue_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
                 </td>
             </tr>
         {% endfor %}
@@ -48,6 +50,6 @@
     </table>
 
     <div class="row">
-        <a href="{{ path('issue_new') }}" class="btn btn-default">Create a new entry</a>
+        <a href="{{ path('issue_new') }}" class="btn btn-default">{{ 'bts.page.issue.action.create'|trans }}</a>
     </div>
     {% endblock %}

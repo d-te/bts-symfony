@@ -1,9 +1,11 @@
 {% extends 'DteBtsBundle::base.html.twig' %}
 
-{% block title 'Bug tracking system - Project list' %}
+{% block title %}
+    {{ 'bts.page.project.head_title'|trans }}
+{% endblock %}
 
 {% block content %}
-    <h1>Project list</h1>
+    <h1>{{ 'bts.page.project.page_title'|trans }}</h1>
 
     <table class="table table-striped">
         <colgroup>
@@ -15,11 +17,11 @@
         </colgroup>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Code</th>
-                <th>Label/Summary</th>
-                <th>Members</th>
-                <th>Actions</th>
+                <th>{{ 'bts.entity.project.id.label'|trans }}</th>
+                <th>{{ 'bts.entity.project.code.label'|trans }}</th>
+                <th>{{ 'bts.entity.project.summary.label'|trans }}</th>
+                <th>{{ 'bts.entity.project.members.label'|trans }}</th>
+                <th>{{ 'bts.default.actions.label'|trans }}</th>
             </tr>
         </thead>
         <tbody>
@@ -30,9 +32,9 @@
                 <td>{{ entity.label }}<br/><i>{{ entity.summary }}</i></td>
                 <td>{{ entity.getMembers()|length }}</td>
                 <td>
-                    <a href="{{ path('project_show', { 'id': entity.id }) }}">show</a>
+                    <a href="{{ path('project_show', { 'id': entity.id }) }}">{{ 'bts.default.action.show'|trans }}</a>
                     <br />
-                    <a href="{{ path('project_edit', { 'id': entity.id }) }}">edit</a>
+                    <a href="{{ path('project_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
                 </td>
             </tr>
         {% endfor %}
@@ -40,6 +42,6 @@
     </table>
 
     <div class="row">
-        <a href="{{ path('project_new') }}" class="btn btn-default">Create a new entry</a>
+        <a href="{{ path('project_new') }}" class="btn btn-default">{{ 'bts.page.project.action.create'|trans }}</a>
     </div>
     {% endblock %}

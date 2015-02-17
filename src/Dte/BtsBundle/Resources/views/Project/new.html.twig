@@ -1,13 +1,12 @@
 {% extends 'DteBtsBundle::base.html.twig' %}
 
-{% block title 'Bug tracking system - Project creation' %}
+{% block title %}
+    {{ 'bts.page.project_create.head_title'|trans }}
+{% endblock %}
 
 {% block content %}
-    <h1>Project creation</h1>
+    <h1>{{ 'bts.page.project_create.page_title'|trans }}</h1>
 
     {{ form(form) }}
 
-    <div class="row">
-        <a href="{{ path('project') }}">Back to the list</a>
-    </div>
 {% endblock %}

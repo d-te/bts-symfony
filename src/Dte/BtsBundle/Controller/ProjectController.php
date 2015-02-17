@@ -80,7 +80,7 @@ class ProjectController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'bts.default.action.create'));
 
         return $form;
     }
@@ -117,7 +117,7 @@ class ProjectController extends Controller
         $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
         }
 
         $activities = $em->getRepository('DteBtsBundle:Activity')->findActivitiesByProject($entity);
@@ -145,7 +145,7 @@ class ProjectController extends Controller
         $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
         }
 
         $editForm = $this->createEditForm($entity);
@@ -172,7 +172,7 @@ class ProjectController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'bts.default.action.update'));
 
         return $form;
     }
@@ -191,7 +191,7 @@ class ProjectController extends Controller
         $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Project entity.');
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -227,7 +227,7 @@ class ProjectController extends Controller
             $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Project entity.');
+                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
             }
 
             $em->remove($entity);
@@ -249,7 +249,7 @@ class ProjectController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('project_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
             ->getForm()
         ;
     }
@@ -274,7 +274,7 @@ class ProjectController extends Controller
 
             return new JsonResponse($members);
         } else {
-            return new JsonResponse(array('error' => 'Unable to find Project entity.'), 404);
+            return new JsonResponse(array('error' => $this->get('translator')->trans('bts.page.project.error.not_found')), 404);
         }
     }
 
@@ -300,7 +300,7 @@ class ProjectController extends Controller
 
             return new JsonResponse($stories);
         } else {
-            return new JsonResponse(array('error' => 'Unable to find Project entity.'), 404);
+            return new JsonResponse(array('error' => $this->get('translator')->trans('bts.page.project.error.not_found')), 404);
         }
     }
 }

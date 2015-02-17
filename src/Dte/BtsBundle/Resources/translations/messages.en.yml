@@ -1,11 +1,19 @@
 bts:
     brand_name: Bug tracking system
+    default:
+        actions.label:          Actions
+        action:
+            show:               Show
+            edit:               Edit
+            create:             Create
+            update:             Update
+            delete:             Delete
     page:
         main:
             menu_label:             Home
             head_title:             Bts - Home page
             action:
-                new_issue:          Create issue
+                new_issue:          Create an new issue
                 logout:             Log Out
             tablist:
                 activities:         Activities
@@ -17,6 +25,26 @@ bts:
                 login:              Login
         project:
             menu_label:             Projects
+            head_title:             Bts - Projects
+            page_title:             Projects
+            action:
+                create:             Create a new project
+                add_member:         Add member
+                delete_member:      Delete member
+            error:
+                not_found:          Unable to find Project entity.
+            tablist:
+                activities:         Activities
+                members:            Project members
+        project_create:
+            head_title:             Bts - Project creation
+            page_title:             Project creation
+        project_edit:
+            head_title:             Bts - Project edit
+            page_title:             Project edit
+        project_show:
+            head_title:             Bts - Project
+            page_title:             Project
         issue:
             menu_label:             Issues
         user:
@@ -45,7 +73,7 @@ bts:
             created.label:          Created
             updated.label:          Updated
             reporter.label:         Reporter
-            assignee.label:        Assignee
+            assignee.label:         Assignee
             status.label:           Status
             priority.label:         Priority
             resolution.label:       Resolution

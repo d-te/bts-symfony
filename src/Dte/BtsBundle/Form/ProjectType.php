@@ -15,15 +15,25 @@ class ProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code', 'text', array('required' => true))
-            ->add('label', 'text', array('required' => true))
-            ->add('summary', 'textarea', array('required' => true))
+            ->add('code', 'text', array(
+                'required' => true,
+                'label'    => 'bts.entity.project.code.label',
+            ))
+            ->add('label', 'text', array(
+                'required' => true,
+                'label'    => 'bts.entity.project.label.label',
+            ))
+            ->add('summary', 'textarea', array(
+                'required' => true,
+                'label'    => 'bts.entity.project.summary.label',
+            ))
             ->add('members', 'bootstrap_collection', array(
                 'type'               => 'entity',
+                'label'              => 'bts.entity.project.members.label',
                 'allow_add'          => true,
                 'allow_delete'       => true,
-                'add_button_text'    => 'Add member',
-                'delete_button_text' => 'Delete member',
+                'add_button_text'    => 'bts.page.project.action.add_member',
+                'delete_button_text' => 'bts.page.project.action.delete_member',
                 'sub_widget_col'     => 4,
                 'button_col'         => 3,
                 'options'            => array(
@@ -40,7 +50,7 @@ class ProjectType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Dte\BtsBundle\Entity\Project'
+            'data_class'         => 'Dte\BtsBundle\Entity\Project'
         ));
     }
 

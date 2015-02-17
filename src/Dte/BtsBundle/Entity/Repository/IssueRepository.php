@@ -45,5 +45,22 @@ class IssueRepository extends EntityRepository
         return $q->getResult();
     }
 
+    /**
+     * Load list of opened issues where user is collaborator
+     * @param User $user
+     */
+    public function findOpenedIssuesByCollaborator(User $user)
+    {
+        $q = $this
+            ->createQueryBuilder('i')
+            ->select('i')
+            ->leftJoin('i.collaborators', 'c')
+            ->where('c.id = :user AND i.status <> :status')
+            ->setParameter('user', $user->getId())
+            ->setParameter('status', 3)
+            ->orderBy('i.id', 'DESC')
+            ->getQuery();
 
+        return $q->getResult();
+    }
 }

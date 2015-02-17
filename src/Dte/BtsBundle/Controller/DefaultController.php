@@ -20,7 +20,18 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('DteBtsBundle:Default:index.html.twig');
+
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $activities   = $em->getRepository('DteBtsBundle:Activity')->findActivitiesByUser($user);
+        $openedIssues = $em->getRepository('DteBtsBundle:Issue')->findOpenedIssuesByCollaborator($user);
+
+        return $this->render('DteBtsBundle:Default:index.html.twig', array(
+            'activities'   => $activities,
+            'openedIssues' => $openedIssues,
+        ));
     }
 
     /**

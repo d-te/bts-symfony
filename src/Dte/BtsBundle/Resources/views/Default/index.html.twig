@@ -1,5 +1,76 @@
 {% extends "DteBtsBundle::base.html.twig" %}
 
 {% block content %}
-	<span>index page</span>
+	<div role="tabpanel">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">Activities</a></li>
+        <li role="presentation"><a href="#issues_pane" aria-controls="issues_pane" role="tab" data-toggle="tab">Opened issues</a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="activities_pane">
+            <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+            </div>
+            <table class="table table-striped">
+                <colgroup>
+                    <col class="col-md-2">
+                    <col class="col-md-2">
+                    <col class="col-md-1">
+                    <col class="col-md-7">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>User</th>
+                        <th>Issue</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for activity in activities %}
+                    <tr>
+                        <td>{% if activity.created %}{{ activity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td><a href="{{ path('user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a></td>
+                        <td><a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a></td>
+                        <td>{{ activity.message }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="issues_pane">
+            <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+            </div>
+            <table class="table table-striped">
+                <colgroup>
+                    <col class="col-md-1">
+                    <col class="col-md-8">
+                    <col class="col-md-1">
+                    <col class="col-md-2">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Summary</th>
+                        <th>Status</th>
+                        <th>Assignee</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for issue in openedIssues %}
+                    <tr>
+                        <td><a href="{{ path('issue_show', { 'id': issue.id }) }}">{{ issue.code }}</a></td>
+                        <td>{{ issue.summary }}</td>
+                        <td>{{ issue.status.label }}</td>
+                        <td><a href="{{ path('user_show', { 'id': issue.assignee.id }) }}">{{ issue.assignee.fullname }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+      </div>
+    </div>
 {% endblock %}

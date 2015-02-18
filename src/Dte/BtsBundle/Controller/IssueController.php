@@ -179,13 +179,11 @@ class IssueController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $deleteForm  = $this->createDeleteForm($id);
         $commentForm = $this->createCommentForm(new Comment(), $entity);
 
         return array(
             'entity'       => $entity,
             'comment_form' => $commentForm->createView(),
-            'delete_form'  => $deleteForm->createView(),
             'types'        => IssueTaskType::getItems(),
         );
     }
@@ -212,12 +210,10 @@ class IssueController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -266,7 +262,6 @@ class IssueController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
@@ -279,57 +274,7 @@ class IssueController extends Controller
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
-    }
-
-    /**
-     * Deletes a Issue entity.
-     *
-     * @Route("/{id}", name="issue_delete", requirements={
-     *     "id": "\d+"
-     * }))
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-            }
-
-            if (false === $this->get('security.context')->isGranted('delete', $entity)) {
-                throw new AccessDeniedException('Unauthorised access!');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('issue'));
-    }
-
-    /**
-     * Creates a form to delete a Issue entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('issue_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
-            ->getForm()
-        ;
     }
 
     /**

@@ -11,7 +11,6 @@ class UserVoter implements VoterInterface
 {
     const VIEW    = 'view';
     const EDIT    = 'edit';
-    const DELETE  = 'delete';
     const PROFILE = 'profile';
 
     protected $roleHierarchy;
@@ -50,7 +49,6 @@ class UserVoter implements VoterInterface
         return in_array($attribute, array(
             self::VIEW,
             self::EDIT,
-            self::DELETE,
             self::PROFILE,
         ));
     }
@@ -92,10 +90,6 @@ class UserVoter implements VoterInterface
         }
 
         switch($attribute) {
-            case self::DELETE:
-                //Only for admin role
-                break;
-
             case self::VIEW:
                 return VoterInterface::ACCESS_GRANTED;
                 break;

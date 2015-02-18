@@ -11,7 +11,6 @@ class IssueVoter implements VoterInterface
 {
     const VIEW    = 'view';
     const EDIT    = 'edit';
-    const DELETE  = 'delete';
 
     protected $roleHierarchy;
 
@@ -49,7 +48,6 @@ class IssueVoter implements VoterInterface
         return in_array($attribute, array(
             self::VIEW,
             self::EDIT,
-            self::DELETE,
         ));
     }
 
@@ -92,7 +90,6 @@ class IssueVoter implements VoterInterface
         switch($attribute) {
             case self::EDIT:
             case self::VIEW:
-            case self::DELETE:
                 foreach ($object->getProject()->getMembers() as $member) {
                     if ($member->getId() === $user->getId() && $this->hasRole($token, 'ROLE_OPERATOR')) {
                         return VoterInterface::ACCESS_GRANTED;

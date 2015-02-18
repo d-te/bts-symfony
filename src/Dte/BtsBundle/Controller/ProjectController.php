@@ -7,6 +7,7 @@ use Dte\BtsBundle\Form\ProjectType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -48,6 +49,10 @@ class ProjectController extends Controller
      */
     public function createAction(Request $request)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_MANAGER')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entity = new Project();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -94,6 +99,10 @@ class ProjectController extends Controller
      */
     public function newAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_MANAGER')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entity = new Project();
         $form   = $this->createCreateForm($entity);
 
@@ -118,6 +127,10 @@ class ProjectController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('view', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $activities = $em->getRepository('DteBtsBundle:Activity')->findActivitiesByProject($entity);
@@ -146,6 +159,10 @@ class ProjectController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -194,6 +211,10 @@ class ProjectController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
         }
 
+        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
@@ -228,6 +249,10 @@ class ProjectController extends Controller
 
             if (!$entity) {
                 throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
+            }
+
+            if (false === $this->get('security.context')->isGranted('delete', $entity)) {
+                throw new AccessDeniedException('Unauthorised access!');
             }
 
             $em->remove($entity);

@@ -27,21 +27,33 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.code }}</a></td>
+                <td>{{ entity.id }}</td>
+                <td>
+                    {% if is_granted('view', entity) %}
+                    <a href="{{ path('project_show', { 'id': entity.id }) }}">{{ entity.code }}</a>
+                    {% else %}
+                    {{ entity.code }}
+                    {% endif %}
+                </td>
                 <td>{{ entity.label }}<br/><i>{{ entity.summary }}</i></td>
                 <td>{{ entity.getMembers()|length }}</td>
                 <td>
+                    {% if is_granted('view', entity) %}
                     <a href="{{ path('project_show', { 'id': entity.id }) }}">{{ 'bts.default.action.show'|trans }}</a>
                     <br />
+                    {% endif %}
+                    {% if is_granted('edit', entity) %}
                     <a href="{{ path('project_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
+    {% if is_granted('ROLE_MANAGER') %}
     <div class="row">
         <a href="{{ path('project_new') }}" class="btn btn-default">{{ 'bts.page.project.action.create'|trans }}</a>
     </div>
-    {% endblock %}
+    {% endif %}
+{% endblock %}

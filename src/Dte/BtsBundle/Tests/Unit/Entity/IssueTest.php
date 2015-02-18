@@ -2,6 +2,7 @@
 
 namespace Dte\BtsBundle\Tests\Unit\Entity;
 
+use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssuePriority;
 use Dte\BtsBundle\Entity\IssueResolution;
@@ -152,5 +153,115 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $entity = new Issue();
 
         $this->assertEquals(array(), $entity->getChildren());
+    }
+
+    public function testCommentsGetter()
+    {
+        $entity = new Issue();
+
+        $this->assertEquals(array(), $entity->getComments());
+    }
+
+    public function testActivitiesGetter()
+    {
+        $entity = new Issue();
+
+        $this->assertEquals(array(), $entity->getActivities());
+    }
+
+    public function testCollaboratorsGetter()
+    {
+        $entity = new Issue();
+
+        $this->assertEquals(array(), $entity->getCollaborators());
+    }
+
+    public function testAddCollaboratorFunction()
+    {
+        $issue = new Issue();
+
+        $this->assertCount(0, $issue->getCollaborators());
+
+        $user = new User();
+
+        $issue->addCollaborator($user);
+
+        $this->assertCount(1, $issue->getCollaborators());
+    }
+
+    public function testRemoveCollaboratorFunction()
+    {
+        $issue = new Issue();
+
+        $this->assertCount(0, $issue->getCollaborators());
+
+        $user = new User();
+
+        $issue->addCollaborator($user);
+
+        $this->assertCount(1, $issue->getCollaborators());
+
+        $issue->removeCollaborator($user);
+
+        $this->assertCount(0, $issue->getCollaborators());
+    }
+
+    public function testHasCollaboratorFunction()
+    {
+        $issue = new Issue();
+
+        $this->assertCount(0, $issue->getCollaborators());
+
+        $user1 = new User();
+        $user1->setEmail('email1@');
+
+        $user2 = new User();
+        $user2->setEmail('email2@');
+
+        $issue->addCollaborator($user1);
+
+        $this->assertCount(1, $issue->getCollaborators());
+        $this->assertTrue($issue->hasCollaborator($user1));
+        $this->assertFalse($issue->hasCollaborator($user2));
+    }
+
+    public function testAddCommentFunction()
+    {
+        $issue = new Issue();
+
+        $this->assertCount(0, $issue->getComments());
+
+        $comment = new Comment();
+
+        $issue->addComment($comment);
+
+        $this->assertCount(1, $issue->getComments());
+    }
+
+    public function testRemoveCommentFunction()
+    {
+        $issue = new Issue();
+
+        $this->assertCount(0, $issue->getComments());
+
+        $comment = new Comment();
+
+        $issue->addComment($comment);
+
+        $this->assertCount(1, $issue->getComments());
+
+        $issue->removeComment($comment);
+
+        $this->assertCount(0, $issue->getComments());
+    }
+
+    public function testGetSelectLabel()
+    {
+        $issue = new Issue();
+
+        $issue->setCode('PPP');
+        $issue->setSummary('Summary test string');
+
+        $this->assertEquals('( PPP ) Summary test string', $issue->getSelectLabel());
     }
 }

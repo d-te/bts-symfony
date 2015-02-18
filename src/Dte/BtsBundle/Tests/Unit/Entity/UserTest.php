@@ -94,6 +94,13 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $user->getProjects());
     }
 
+    public function testActivitiesGetter()
+    {
+        $user = new User();
+
+        $this->assertEquals(array(), $user->getActivities());
+    }
+
     public function testSerialize()
     {
         $user = new User();

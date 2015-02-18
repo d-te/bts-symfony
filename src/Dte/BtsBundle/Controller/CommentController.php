@@ -176,7 +176,7 @@ class CommentController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_comment'));
         }
 
-        if (false === $this->get('security.context')->isGranted('edit', $comment)) {
+        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
@@ -220,7 +220,7 @@ class CommentController extends Controller
                 throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_comment'));
             }
 
-            if (false === $this->get('security.context')->isGranted('delete', $issue)) {
+            if (false === $this->get('security.context')->isGranted('delete', $entity)) {
                 throw new AccessDeniedException('Unauthorised access!');
             }
 

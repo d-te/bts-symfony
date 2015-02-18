@@ -32,7 +32,13 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.code }}</a></td>
+                <td>
+                    {% if is_granted('view', entity) %}
+                    <a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ entity.code }}</a>
+                    {% else %}
+                    {{ entity.code }}
+                    {% endif %}
+                </td>
                 <td>{{ entity.summary }}</td>
                 <td>{{ types[entity.type] }}</td>
                 <td>{{ entity.status.label }}</td>
@@ -40,16 +46,22 @@
                 <td>{% if entity.assignee %}<a href="{{ path('user_show', { 'id': entity.assignee.id }) }}">{{ entity.assignee.fullname }}</a> {% else %} - {% endif %}</td>
                 <td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
+                    {% if is_granted('view', entity) %}
                     <a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ 'bts.default.action.show'|trans }}</a>
+                    {% endif %}
                     <br/>
+                    {% if is_granted('edit', entity) %}
                     <a href="{{ path('issue_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
+    {% if is_granted('ROLE_OPERATOR') %}
     <div class="row">
         <a href="{{ path('issue_new') }}" class="btn btn-default">{{ 'bts.page.issue.action.create'|trans }}</a>
     </div>
+    {% endif %}
     {% endblock %}

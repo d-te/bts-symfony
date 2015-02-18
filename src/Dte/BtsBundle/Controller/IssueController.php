@@ -8,8 +8,9 @@ use Dte\BtsBundle\Entity\IssueTaskType;
 use Dte\BtsBundle\Form\CommentType;
 use Dte\BtsBundle\Form\IssueType;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -32,6 +33,10 @@ class IssueController extends Controller
      */
     public function indexAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_OPERATOR')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('DteBtsBundle:Issue')->findAll();
@@ -50,6 +55,10 @@ class IssueController extends Controller
      */
     public function createAction(Request $request)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_OPERATOR')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entity = new Issue();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -120,6 +129,10 @@ class IssueController extends Controller
      */
     public function newAction(Request $request)
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_OPERATOR')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entity  = new Issue();
         $isSubtask = false;
 
@@ -162,6 +175,10 @@ class IssueController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
+        if (false === $this->get('security.context')->isGranted('view', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $deleteForm  = $this->createDeleteForm($id);
         $commentForm = $this->createCommentForm(new Comment(), $entity);
 
@@ -188,6 +205,10 @@ class IssueController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -241,6 +262,10 @@ class IssueController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
+        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
@@ -277,6 +302,10 @@ class IssueController extends Controller
 
             if (!$entity) {
                 throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
+            }
+
+            if (false === $this->get('security.context')->isGranted('delete', $entity)) {
+                throw new AccessDeniedException('Unauthorised access!');
             }
 
             $em->remove($entity);
@@ -317,6 +346,10 @@ class IssueController extends Controller
 
         if (!$entity) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $status = $em->getRepository('DteBtsBundle:IssueStatus')->find($status);

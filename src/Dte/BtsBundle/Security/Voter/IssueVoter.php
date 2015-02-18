@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ProjectVoter implements VoterInterface
+class IssueVoter implements VoterInterface
 {
     const VIEW    = 'view';
     const EDIT    = 'edit';
@@ -58,14 +58,14 @@ class ProjectVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        $supportedClass = 'Dte\BtsBundle\Entity\Project';
+        $supportedClass = 'Dte\BtsBundle\Entity\Issue';
 
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
     }
 
     /**
      * @inheritDoc
-     * @var \Dte\BtsBundle\Entity\Project $object
+     * @var \Dte\BtsBundle\Entity\Issue $object
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
@@ -90,9 +90,11 @@ class ProjectVoter implements VoterInterface
         }
 
         switch($attribute) {
+            case self::EDIT:
             case self::VIEW:
-                foreach ($object->getMembers() as $member) {
-                    if ($member->getId() === $user->getId()) {
+            case self::DELETE:
+                foreach ($object->getProject()->getMembers() as $member) {
+                    if ($member->getId() === $user->getId() && $this->hasRole($token, 'ROLE_OPERATOR')) {
                         return VoterInterface::ACCESS_GRANTED;
                     }
                 }

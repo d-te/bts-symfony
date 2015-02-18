@@ -38,3 +38,10 @@ services:
             - '@dte_bts_role_hierarchy'
         tags:
            - { name: security.voter }
+    security.access.issue_voter:
+        class:      Dte\BtsBundle\Security\Voter\IssueVoter
+        public:     false
+        arguments:
+            - '@dte_bts_role_hierarchy'
+        tags:
+           - { name: security.voter }

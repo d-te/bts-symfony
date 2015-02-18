@@ -5,10 +5,10 @@ namespace Dte\BtsBundle\Controller;
 use Dte\BtsBundle\Entity\Project;
 use Dte\BtsBundle\Form\ProjectType;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -31,6 +31,10 @@ class ProjectController extends Controller
      */
     public function indexAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_OPERATOR')) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('DteBtsBundle:Project')->findAll();

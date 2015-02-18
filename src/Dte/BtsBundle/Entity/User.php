@@ -356,20 +356,4 @@ class User implements UserInterface, \Serializable, EquatableInterface
     {
         $this->roles->removeElement($role);
     }
-
-    /**
-     * Check user role
-     */
-    public function hasRole($targetRole)
-    {
-        foreach($this->getRoles() as $role)
-        {
-            if ($role->getRole() == $targetRole) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 }

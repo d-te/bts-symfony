@@ -4,6 +4,7 @@ namespace Dte\BtsBundle\Security\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVoter implements VoterInterface
@@ -12,6 +13,33 @@ class UserVoter implements VoterInterface
     const EDIT    = 'edit';
     const DELETE  = 'delete';
     const PROFILE = 'profile';
+
+    protected $roleHierarchy;
+
+    /**
+     * Constructor
+     * @param RoleHierarchy $roleHierarchy
+     */
+    function __construct(RoleHierarchy $roleHierarchy)
+    {
+        $this->roleHierarchy = $roleHierarchy;
+    }
+
+    /**
+     * Has role
+     * @param  TokenInterface $token
+     * @param  string         $targetRole
+     * @return boolean
+     */
+    protected function hasRole(TokenInterface $token, $targetRole)
+    {
+        $reachableRoles = $this->roleHierarchy->getReachableRoles($token->getRoles());
+        foreach($reachableRoles as $role)
+        {
+            if ($role->getRole() == $targetRole) return true;
+        }
+        return false;
+    }
 
     /**
      * @inheritDoc
@@ -58,7 +86,7 @@ class UserVoter implements VoterInterface
             return VoterInterface::ACCESS_DENIED;
         }
 
-        if ($user->hasRole('ROLE_ADMIN')) {
+        if ($this->hasRole($token, 'ROLE_ADMIN')) {
             return VoterInterface::ACCESS_GRANTED;
         }
 

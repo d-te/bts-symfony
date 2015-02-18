@@ -20,7 +20,7 @@ class UserVoter implements VoterInterface
      * Constructor
      * @param RoleHierarchy $roleHierarchy
      */
-    function __construct(RoleHierarchy $roleHierarchy)
+    public function __construct(RoleHierarchy $roleHierarchy)
     {
         $this->roleHierarchy = $roleHierarchy;
     }
@@ -34,9 +34,10 @@ class UserVoter implements VoterInterface
     protected function hasRole(TokenInterface $token, $targetRole)
     {
         $reachableRoles = $this->roleHierarchy->getReachableRoles($token->getRoles());
-        foreach($reachableRoles as $role)
-        {
-            if ($role->getRole() == $targetRole) return true;
+        foreach ($reachableRoles as $role) {
+            if ($role->getRole() == $targetRole) {
+                return true;
+            }
         }
         return false;
     }

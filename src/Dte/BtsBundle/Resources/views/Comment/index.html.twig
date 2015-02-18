@@ -12,17 +12,25 @@
                 <div id="comment-body-textblock-{{ entity.id }}">
                 {{ entity.body }}
                 </div>
+                {% if is_granted('edit', entity) %}
                 <div id="comment-body-formblock-{{ entity.id }}" class="hidden">
                     {{ form(forms['edit'][entity.id], { 'id': "comment-form-" ~ entity.id, 'attr': {'class': 'comment-form', 'data-comment-id': entity.id }}) }}
                 </div>
+                {% endif %}
+                {% if is_granted('delete', entity) %}
                 <div id="comment-body-formblock-delete-{{ entity.id }}" class="hidden">
                     {{ form(forms['delete'][entity.id], { 'id': "comment-form-delete-" ~ entity.id, 'attr': {'class': 'comment-form-delete', 'data-comment-id': entity.id }}) }}
                 </div>
+                {% endif %}
             </td>
             <td>
+                {% if is_granted('edit', entity) %}
                 <a class="edit_comment_button" href="#" data-comment-id="{{ entity.id }}">{{ 'bts.default.action.edit'|trans }}</a>
+                {% endif %}
                 <br />
+                {% if is_granted('delete', entity) %}
                 <a class="delete_comment_button" href="#" data-comment-id="{{ entity.id }}">{{ 'bts.default.action.delete'|trans }}</a>
+                {% endif %}
             </td>
         </tr>
     {% endfor %}

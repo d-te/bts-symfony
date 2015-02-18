@@ -7,9 +7,10 @@ use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\Form\CommentType;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -40,6 +41,10 @@ class CommentController extends Controller
 
         if (!$issue) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('view', $issue)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $entities = $issue->getComments();
@@ -74,6 +79,10 @@ class CommentController extends Controller
 
         if (!$issue) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('view', $issue)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $user = $this->get('security.context')->getToken()->getUser();
@@ -157,10 +166,18 @@ class CommentController extends Controller
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
         }
 
+        if (false === $this->get('security.context')->isGranted('view', $issue)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
         $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_comment'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('edit', $comment)) {
+            throw new AccessDeniedException('Unauthorised access!');
         }
 
         $editForm = $this->createEditForm($entity, $issue);
@@ -193,10 +210,18 @@ class CommentController extends Controller
                 throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
             }
 
+            if (false === $this->get('security.context')->isGranted('view', $issue)) {
+                throw new AccessDeniedException('Unauthorised access!');
+            }
+
             $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_comment'));
+            }
+
+            if (false === $this->get('security.context')->isGranted('delete', $issue)) {
+                throw new AccessDeniedException('Unauthorised access!');
             }
 
             $em->remove($entity);

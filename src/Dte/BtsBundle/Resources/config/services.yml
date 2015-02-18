@@ -45,3 +45,10 @@ services:
             - '@dte_bts_role_hierarchy'
         tags:
            - { name: security.voter }
+    security.access.comment_voter:
+        class:      Dte\BtsBundle\Security\Voter\CommentVoter
+        public:     false
+        arguments:
+            - '@dte_bts_role_hierarchy'
+        tags:
+           - { name: security.voter }

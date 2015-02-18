@@ -42,7 +42,6 @@ class ActivitySubscriber implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
 
         if ($entity instanceof Issue) {
             $this->activityManager->logPersistIssue($entity);
@@ -57,7 +56,6 @@ class ActivitySubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
 
         if ($entity instanceof Issue) {
             if ($args->hasChangedField('status')) {

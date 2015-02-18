@@ -93,8 +93,6 @@ class ActivityManager
      */
     public function addActivity($message, Issue $issue, User $user)
     {
-        $em = $this->getEntityManager();
-
         $activity = new Activity();
 
         $activity->setMessage($message);

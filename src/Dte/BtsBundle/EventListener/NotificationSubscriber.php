@@ -47,7 +47,6 @@ class NotificationSubscriber implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
 
         if ($entity instanceof Activity) {
             $this->sendCollaboratorsNotification($entity);

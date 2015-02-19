@@ -22,7 +22,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "braincrafted/bootstrap-bundle": "~2.0",
         "leafo/lessphp": "*",
-        "stof/doctrine-extensions-bundle": "*"
+        "stof/doctrine-extensions-bundle": "*",
+        "doctrine/doctrine-fixtures-bundle": "2.2.*"
     },
     "scripts": {
         "post-install-cmd": [

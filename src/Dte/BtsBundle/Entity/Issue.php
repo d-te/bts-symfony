@@ -26,7 +26,7 @@ class Issue
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=20, nullable=false)
+     * @ORM\Column(name="code", type="string", length=20, nullable=true)
      */
     private $code;
 
@@ -148,7 +148,7 @@ class Issue
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="issue")
-     * @ORM\OrderBy({"id" = "desc"})
+     * @ORM\OrderBy({"id" = "asc"})
      */
     private $comments;
 

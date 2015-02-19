@@ -158,12 +158,12 @@ class IssueSubscriber implements EventSubscriber
      */
     public function addIssueReporterAndAssignee(Issue $issue)
     {
-        $user = $this->getUser();
+        if (null === $issue->getReporter()) {
+            $issue->setReporter($this->getUser());
+        }
 
-        $issue->setReporter($user);
-
-        if (!$issue->getAssignee()) {
-            $issue->setAssignee($user);
+        if (null === $issue->getAssignee()) {
+            $issue->setAssignee($this->getUser());
         }
     }
 

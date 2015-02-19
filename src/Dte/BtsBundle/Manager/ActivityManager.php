@@ -59,7 +59,7 @@ class ActivityManager
     public function logPersistIssue(Issue $issue)
     {
         $message = 'New issue added';
-        $this->addActivity($message, $issue, $this->getUser());
+        $this->addActivity($message, $issue, $issue->getReporter());
     }
 
     /**
@@ -81,7 +81,7 @@ class ActivityManager
     public function logPersistComment(Comment $comment)
     {
         $message = 'New comment added';
-        $this->addActivity($message, $comment->getIssue(), $this->getUser());
+        $this->addActivity($message, $comment->getIssue(), $comment->getUser());
     }
 
     /**

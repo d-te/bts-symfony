@@ -22,7 +22,7 @@ class IssuePriority
     /**
      * @var integer
      *
-     * @ORM\Column(name="order", type="integer", nullable=false)
+     * @ORM\Column(name="`order`", type="integer", nullable=false)
      */
     private $order;
 

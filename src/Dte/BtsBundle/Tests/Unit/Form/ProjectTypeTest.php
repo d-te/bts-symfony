@@ -46,10 +46,13 @@ class ProjectTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('code'),
                     $this->equalTo('text'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required' => true,
                             'label'    => 'bts.entity.project.code.label',
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(1))
@@ -57,10 +60,13 @@ class ProjectTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('label'),
                     $this->equalTo('text'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required' => true,
                             'label'    => 'bts.entity.project.label.label',
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(2))
@@ -68,10 +74,13 @@ class ProjectTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('summary'),
                     $this->equalTo('textarea'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required' => true,
                             'label'    => 'bts.entity.project.summary.label',
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(3))
@@ -79,7 +88,8 @@ class ProjectTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('members'),
                     $this->equalTo('bootstrap_collection'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'type'               => 'entity',
                             'label'              => 'bts.entity.project.members.label',
                             'allow_add'          => true,
@@ -92,7 +102,9 @@ class ProjectTypeTest extends \PHPUnit_Framework_TestCase
                                 'class' => 'DteBtsBundle:User',
                                 'property' => 'fullname'
                             )
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
 
         $form = new ProjectType();

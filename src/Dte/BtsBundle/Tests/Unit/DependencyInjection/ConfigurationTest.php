@@ -6,7 +6,7 @@ use Dte\BtsBundle\DependencyInjection\Configuration;
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
-	public function testGetConfigTreeBuilder()
+    public function testGetConfigTreeBuilder()
     {
         $configuration = new Configuration();
         $builder = $configuration->getConfigTreeBuilder();

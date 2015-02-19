@@ -123,7 +123,7 @@ class ActivityManagerTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('persist');
 
-       $em
+        $em
             ->expects($this->once())
             ->method('flush');
 

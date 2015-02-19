@@ -92,6 +92,6 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $project->setCode('CODE');
         $project->setLabel('Test project');
 
-        $this->assertEquals('( CODE ) Test project' , $project->getSelectLabel());
+        $this->assertEquals('( CODE ) Test project', $project->getSelectLabel());
     }
 }

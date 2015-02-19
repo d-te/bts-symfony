@@ -54,5 +54,4 @@ class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $subscriber->getSubscribedEvents());
     }
-
 }

@@ -47,11 +47,14 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('email'),
                     $this->equalTo('email'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'read_only' => false,
                             'label'     => 'bts.entity.user.email.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(1))
@@ -59,10 +62,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('username'),
                     $this->equalTo('text'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'label'     => 'bts.entity.user.username.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(2))
@@ -70,10 +76,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('fullname'),
                     $this->equalTo('text'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'label'     => 'bts.entity.user.fullname.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(3))
@@ -81,10 +90,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('password'),
                     $this->equalTo('password'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'label'     => 'bts.entity.user.password.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(4))
@@ -92,10 +104,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('avatar'),
                     $this->equalTo('url'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => false,
                             'label'     => 'bts.entity.user.avatar.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
 
         $form = new UserType();
@@ -114,11 +129,14 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('email'),
                     $this->equalTo('email'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'read_only' => true,
                             'label'     => 'bts.entity.user.email.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(1))
@@ -126,10 +144,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('username'),
                     $this->equalTo('text'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'label'     => 'bts.entity.user.username.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(2))
@@ -137,10 +158,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('fullname'),
                     $this->equalTo('text'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'label'     => 'bts.entity.user.fullname.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(3))
@@ -148,10 +172,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('password'),
                     $this->equalTo('password'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => false,
                             'label'     => 'bts.entity.user.password.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(4))
@@ -159,10 +186,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('avatar'),
                     $this->equalTo('url'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => false,
                             'label'     => 'bts.entity.user.avatar.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
 
         $form = new UserType();
@@ -181,11 +211,14 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('email'),
                     $this->equalTo('email'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'read_only' => true,
                             'label'     => 'bts.entity.user.email.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(1))
@@ -193,10 +226,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('username'),
                     $this->equalTo('text'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'label'     => 'bts.entity.user.username.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(2))
@@ -204,10 +240,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('fullname'),
                     $this->equalTo('text'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => true,
                             'label'     => 'bts.entity.user.fullname.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(3))
@@ -215,10 +254,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('password'),
                     $this->equalTo('password'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => false,
                             'label'     => 'bts.entity.user.password.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(4))
@@ -226,10 +268,13 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('avatar'),
                     $this->equalTo('url'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required'  => false,
                             'label'     => 'bts.entity.user.avatar.label'
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
         $builder
                 ->expects($this->at(5))
@@ -237,14 +282,17 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                 ->with(
                     $this->equalTo('roles'),
                     $this->equalTo('entity'),
-                    $this->equalTo(array(
+                    $this->equalTo(
+                        array(
                             'required' => true,
                             'label'     => 'bts.entity.user.roles.label',
                             'property' => 'name',
                             'class'    => 'DteBtsBundle:Role',
                             'multiple' => true,
                             'expanded' => true,
-                )))
+                        )
+                    )
+                )
                 ->will($this->returnValue($builder));
 
         $form = new UserType();

@@ -47,7 +47,8 @@ class IssueType extends AbstractType
      * get User
      * @return Dte\BtsBundle\Entity\User
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->securityContext->getToken()->getUser();
     }
 
@@ -56,7 +57,8 @@ class IssueType extends AbstractType
      * @param  Dte\BtsBundle\Entity\Project $project
      * @return array
      */
-    public function getProjectMembers($project) {
+    public function getProjectMembers($project)
+    {
         $members = array();
 
         if (null !== $project) {
@@ -71,7 +73,8 @@ class IssueType extends AbstractType
      * @param  Dte\BtsBundle\Entity\Project $project
      * @return array
      */
-    public function getProjectStories($project) {
+    public function getProjectStories($project)
+    {
         $stories = array();
 
         if (null !== $project) {

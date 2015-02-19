@@ -264,4 +264,22 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('( PPP ) Summary test string', $issue->getSelectLabel());
     }
+
+    public function testGenerateCode()
+    {
+        $issue = $this->getMockBuilder('Dte\BtsBundle\Entity\Issue')
+                        ->setMethods(array('getId'))
+                        ->getMock();
+        $issue
+              ->expects($this->once())
+              ->method('getId')
+              ->will($this->returnValue(5));
+
+        $project = new Project();
+        $project->setCode('CODE');
+
+        $issue->setProject($project);
+
+        $this->assertEquals('CODE-5', $issue->generateCode());
+    }
 }

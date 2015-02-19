@@ -36,17 +36,14 @@ class ActivityManagerTest extends \PHPUnit_Framework_TestCase
 
         $user = new User();
 
+        $issue->setReporter($user);
+
         $manager = $this->getMockBuilder('Dte\BtsBundle\Manager\ActivityManager')
                         ->disableOriginalConstructor()
                         ->setMethods(array('getUser', 'addActivity'))
                         ->getMock();
 
-        $manager
-                ->expects($this->once())
-                ->method('getUser')
-                ->will($this->returnValue($user));
-
-        $manager
+         $manager
                 ->expects($this->once())
                 ->method('addActivity')
                 ->with($this->equalTo('New issue added'), $this->equalTo($issue), $this->equalTo($user));
@@ -86,21 +83,16 @@ class ActivityManagerTest extends \PHPUnit_Framework_TestCase
     public function testLogPersistComment()
     {
         $issue = new Issue();
+        $user  = new User();
 
         $comment = new Comment();
         $comment->setIssue($issue);
-
-        $user = new User();
+        $comment->setUser($user);
 
         $manager = $this->getMockBuilder('Dte\BtsBundle\Manager\ActivityManager')
                         ->disableOriginalConstructor()
                         ->setMethods(array('getUser', 'addActivity'))
                         ->getMock();
-
-        $manager
-                ->expects($this->once())
-                ->method('getUser')
-                ->will($this->returnValue($user));
 
         $manager
                 ->expects($this->once())

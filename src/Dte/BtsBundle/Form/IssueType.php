@@ -22,7 +22,7 @@ class IssueType extends AbstractType
 {
 
     /**
-     * @var SecurityContext
+     * @var Symfony\Component\Security\Core\SecurityContext
      */
     private $securityContext;
 
@@ -44,6 +44,44 @@ class IssueType extends AbstractType
     }
 
     /**
+     * get User
+     * @return Dte\BtsBundle\Entity\User
+     */
+    public function getUser() {
+        return $this->securityContext->getToken()->getUser();
+    }
+
+    /**
+     * get project's members
+     * @param  Dte\BtsBundle\Entity\Project $project
+     * @return array
+     */
+    public function getProjectMembers($project) {
+        $members = array();
+
+        if (null !== $project) {
+            $members = $project->getMembers();
+        }
+
+        return $members;
+    }
+
+    /**
+     * get project's stories
+     * @param  Dte\BtsBundle\Entity\Project $project
+     * @return array
+     */
+    public function getProjectStories($project) {
+        $stories = array();
+
+        if (null !== $project) {
+            $stories = $this->em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($project);
+        }
+
+        return $stories;
+    }
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -52,9 +90,9 @@ class IssueType extends AbstractType
         $isCreateContext = ($options['form_context'] === 'create');
         $isEditContext   = ($options['form_context'] === 'edit');
 
-        $user = $this->securityContext->getToken()->getUser();
+        $isSubtask       = $options['isSubtask'];
 
-        $isSubtask = $options['isSubtask'];
+        $user = $this->getUser();
 
         $builder
             ->add('project', 'entity', array(
@@ -79,8 +117,8 @@ class IssueType extends AbstractType
         }
 
         $formModifier = function (FormInterface $form, Issue $issue = null, Project $project = null) use ($isCreateContext, $isEditContext, $isSubtask, $options) {
-            $members = (null !== $project) ? $project->getMembers() : array();
-            $stories = (null !== $project) ? $this->em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($project) : array();
+            $members = $this->getProjectMembers($project);
+            $stories = $this->getProjectStories($project);
 
             $form
                 ->add('type', 'choice', array(
@@ -178,8 +216,6 @@ class IssueType extends AbstractType
         $resolver->setDefaults(array(
             'data_class'   => 'Dte\BtsBundle\Entity\Issue',
             'form_context' => 'default',
-            'members'      => array(),
-            'stories'      => array(),
             'isSubtask'    => false,
         ));
     }

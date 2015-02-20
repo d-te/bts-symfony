@@ -34,7 +34,11 @@ class ProjectControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/project/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /project/"
+        );
         $crawler = $this->client->click($crawler->selectLink('Create a new project')->link());
 
         $form = $crawler->selectButton('Create')->form(array(
@@ -46,7 +50,11 @@ class ProjectControllerTest extends FixturesWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('#entity-header strong[class="project-code"]')->count(), 'Missing element strong:contains("(CODE)&nbsp;)")');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('#entity-header strong[class="project-code"]')->count(),
+            'Missing element strong:contains("(CODE)&nbsp;)")'
+        );
 
         $crawler = $this->client->click($crawler->selectLink('Edit')->link());
 
@@ -57,7 +65,11 @@ class ProjectControllerTest extends FixturesWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('[value="1111Test project updated"]')->count(), 'Missing element [value="1111Test project updated"]');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('[value="1111Test project updated"]')->count(),
+            'Missing element [value="1111Test project updated"]'
+        );
 
         $this->client->submit($crawler->selectButton('Delete')->form());
         $crawler = $this->client->followRedirect();
@@ -70,8 +82,17 @@ class ProjectControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/project/1/members');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
-        $this->assertEquals('[{"id":1,"label":"Admin A.A."},{"id":2,"label":"Manager M.M."},{"id":3,"label":"Operator the first O.O."}]', $this->client->getResponse()->getContent());
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /project/"
+        );
+        $expected = '[{"id":1,"label":"Admin A.A."},{"id":2,"label":"Manager M.M."},';
+        $expected .= '{"id":3,"label":"Operator the first O.O."}]';
+        $this->assertEquals(
+            $expected,
+            $this->client->getResponse()->getContent()
+        );
     }
 
     public function testProjecMemberErrorScenario()
@@ -79,8 +100,15 @@ class ProjectControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/project/111/members');
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
-        $this->assertEquals('{"error":"Unable to find Project entity."}', $this->client->getResponse()->getContent());
+        $this->assertEquals(
+            404,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /project/"
+        );
+        $this->assertEquals(
+            '{"error":"Unable to find Project entity."}',
+            $this->client->getResponse()->getContent()
+        );
     }
 
     public function testProjectStoriesScenario()
@@ -88,8 +116,15 @@ class ProjectControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/project/1/stories');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
-        $this->assertEquals('[{"id":1,"label":"( BTS-1 ) Add manager of systems guides"}]', $this->client->getResponse()->getContent());
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /project/"
+        );
+        $this->assertEquals(
+            '[{"id":1,"label":"( BTS-1 ) Add manager of systems guides"}]',
+            $this->client->getResponse()->getContent()
+        );
     }
 
     public function testProjectStoriesErrorScenario()
@@ -97,7 +132,14 @@ class ProjectControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/project/111/stories');
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
-        $this->assertEquals('{"error":"Unable to find Project entity."}', $this->client->getResponse()->getContent());
+        $this->assertEquals(
+            404,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /project/"
+        );
+        $this->assertEquals(
+            '{"error":"Unable to find Project entity."}',
+            $this->client->getResponse()->getContent()
+        );
     }
 }

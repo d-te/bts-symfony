@@ -45,7 +45,7 @@ class ActivitySubscriber implements EventSubscriber
 
         if ($entity instanceof Issue) {
             $this->activityManager->logPersistIssue($entity);
-        } else if ($entity instanceof Comment) {
+        } elseif ($entity instanceof Comment) {
             $this->activityManager->logPersistComment($entity);
         }
     }

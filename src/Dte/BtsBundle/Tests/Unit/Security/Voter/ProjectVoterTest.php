@@ -18,14 +18,16 @@ class ProjectVoterTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->roleHierarchy = $this->getMockBuilder('Symfony\Component\Security\Core\Role\RoleHierarchy')
-                        ->disableOriginalConstructor()
-                        ->setMethods(array('getReachableRoles'))
-                        ->getMock();
-        $this->token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
-                        ->disableOriginalConstructor()
-                        ->setMethods(array('getUser', 'getRoles'))
-                        ->getMock();
+        $this->roleHierarchy = $this
+                    ->getMockBuilder('Symfony\Component\Security\Core\Role\RoleHierarchy')
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('getReachableRoles'))
+                    ->getMock();
+        $this->token = $this
+                    ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
+                    ->disableOriginalConstructor()
+                    ->setMethods(array('getUser', 'getRoles'))
+                    ->getMock();
     }
 
     public function tearDown()
@@ -75,7 +77,7 @@ class ProjectVoterTest extends \PHPUnit_Framework_TestCase
 
         $object = new Project();
 
-        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $voter->vote($this->token, $object, array('not_supported')));
+        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $voter->vote($this->token, $object, array('notsupported')));
     }
 
     public function testVoteWithNotAuthorizedUser()

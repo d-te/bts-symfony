@@ -40,11 +40,13 @@ class DefaultController extends Controller
      */
     public function loginAction(Request $request)
     {
-        if ($request->attributes->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContextInterface::AUTHENTICATION_ERROR);
-        } elseif (null !== $request->getSession() && $request->getSession()->has(SecurityContextInterface::AUTHENTICATION_ERROR)) {
-            $error = $request->getSession()->get(SecurityContextInterface::AUTHENTICATION_ERROR);
-            $request->getSession()->remove(SecurityContextInterface::AUTHENTICATION_ERROR);
+        $err = SecurityContextInterface::AUTHENTICATION_ERROR;
+
+        if ($request->attributes->has($err)) {
+            $error = $request->attributes->get($err);
+        } elseif (null !== $request->getSession() && $request->getSession()->has($err)) {
+            $error = $request->getSession()->get($err);
+            $request->getSession()->remove($err);
         } else {
             $error = null;
         }

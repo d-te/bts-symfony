@@ -55,13 +55,16 @@ class CommentController extends Controller
         );
 
         foreach ($entities as $entity) {
-            $forms['edit'][$entity->getId()]   = $this->createEditForm($entity, $issue)->createView();
-            $forms['delete'][$entity->getId()] = $this->createDeleteForm($entity->getId(), $issue->getId())->createView();
+            $editForm = $this->createEditForm($entity, $issue)->createView();
+            $deleteForm = $this->createDeleteForm($entity->getId(), $issue->getId())->createView();
+
+            $forms['edit'][$entity->getId()]   = $editForm;
+            $forms['delete'][$entity->getId()] = $deleteForm;
         }
 
         return array(
-            'entities'   => $entities,
-            'forms' => $forms,
+            'entities' => $entities,
+            'forms'    => $forms,
         );
     }
 
@@ -173,7 +176,9 @@ class CommentController extends Controller
         $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_comment'));
+            throw $this->createNotFoundException(
+                $this->get('translator')->trans('bts.page.issue.error.not_found_comment')
+            );
         }
 
         if (false === $this->get('security.context')->isGranted('edit', $entity)) {
@@ -217,7 +222,9 @@ class CommentController extends Controller
             $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_comment'));
+                throw $this->createNotFoundException(
+                    $this->get('translator')->trans('bts.page.issue.error.not_found_comment')
+                );
             }
 
             if (false === $this->get('security.context')->isGranted('delete', $entity)) {

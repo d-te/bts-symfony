@@ -2,11 +2,11 @@
 
 {% block head %}
     <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/dtebts/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bundles/dtebts/css/bootstrap-theme.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/dtebts/css/bootstrap.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/dtebts/css/bootstrap-theme.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/bootstrap-collection.css') }}" />
-    <script src="{{ asset('bundles/dtebts/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('bundles/dtebts/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('bundles/dtebts/js/jquery.js') }}"></script>
+    <script src="{{ asset('bundles/dtebts/js/bootstrap.js') }}"></script>
     <script src="{{ asset('js/bootstrap-collection.js') }}"></script>
     <script src="{{ asset('bundles/dtebts/js/scripts.js') }}"></script>
 {% endblock %}
@@ -55,11 +55,13 @@
                 <li {% if app.request.uri == url("user_profile") %} class="active" {% endif %}>
                     <a href="{{ url("user_profile") }}">
                         {% if app.user.avatar %}
-                        <img src="{{app.user.avatar}}" width="24" height="24">
+                        <img src="{{app.user.avatar}}" width="18" height="18">
                         {% else %}
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         {% endif %}
-                    </a>&nbsp;&nbsp;
+                    </a>
+                </li>
+                <li {% if app.request.uri == url("user_profile") %} class="active" {% endif %}>
                     <a href="{{ url("user_profile") }}">{{ app.user.fullname }}</a>
                 </li>
                 <li><a href="{{ url("dte_bts_logout") }}">{{ 'bts.page.main.action.logout'|trans }}</a></li>

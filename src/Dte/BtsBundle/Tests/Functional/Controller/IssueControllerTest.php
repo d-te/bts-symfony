@@ -23,7 +23,11 @@ class IssueControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/issue/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /issue/");
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /issue/"
+        );
         $crawler = $this->client->click($crawler->selectLink('Create a new issue')->link());
 
         $form = $crawler->selectButton('Create')->form(array(
@@ -39,7 +43,11 @@ class IssueControllerTest extends FixturesWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('#issue-code:contains("(BTS-8)")')->count(), 'Missing element #issue-code:contains("(BTS-8)")');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('#issue-code:contains("(BTS-8)")')->count(),
+            'Missing element #issue-code:contains("(BTS-8)")'
+        );
 
         $this->assertEquals('btn btn-default  active disabled ', $crawler->selectLink('Open')->attr('class'));
 
@@ -59,7 +67,11 @@ class IssueControllerTest extends FixturesWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('[value="Test issue summary updated"]')->count(), 'Missing element [value="Test issue summary updated"]');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('[value="Test issue summary updated"]')->count(),
+            'Missing element [value="Test issue summary updated"]'
+        );
     }
 
     public function testAddSubtaskScenario()
@@ -67,7 +79,11 @@ class IssueControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/issue/1');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /issue/");
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /issue/"
+        );
         $crawler = $this->client->click($crawler->selectLink('Add Subtask')->link());
 
         $form = $crawler->selectButton('Create')->form(array(
@@ -84,6 +100,10 @@ class IssueControllerTest extends FixturesWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('#issue-code:contains("(BTS-8)")')->count(), 'Missing element #issue-code:contains("(BTS-8)")');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('#issue-code:contains("(BTS-8)")')->count(),
+            'Missing element #issue-code:contains("(BTS-8)")'
+        );
     }
 }

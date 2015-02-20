@@ -300,7 +300,9 @@ class IssueController extends Controller
         $status = $em->getRepository('DteBtsBundle:IssueStatus')->find($status);
 
         if (!$status) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found_status'));
+            throw $this->createNotFoundException(
+                $this->get('translator')->trans('bts.page.issue.error.not_found_status')
+            );
         }
 
         $entity->setStatus($status);

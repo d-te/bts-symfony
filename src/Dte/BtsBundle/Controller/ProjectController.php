@@ -252,7 +252,9 @@ class ProjectController extends Controller
             $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
+                throw $this->createNotFoundException(
+                    $this->get('translator')->trans('bts.page.project.error.not_found')
+                );
             }
 
             if (false === $this->get('security.context')->isGranted('delete', $entity)) {
@@ -303,7 +305,10 @@ class ProjectController extends Controller
 
             return new JsonResponse($members);
         } else {
-            return new JsonResponse(array('error' => $this->get('translator')->trans('bts.page.project.error.not_found')), 404);
+            return new JsonResponse(
+                array('error' => $this->get('translator')->trans('bts.page.project.error.not_found')),
+                404
+            );
         }
     }
 
@@ -329,7 +334,10 @@ class ProjectController extends Controller
 
             return new JsonResponse($stories);
         } else {
-            return new JsonResponse(array('error' => $this->get('translator')->trans('bts.page.project.error.not_found')), 404);
+            return new JsonResponse(
+                array('error' => $this->get('translator')->trans('bts.page.project.error.not_found')),
+                404
+            );
         }
     }
 }

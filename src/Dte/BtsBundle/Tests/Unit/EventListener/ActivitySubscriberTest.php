@@ -90,10 +90,20 @@ class ActivitySubscriberTest extends \PHPUnit_Framework_TestCase
                             ))
                             ->getMock();
 
-        $args->expects($this->once())->method('getEntity')->will($this->returnValue($issue));
-        $args->expects($this->once())->method('hasChangedField')->with($this->equalTo('status'))->will($this->returnValue(true));
+        $args
+            ->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue($issue));
+        $args
+            ->expects($this->once())
+            ->method('hasChangedField')
+            ->with($this->equalTo('status'))
+            ->will($this->returnValue(true));
 
-        $this->activityManager->expects($this->once())->method('logUpdateIssueStatus')->with($this->equalTo($issue));
+        $this->activityManager
+                ->expects($this->once())
+                ->method('logUpdateIssueStatus')
+                ->with($this->equalTo($issue));
 
         $subscriber = new ActivitySubscriber($this->activityManager);
 
@@ -112,8 +122,15 @@ class ActivitySubscriberTest extends \PHPUnit_Framework_TestCase
                             ))
                             ->getMock();
 
-        $args->expects($this->once())->method('getEntity')->will($this->returnValue($issue));
-        $args->expects($this->once())->method('hasChangedField')->with($this->equalTo('status'))->will($this->returnValue(false));
+        $args
+            ->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue($issue));
+        $args
+            ->expects($this->once())
+            ->method('hasChangedField')
+            ->with($this->equalTo('status'))
+            ->will($this->returnValue(false));
 
         $this->activityManager->expects($this->never())->method('logUpdateIssueStatus');
 

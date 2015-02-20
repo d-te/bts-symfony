@@ -74,7 +74,7 @@ class IssueSubscriber implements EventSubscriber
             $this->addIssueCode($entity);
             $this->addIssueReporterCollaborator($entity);
             $this->addIssueAssigneeCollaborator($entity);
-        } else if ($entity instanceof Comment) {
+        } elseif ($entity instanceof Comment) {
             $this->addCommentCollaborator($entity);
         }
     }

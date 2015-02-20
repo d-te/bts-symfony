@@ -9,7 +9,13 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Comment
  *
- * @ORM\Table(name="comment", indexes={@ORM\Index(name="IDX_9474526CA76ED395", columns={"user_id"}), @ORM\Index(name="IDX_9474526C5E7AA58C", columns={"issue_id"})})
+ * @ORM\Table(
+ *         name="comment",
+ *         indexes={
+ *             @ORM\Index(name="IDX_9474526CA76ED395", columns={"user_id"}),
+ *             @ORM\Index(name="IDX_9474526C5E7AA58C", columns={"issue_id"})
+ *         }
+ *  )
  * @ORM\Entity
  */
 class Comment

@@ -43,7 +43,11 @@ class CommentTypeTest extends \PHPUnit_Framework_TestCase
         $builder
                 ->expects($this->at(0))
                 ->method('add')
-                ->with($this->equalTo('body'), $this->equalTo('textarea'), $this->equalTo(array('required' => true, 'label' => false)));
+                ->with(
+                    $this->equalTo('body'),
+                    $this->equalTo('textarea'),
+                    $this->equalTo(array('required' => true, 'label' => false))
+                );
 
         $form = new CommentType();
         $form->buildForm($builder, array());

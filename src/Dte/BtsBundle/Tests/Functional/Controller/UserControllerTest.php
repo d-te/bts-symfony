@@ -23,7 +23,12 @@ class UserControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/user/');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/");
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /user/"
+        );
+
         $crawler = $this->client->click($crawler->selectLink('Create a new user')->link());
 
         $form = $crawler->selectButton('Create')->form(array(
@@ -37,7 +42,11 @@ class UserControllerTest extends FixturesWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('#user-credentials:contains("Tester T.T. ( test@bts.dev )")')->count(), 'Missing element #user-credentials:contains("Tester T.T. ( test@bts.dev )")');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('#user-credentials:contains("Tester T.T. ( test@bts.dev )")')->count(),
+            'Missing element #user-credentials:contains("Tester T.T. ( test@bts.dev )")'
+        );
 
         $crawler = $this->client->click($crawler->selectLink('Edit')->link());
 
@@ -48,7 +57,11 @@ class UserControllerTest extends FixturesWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('[value="Tester T.T.updated"]')->count(), 'Missing element [value="1111Test user updated"]');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('[value="Tester T.T.updated"]')->count(),
+            'Missing element [value="1111Test user updated"]'
+        );
     }
 
     public function testProfileScenario()
@@ -56,9 +69,17 @@ class UserControllerTest extends FixturesWebTestCase
         $this->logInByUsername('admin');
 
         $crawler = $this->client->request('GET', '/user/profile');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/profile/");
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /user/profile/"
+        );
 
-        $this->assertGreaterThan(0, $crawler->filter('#user-credentials:contains("Admin A.A. ( admin@bts.dev )")')->count(), 'Missing element #user-credentials:contains("Admin A.A. ( admin@bts.dev )")');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('#user-credentials:contains("Admin A.A. ( admin@bts.dev )")')->count(),
+            'Missing element #user-credentials:contains("Admin A.A. ( admin@bts.dev )")'
+        );
 
         $crawler = $this->client->click($crawler->selectLink('Edit')->link());
 
@@ -69,6 +90,10 @@ class UserControllerTest extends FixturesWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertGreaterThan(0, $crawler->filter('[value="Tester T.T.updated"]')->count(), 'Missing element [value="1111Test user updated"]');
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('[value="Tester T.T.updated"]')->count(),
+            'Missing element [value="1111Test user updated"]'
+        );
     }
 }

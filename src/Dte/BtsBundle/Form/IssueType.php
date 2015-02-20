@@ -160,7 +160,7 @@ class IssueType extends AbstractType
                 'choices'     => $members,
             ))->add('resolution', 'entity', array(
                 'label'         => 'bts.entity.issue.resolution.label',
-                'read_only'    => $isEditContext,
+                'read_only'     => $isCreateContext,
                 'required'      => false,
                 'property'      => 'label',
                 'class'         => 'DteBtsBundle:IssueResolution',

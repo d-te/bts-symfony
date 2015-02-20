@@ -57,5 +57,4 @@ class DefaultControllerTest extends FixturesWebTestCase
 
         $this->assertRegExp('/\/login$/', $this->client->getResponse()->headers->get('location'));
     }
-
 }

@@ -2,18 +2,12 @@
 
 namespace Dte\BtsBundle\Tests\Functional\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Dte\BtsBundle\Tests\FixturesWebTestCase;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class UserControllerTest extends WebTestCase
+class UserControllerTest extends FixturesWebTestCase
 {
-
-    private $client = null;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-    }
 
     public function testProfileWithoutAuth()
     {
@@ -24,50 +18,57 @@ class UserControllerTest extends WebTestCase
         $this->assertRegExp('/\/login$/', $this->client->getResponse()->headers->get('location'));
     }
 
-    /*
     public function testCompleteScenario()
     {
-        // Create a new client to browse the application
-        $client = static::createClient();
+        $this->logInByUsername('admin');
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/user/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
+        $crawler = $this->client->request('GET', '/user/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/");
+        $crawler = $this->client->click($crawler->selectLink('Create a new user')->link());
 
-        // Fill in the form and submit it
         $form = $crawler->selectButton('Create')->form(array(
-            'dte_btsbundle_user[field_name]'  => 'Test',
-            // ... other fields to fill
+            'dte_btsbundle_user[email]'    => 'test@bts.dev',
+            'dte_btsbundle_user[username]' => 'tester',
+            'dte_btsbundle_user[fullname]' => 'Tester T.T.',
+            'dte_btsbundle_user[password]' => 'tester',
+            'dte_btsbundle_user[avatar]'   => 'https://avatars3.githubusercontent.com/u/3748005?v=3&s=460',
         ));
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
 
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
+        $this->assertGreaterThan(0, $crawler->filter('#user-credentials:contains("Tester T.T. ( test@bts.dev )")')->count(), 'Missing element #user-credentials:contains("Tester T.T. ( test@bts.dev )")');
 
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
+        $crawler = $this->client->click($crawler->selectLink('Edit')->link());
 
         $form = $crawler->selectButton('Update')->form(array(
-            'dte_btsbundle_user[field_name]'  => 'Foo',
-            // ... other fields to fill
+           'dte_btsbundle_user[fullname]'  => 'Tester T.T.updated',
         ));
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
 
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+        $this->assertGreaterThan(0, $crawler->filter('[value="Tester T.T.updated"]')->count(), 'Missing element [value="1111Test user updated"]');
     }
 
-    */
+    public function testProfileScenario()
+    {
+        $this->logInByUsername('admin');
+
+        $crawler = $this->client->request('GET', '/user/profile');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /user/profile/");
+
+        $this->assertGreaterThan(0, $crawler->filter('#user-credentials:contains("Admin A.A. ( admin@bts.dev )")')->count(), 'Missing element #user-credentials:contains("Admin A.A. ( admin@bts.dev )")');
+
+        $crawler = $this->client->click($crawler->selectLink('Edit')->link());
+
+        $form = $crawler->selectButton('Update')->form(array(
+           'dte_btsbundle_user[fullname]'  => 'Tester T.T.updated',
+        ));
+
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertGreaterThan(0, $crawler->filter('[value="Tester T.T.updated"]')->count(), 'Missing element [value="1111Test user updated"]');
+    }
 }

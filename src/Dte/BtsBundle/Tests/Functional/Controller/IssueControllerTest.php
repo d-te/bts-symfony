@@ -2,18 +2,12 @@
 
 namespace Dte\BtsBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Dte\BtsBundle\Tests\FixturesWebTestCase;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class IssueControllerTest extends WebTestCase
+class IssueControllerTest extends FixturesWebTestCase
 {
-
-    private $client = null;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-    }
 
     public function testProjectWithoutAuth()
     {
@@ -23,50 +17,39 @@ class IssueControllerTest extends WebTestCase
 
         $this->assertRegExp('/\/login$/', $this->client->getResponse()->headers->get('location'));
     }
-    /*
+
     public function testCompleteScenario()
     {
-        // Create a new client to browse the application
-        $client = static::createClient();
+        $this->logInByUsername('admin');
 
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/issue/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /issue/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
+        $crawler = $this->client->request('GET', '/issue/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /issue/");
+        $crawler = $this->client->click($crawler->selectLink('Create a new issue')->link());
 
-        // Fill in the form and submit it
         $form = $crawler->selectButton('Create')->form(array(
-            'dte_btsbundle_issue[field_name]'  => 'Test',
-            // ... other fields to fill
+            'dte_btsbundle_issue[project]'     => 1,
+            'dte_btsbundle_issue[type]'        => 2,
+            'dte_btsbundle_issue[summary]'     => 'Test issue summary',
+            'dte_btsbundle_issue[description]' => 'Test issue summary descrption',
+            'dte_btsbundle_issue[status]'      => 1,
+            'dte_btsbundle_issue[priority]'    => 3,
+            //'dte_btsbundle_issue[assignee]'    => 1,
         ));
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
 
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
+        $this->assertGreaterThan(0, $crawler->filter('#issue-code:contains("(BTS-8)")')->count(), 'Missing element #issue-code:contains("(BTS-8)")');
 
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
+        $crawler = $this->client->click($crawler->selectLink('Edit')->link());
 
         $form = $crawler->selectButton('Update')->form(array(
-            'dte_btsbundle_issue[field_name]'  => 'Foo',
-            // ... other fields to fill
+           'dte_btsbundle_issue[summary]'  => 'Test issue summary updated',
         ));
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
 
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+        $this->assertGreaterThan(0, $crawler->filter('[value="Test issue summary updated"]')->count(), 'Missing element [value="Test issue summary updated"]');
     }
-
-    */
 }

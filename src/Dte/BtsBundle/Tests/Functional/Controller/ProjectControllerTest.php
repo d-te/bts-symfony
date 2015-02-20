@@ -2,71 +2,84 @@
 
 namespace Dte\BtsBundle\Tests\Functional\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Dte\BtsBundle\Tests\FixturesWebTestCase;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class ProjectControllerTest extends WebTestCase
+class ProjectControllerTest extends FixturesWebTestCase
 {
-
-    private $client = null;
-
-    public function setUp()
+    /**
+     * @dataProvider pagesDataProvider
+     */
+    public function testProjectWithoutAuth($method, $url)
     {
-        $this->client = static::createClient();
-    }
-
-    public function testProjectWithoutAuth()
-    {
-        $this->client->request('GET', '/project');
+        $this->client->request($method, $url);
 
         $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
 
         $this->assertRegExp('/\/login$/', $this->client->getResponse()->headers->get('location'));
     }
-    /*
-    public function testCompleteScenario()
+
+    public function pagesDataProvider()
     {
-        // Create a new client to browse the application
-        $client = static::createClient();
-
-        // Create a new entry in the database
-        $crawler = $client->request('GET', '/project/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
-        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
-
-        // Fill in the form and submit it
-        $form = $crawler->selectButton('Create')->form(array(
-            'dte_btsbundle_project[field_name]'  => 'Test',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check data in the show view
-        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
-
-        // Edit the entity
-        $crawler = $client->click($crawler->selectLink('Edit')->link());
-
-        $form = $crawler->selectButton('Update')->form(array(
-            'dte_btsbundle_project[field_name]'  => 'Foo',
-            // ... other fields to fill
-        ));
-
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-
-        // Check the element contains an attribute with value equals "Foo"
-        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
-
-        // Delete the entity
-        $client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $client->followRedirect();
-
-        // Check the entity has been delete on the list
-        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
+        return array(
+            array('GET', '/project'),
+            array('GET', '/project/1/members'),
+            array('GET', '/project/1/stories'),
+        );
     }
 
-    */
+    public function testCompleteScenario()
+    {
+        $this->logInByUsername('admin');
+
+        $crawler = $this->client->request('GET', '/project/');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
+        $crawler = $this->client->click($crawler->selectLink('Create a new project')->link());
+
+        $form = $crawler->selectButton('Create')->form(array(
+            'dte_btsbundle_project[code]'  => 'CODE',
+            'dte_btsbundle_project[label]'  => '1111Test project',
+            'dte_btsbundle_project[summary]'  => 'Some summary',
+        ));
+
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertGreaterThan(0, $crawler->filter('#entity-header strong[class="project-code"]')->count(), 'Missing element strong:contains("(CODE)&nbsp;)")');
+
+        $crawler = $this->client->click($crawler->selectLink('Edit')->link());
+
+        $form = $crawler->selectButton('Update')->form(array(
+           'dte_btsbundle_project[label]'  => '1111Test project updated',
+        ));
+
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertGreaterThan(0, $crawler->filter('[value="1111Test project updated"]')->count(), 'Missing element [value="1111Test project updated"]');
+
+        $this->client->submit($crawler->selectButton('Delete')->form());
+        $crawler = $this->client->followRedirect();
+
+        $this->assertNotRegExp('/1111Test project/', $this->client->getResponse()->getContent());
+    }
+
+    public function testProjecMemberScenario()
+    {
+        $this->logInByUsername('admin');
+
+        $crawler = $this->client->request('GET', '/project/1/members');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
+        $this->assertEquals('[{"id":1,"label":"Admin A.A."},{"id":2,"label":"Manager M.M."},{"id":3,"label":"Operator the first O.O."}]', $this->client->getResponse()->getContent());
+    }
+
+    public function testProjecStoriesScenario()
+    {
+        $this->logInByUsername('admin');
+
+        $crawler = $this->client->request('GET', '/project/1/stories');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /project/");
+        $this->assertEquals('[{"id":1,"label":"( BTS-1 ) Add manager of systems guides"}]', $this->client->getResponse()->getContent());
+    }
 }

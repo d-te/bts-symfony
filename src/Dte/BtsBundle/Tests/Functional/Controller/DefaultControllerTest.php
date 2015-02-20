@@ -2,20 +2,12 @@
 
 namespace Dte\BtsBundle\Tests\Functional\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
+use Dte\BtsBundle\Tests\FixturesWebTestCase;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerTest extends FixturesWebTestCase
 {
-
-    private $client = null;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-    }
 
     public function testIndexWithoutAuth()
     {
@@ -28,7 +20,7 @@ class DefaultControllerTest extends WebTestCase
 
     public function testIndexWithAuth()
     {
-        $this->logIn();
+        $this->logInByUsername('admin');
 
         $this->client->request('GET', '/');
 
@@ -46,18 +38,5 @@ class DefaultControllerTest extends WebTestCase
         $this->assertTrue($crawler->filter('input[name="_password"]')->count() > 0);
 
         $this->assertTrue($crawler->filter('button[type=submit]')->count() > 0);
-    }
-
-    private function logIn()
-    {
-        $session = $this->client->getContainer()->get('session');
-
-        $firewall = 'secured_area';
-        $token = new UsernamePasswordToken('admin', null, $firewall, array('ROLE_ADMIN'));
-        $session->set('_security_'.$firewall, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
     }
 }

@@ -8,10 +8,10 @@
     <h1>{{ 'bts.page.project_show.page_title'|trans }}</h1>
 
     <div class="row">
-        <div class="col-md-12">
-            <strong>({{ entity.code }})&nbsp;</strong>{{ entity.label }} &nbsp;&nbsp;
+        <div id="entity-header" class="col-md-12">
+            <strong class="project-code">({{ entity.code }})&nbsp;</strong>{{ entity.label }} &nbsp;&nbsp;
             {% if is_granted('edit', entity) %}
-            <a href="{{ path('project_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;{{ 'bts.default.action.edit'|trans }}</a>
+            <a href="{{ path('project_edit', { 'id': entity.id }) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>&nbsp;&nbsp;<a id="edit-link" href="{{ path('project_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
             {% endif %}
             <br/>
             <br/>

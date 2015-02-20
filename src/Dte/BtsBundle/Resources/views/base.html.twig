@@ -59,8 +59,8 @@
                         {% else %}
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                         {% endif %}
-                        &nbsp;&nbsp;{{ app.user.fullname }}
-                    </a>
+                    </a>&nbsp;&nbsp;
+                    <a href="{{ url("user_profile") }}">{{ app.user.fullname }}</a>
                 </li>
                 <li><a href="{{ url("dte_bts_logout") }}">{{ 'bts.page.main.action.logout'|trans }}</a></li>
                 {% endif %}

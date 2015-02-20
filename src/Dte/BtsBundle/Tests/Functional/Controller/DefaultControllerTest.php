@@ -27,7 +27,7 @@ class DefaultControllerTest extends FixturesWebTestCase
         $this->assertFalse($this->client->getResponse() instanceof RedirectResponse);
     }
 
-    public function testLoginForm()
+    public function testLoginLogoutScenario()
     {
         $crawler = $this->client->request('GET', '/login');
 
@@ -38,5 +38,24 @@ class DefaultControllerTest extends FixturesWebTestCase
         $this->assertTrue($crawler->filter('input[name="_password"]')->count() > 0);
 
         $this->assertTrue($crawler->filter('button[type=submit]')->count() > 0);
+
+        $form = $crawler->selectButton('Login')->form(array(
+            '_username'  => 'admin',
+            '_password'  => 'admin',
+        ));
+
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertGreaterThan(0, $crawler->selectLink('Admin A.A.')->count());
+
+        $crawler = $this->client->click($crawler->selectLink('Log Out')->link());
+
+        $crawler = $this->client->followRedirect();
+
+        $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
+
+        $this->assertRegExp('/\/login$/', $this->client->getResponse()->headers->get('location'));
     }
+
 }

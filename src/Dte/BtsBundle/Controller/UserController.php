@@ -223,6 +223,7 @@ class UserController extends Controller
         }
 
         $oldPassword = $entity->getPassword();
+        $oldRoles    = $entity->getRoles();
 
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
@@ -240,6 +241,12 @@ class UserController extends Controller
                 $entity->setPassword($password);
             } else {
                 $entity->setPassword($oldPassword);
+            }
+
+            if ($isProfileContext) {
+                foreach ($oldRoles as $role) {
+                    $entity->addRole($role);
+                }
             }
 
             $em->flush();

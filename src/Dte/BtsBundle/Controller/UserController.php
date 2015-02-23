@@ -224,8 +224,10 @@ class UserController extends Controller
 
         $oldPassword = $entity->getPassword();
 
-        $editForm   = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
+
+        $isProfileContext = ($editForm->get('is_profile')->getData() == 1);
 
         if ($editForm->isValid()) {
             $plainPassword = $entity->getPassword();
@@ -242,12 +244,19 @@ class UserController extends Controller
 
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            if ($isProfileContext) {
+                $url = $this->generateUrl('user_profile_edit');
+            } else {
+                $url = $this->generateUrl('user_edit', array('id' => $id));
+            }
+
+            return $this->redirect($url);
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity'       => $entity,
+            'edit_form'    => $editForm->createView(),
+            'form_context' => ($isProfileContext) ? 'profile' : 'edit',
         );
     }
 

@@ -21,6 +21,10 @@ class UserType extends AbstractType
         $isProfileContext = ($options['form_context'] === 'profile');
 
         $builder
+            ->add('is_profile', 'hidden', array(
+                'mapped' => false,
+                'data'   => intval($isProfileContext),
+            ))
             ->add('email', 'email', array(
                 'required'  => true,
                 'read_only' => ($isEditContext || $isProfileContext),

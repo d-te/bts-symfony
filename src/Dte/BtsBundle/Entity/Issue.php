@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
+
 /**
  * Issue
  *
@@ -23,6 +26,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * )
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Dte\BtsBundle\Entity\Repository\IssueRepository")
+ * @Assert\Callback(methods={"isStorySelected"})
  */
 class Issue
 {
@@ -30,6 +34,8 @@ class Issue
      * @var string
      *
      * @ORM\Column(name="summary", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $summary;
 
@@ -43,7 +49,8 @@ class Issue
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @Assert\Length(max = 255)
      */
     private $description;
 
@@ -51,6 +58,7 @@ class Issue
      * @var boolean
      *
      * @ORM\Column(name="type", type="integer", nullable=false)
+     * @Assert\NotBlank()
      */
     private $type;
 
@@ -121,6 +129,7 @@ class Issue
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="status_id", referencedColumnName="id")
      * })
+     * @Assert\NotBlank()
      */
     private $status;
 
@@ -141,6 +150,7 @@ class Issue
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="priority_id", referencedColumnName="id")
      * })
+     * @Assert\NotBlank()
      */
     private $priority;
 
@@ -572,5 +582,17 @@ class Issue
     public function hasCollaborator(User $user)
     {
         return $this->collaborators->contains($user);
+    }
+
+    /**
+     * Check is parent selected for a subtask
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function isStorySelected(ExecutionContextInterface $context)
+    {
+        if ($this->getType() === IssueTaskType::SUBTASK_TYPE && null === $this->getParent()) {
+            $context->addViolationAt('parent', 'This field is requiered for subtask type issue!', array(), null);
+        }
     }
 }

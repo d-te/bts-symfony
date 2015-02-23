@@ -181,8 +181,8 @@ class IssueType extends AbstractType
         $builder->get('project')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formModifier) {
-                $project = $event->getForm()->getData();
-                $issue   = $event->getForm()->getParent()->getData();
+                $project   = $event->getForm()->getData();
+                $issue     = $event->getForm()->getParent()->getData();
                 $formModifier($event->getForm()->getParent(), $issue, $project);
             }
         );

@@ -133,13 +133,19 @@ class IssueController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
+        $em = $this->getDoctrine()->getManager();
+
         $entity  = new Issue();
+
+        $status = $em->getRepository('DteBtsBundle:IssueStatus')->findOneBy(array('label' => 'Open'));
+
+        $entity->setStatus($status);
+
         $isSubtask = false;
 
         if (intval($request->get('story')) > 0) {
-            $em = $this->getDoctrine()->getManager();
 
-            $story   = $em->getRepository('DteBtsBundle:Issue')->find(intval($request->get('story')));
+            $story = $em->getRepository('DteBtsBundle:Issue')->find(intval($request->get('story')));
 
             if ($story && $story->getType() === IssueTaskType::STORY_TYPE) {
                 $entity->setParent($story);

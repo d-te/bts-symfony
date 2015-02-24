@@ -230,12 +230,8 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
     public function testBuildFormEditContext()
     {
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
-                        ->disableOriginalConstructor()
-                        ->setMethods(array('add'))
-                        ->getMock();
-        $builder
-                ->expects($this->at(0))
-                ->method('add')
+                        ->disableOriginalConstructor()->setMethods(array('add'))->getMock();
+        $builder->expects($this->at(0))->method('add')
                 ->with(
                     $this->equalTo('is_profile'),
                     $this->equalTo('hidden'),
@@ -247,9 +243,7 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                     )
                 )
                 ->will($this->returnValue($builder));
-        $builder
-                ->expects($this->at(1))
-                ->method('add')
+        $builder->expects($this->at(1))->method('add')
                 ->with(
                     $this->equalTo('email'),
                     $this->equalTo('email'),
@@ -262,9 +256,7 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                     )
                 )
                 ->will($this->returnValue($builder));
-        $builder
-                ->expects($this->at(2))
-                ->method('add')
+        $builder->expects($this->at(2))->method('add')
                 ->with(
                     $this->equalTo('username'),
                     $this->equalTo('text'),
@@ -276,9 +268,7 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                     )
                 )
                 ->will($this->returnValue($builder));
-        $builder
-                ->expects($this->at(3))
-                ->method('add')
+        $builder->expects($this->at(3))->method('add')
                 ->with(
                     $this->equalTo('fullname'),
                     $this->equalTo('text'),
@@ -290,9 +280,7 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                     )
                 )
                 ->will($this->returnValue($builder));
-        $builder
-                ->expects($this->at(4))
-                ->method('add')
+        $builder->expects($this->at(4))->method('add')
                 ->with(
                     $this->equalTo('password'),
                     $this->equalTo('password'),
@@ -304,9 +292,7 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                     )
                 )
                 ->will($this->returnValue($builder));
-        $builder
-                ->expects($this->at(5))
-                ->method('add')
+        $builder->expects($this->at(5))->method('add')
                 ->with(
                     $this->equalTo('avatar'),
                     $this->equalTo('url'),
@@ -318,9 +304,7 @@ class UserTypeTest extends \PHPUnit_Framework_TestCase
                     )
                 )
                 ->will($this->returnValue($builder));
-        $builder
-                ->expects($this->at(6))
-                ->method('add')
+        $builder->expects($this->at(6))->method('add')
                 ->with(
                     $this->equalTo('roles'),
                     $this->equalTo('entity'),

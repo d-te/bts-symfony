@@ -1,0 +1,13 @@
+{% extends 'DteBtsBundle::base.html.twig' %}
+
+{% block title %}
+    An Error Occurred: {{ status_text }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="alert alert-danger" role="alert">
+            <strong>Error</strong> Access Denied to the page.
+        </div>
+    </div>
+{% endblock %}

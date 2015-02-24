@@ -34,7 +34,13 @@
                     <tr>
                         <td>{% if activity.created %}{{ activity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
                         <td><a href="{{ path('user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a></td>
-                        <td><a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a></td>
+                        <td>
+                            {% if is_granted('view', activity.issue) %}
+                            <a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a>
+                            {% else %}
+                            {{ activity.issue.code }}
+                            {% endif %}
+                        </td>
                         <td>{{ activity.message }}</td>
                     </tr>
                 {% endfor %}
@@ -63,7 +69,13 @@
                 <tbody>
                 {% for issue in openedIssues %}
                     <tr>
-                        <td><a href="{{ path('issue_show', { 'id': issue.id }) }}">{{ issue.code }}</a></td>
+                        <td>
+                            {% if is_granted('view', issue) %}
+                            <a href="{{ path('issue_show', { 'id': issue.id }) }}">{{ issue.code }}</a>
+                            {% else %}
+                            {{ issue.code }}
+                            {% endif %}
+                        </td>
                         <td>{{ issue.summary }}</td>
                         <td>{{ issue.status.label }}</td>
                         <td><a href="{{ path('user_show', { 'id': issue.assignee.id }) }}">{{ issue.assignee.fullname }}</a></td>

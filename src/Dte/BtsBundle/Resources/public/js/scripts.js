@@ -15,9 +15,13 @@
 
                 if (type !== '4') {
                     $('#dte_btsbundle_issue_parent').find(':selected').removeAttr('selected');
-                    $('#dte_btsbundle_issue_parent').attr('readonly', 'readonly');
+                    $('#dte_btsbundle_issue_parent')
+                                            .attr('readonly', 'readonly')
+                                            .attr('disabled', 'disabled');
                 } else {
-                    $('#dte_btsbundle_issue_parent').removeAttr('readonly');
+                    $('#dte_btsbundle_issue_parent')
+                                        .removeAttr('readonly')
+                                        .removeAttr('disabled');
                 }
             });
 
@@ -45,6 +49,17 @@
                          .text(value.label));
                 });
             }
+
+
+            $('form[name="dte_btsbundle_issue"]').find('select').each(function(key, value) {
+                if ($(value).attr('readonly') === 'readonly') {
+                    $(value).attr('disabled', 'disabled');
+                }
+            });
+
+            $('form[name="dte_btsbundle_issue"]').submit(function(e) {
+                $('form[name="dte_btsbundle_issue"]').find(':disabled').removeAttr('disabled');
+            });
         }
     });
 })(jQuery);

@@ -144,7 +144,6 @@ class IssueController extends Controller
         $isSubtask = false;
 
         if (intval($request->get('story')) > 0) {
-
             $story = $em->getRepository('DteBtsBundle:Issue')->find(intval($request->get('story')));
 
             if ($story && $story->getType() === IssueTaskType::STORY_TYPE) {

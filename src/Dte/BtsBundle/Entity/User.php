@@ -339,7 +339,8 @@ class User implements UserInterface, \Serializable, EquatableInterface
 
     /**
      * Add user's roles
-     *
+     * @param Role $role
+     * @return User
      */
     public function addRole(Role $role)
     {
@@ -350,10 +351,24 @@ class User implements UserInterface, \Serializable, EquatableInterface
 
     /**
      * Remove user`s role
-     *
+     * @param Role $role
      */
     public function removeRole(Role $role)
     {
         $this->roles->removeElement($role);
+    }
+
+    /**
+     * Add several roles
+     * @param array $roles
+     * @return User`
+     */
+    public function addRoles(array $roles)
+    {
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
+
+        return $this;
     }
 }

@@ -244,9 +244,7 @@ class UserController extends Controller
             }
 
             if ($isProfileContext) {
-                foreach ($oldRoles as $role) {
-                    $entity->addRole($role);
-                }
+                $entity->addRoles($oldRoles);
             }
 
             $em->flush();

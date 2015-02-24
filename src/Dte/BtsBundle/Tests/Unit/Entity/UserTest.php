@@ -170,6 +170,21 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $user->getRoles());
     }
 
+    public function testAddRolesFunction()
+    {
+        $user = new User();
+
+        $this->assertCount(0, $user->getRoles());
+
+        $role1 = new Role();
+        $role2 = new Role();
+        $role3 = new Role();
+
+        $user->addRoles(array($role1, $role2, $role3));
+
+        $this->assertCount(3, $user->getRoles());
+    }
+
     public function testRemoveRoleFunction()
     {
         $user = new User();

@@ -88,10 +88,5 @@
     <div class="row">
         <div class="col-md-1">&nbsp;</div>
     </div>
-    {% if is_granted('delete', entity) %}
-    <div class="row">
-        <span>{{ form(delete_form) }}</span>
-    </div>
-    {% endif %}
 
 {% endblock %}

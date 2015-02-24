@@ -70,11 +70,6 @@ class ProjectControllerTest extends FixturesWebTestCase
             $crawler->filter('[value="1111Test project updated"]')->count(),
             'Missing element [value="1111Test project updated"]'
         );
-
-        $this->client->submit($crawler->selectButton('Delete')->form());
-        $crawler = $this->client->followRedirect();
-
-        $this->assertNotRegExp('/1111Test project/', $this->client->getResponse()->getContent());
     }
 
     public function testProjecMemberScenario()

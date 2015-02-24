@@ -139,12 +139,9 @@ class ProjectController extends Controller
 
         $activities = $em->getRepository('DteBtsBundle:Activity')->findActivitiesByProject($entity);
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'entity'      => $entity,
             'activities'  => $activities,
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -170,12 +167,10 @@ class ProjectController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -219,7 +214,6 @@ class ProjectController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
@@ -232,57 +226,7 @@ class ProjectController extends Controller
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
-    }
-
-    /**
-     * Deletes a Project entity.
-     *
-     * @Route("/{id}", name="project_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException(
-                    $this->get('translator')->trans('bts.page.project.error.not_found')
-                );
-            }
-
-            if (false === $this->get('security.context')->isGranted('delete', $entity)) {
-                throw new AccessDeniedException('Unauthorised access!');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('project'));
-    }
-
-    /**
-     * Creates a form to delete a Project entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('project_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
-            ->getForm()
-        ;
     }
 
     /**

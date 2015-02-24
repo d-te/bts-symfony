@@ -11,7 +11,6 @@ class ProjectVoter implements VoterInterface
 {
     const VIEW    = 'view';
     const EDIT    = 'edit';
-    const DELETE  = 'delete';
 
     protected $roleHierarchy;
 
@@ -49,7 +48,6 @@ class ProjectVoter implements VoterInterface
         return in_array($attribute, array(
             self::VIEW,
             self::EDIT,
-            self::DELETE,
         ));
     }
 

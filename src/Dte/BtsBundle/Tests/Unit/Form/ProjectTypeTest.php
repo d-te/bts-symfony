@@ -48,7 +48,6 @@ class ProjectTypeTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('text'),
                     $this->equalTo(
                         array(
-                            'required' => true,
                             'label'    => 'bts.entity.project.code.label',
                         )
                     )
@@ -62,7 +61,6 @@ class ProjectTypeTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('text'),
                     $this->equalTo(
                         array(
-                            'required' => true,
                             'label'    => 'bts.entity.project.label.label',
                         )
                     )
@@ -76,7 +74,6 @@ class ProjectTypeTest extends \PHPUnit_Framework_TestCase
                     $this->equalTo('textarea'),
                     $this->equalTo(
                         array(
-                            'required' => true,
                             'label'    => 'bts.entity.project.summary.label',
                         )
                     )

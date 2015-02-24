@@ -175,6 +175,10 @@ class Project
      */
     public function addMember(User $member)
     {
+        if ($this->members->contains($member)) {
+            return;
+        }
+
         $this->members->add($member);
 
         return $this;
@@ -186,6 +190,10 @@ class Project
      */
     public function removeMember(User $member)
     {
+        if ($this->members->contains($member)) {
+            return;
+        }
+
         $this->members->removeElement($member);
     }
 

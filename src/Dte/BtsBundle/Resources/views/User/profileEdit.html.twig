@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ 'bts.page.user_profile_edit.page_title'|trans }}</h1>
+    <h1>{{ 'bts.page.user_profile_edit.page_title'|trans }}&nbsp;&nbsp;<small><a href="{{ path('user_profile') }}">view</a></small></h1>
 
     {{ form(edit_form) }}
 

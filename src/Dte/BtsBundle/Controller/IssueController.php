@@ -315,4 +315,30 @@ class IssueController extends Controller
 
         return $this->redirect($this->generateUrl('issue_show', array('id' => $id)));
     }
+
+    /**
+     * Get issue collaborators
+     *
+     * @Route("/{id}/collaborators/", name="issue_collaborators")
+     * @Method("GET")
+     * @Template("DteBtsBundle:Issue:collaborators.html.twig")
+     */
+    public function getCollaboratorsAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
+        }
+
+        if (false === $this->get('security.context')->isGranted('view', $entity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
+
+        return array(
+            'entity' => $entity,
+        );
+    }
 }

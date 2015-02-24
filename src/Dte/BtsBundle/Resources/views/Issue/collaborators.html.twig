@@ -1,0 +1,15 @@
+            <div class="row">
+                <div class="col-md-1">&nbsp;</div>
+            </div>
+            <table class="table table-striped">
+                <colgroup>
+                    <col class="col-md-6">
+                </colgroup>
+                <tbody>
+                    {% for user in entity.getCollaborators() %}
+                    <tr>
+                        <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.fullname }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>

@@ -68,9 +68,10 @@
 (function ($) {
     $(document).ready(function() {
         if ($('form[name="dte_btsbundle_comment"]').length > 0) {
-            var form    = $('form[name="dte_btsbundle_comment"]');
-            var issueId = parseInt($('#comments').attr('data-issue-id'));
-            var url     = '/issue/' + issueId + '/comment/';
+            var form             = $('form[name="dte_btsbundle_comment"]');
+            var issueId          = parseInt($('#comments').attr('data-issue-id'));
+            var url              = '/issue/' + issueId + '/comment/';
+            var urlCollaborators = '/issue/' + issueId + '/collaborators/';
 
             refresh();
 
@@ -166,6 +167,13 @@
                 });
             }
 
+            function refreshCollaborators()
+            {
+                $.get(urlCollaborators, function(data) {
+                    $('#collaborators_pane').html(data);
+                });
+            }
+
             function addComment(data)
             {
                 $.ajax({
@@ -174,6 +182,7 @@
                     data: data,
                     success: function() {
                         refresh();
+                        refreshCollaborators();
                         enableAddForm();
                     },
                 });

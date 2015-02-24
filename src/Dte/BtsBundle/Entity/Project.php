@@ -190,10 +190,6 @@ class Project
      */
     public function removeMember(User $member)
     {
-        if ($this->members->contains($member)) {
-            return;
-        }
-
         $this->members->removeElement($member);
     }
 

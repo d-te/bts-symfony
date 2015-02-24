@@ -16,15 +16,12 @@ class ProjectType extends AbstractType
     {
         $builder
             ->add('code', 'text', array(
-                'required' => true,
                 'label'    => 'bts.entity.project.code.label',
             ))
             ->add('label', 'text', array(
-                'required' => true,
                 'label'    => 'bts.entity.project.label.label',
             ))
             ->add('summary', 'textarea', array(
-                'required' => true,
                 'label'    => 'bts.entity.project.summary.label',
             ))
             ->add('members', 'bootstrap_collection', array(

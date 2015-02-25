@@ -44,7 +44,7 @@ class CommentVoter implements VoterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supportsAttribute($attribute)
     {
@@ -55,7 +55,7 @@ class CommentVoter implements VoterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function supportsClass($class)
     {
@@ -65,7 +65,7 @@ class CommentVoter implements VoterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      * @var \Dte\BtsBundle\Entity\Comment $object
      */
     public function vote(TokenInterface $token, $object, array $attributes)

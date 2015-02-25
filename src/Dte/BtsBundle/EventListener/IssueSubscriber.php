@@ -50,7 +50,7 @@ class IssueSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getSubscribedEvents()
     {
@@ -63,7 +63,7 @@ class IssueSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function postPersist(LifecycleEventArgs $args)
     {
@@ -79,7 +79,7 @@ class IssueSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -91,7 +91,7 @@ class IssueSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function preUpdate(LifecycleEventArgs $args)
     {
@@ -165,7 +165,7 @@ class IssueSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function postFlush(PostFlushEventArgs $args)
     {

@@ -31,7 +31,7 @@ class NotificationSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getSubscribedEvents()
     {
@@ -41,7 +41,7 @@ class NotificationSubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function postPersist(LifecycleEventArgs $args)
     {

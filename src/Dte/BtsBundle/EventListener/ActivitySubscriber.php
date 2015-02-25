@@ -26,7 +26,7 @@ class ActivitySubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getSubscribedEvents()
     {
@@ -38,7 +38,7 @@ class ActivitySubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function postPersist(LifecycleEventArgs $args)
     {
@@ -52,7 +52,7 @@ class ActivitySubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function preUpdate(LifecycleEventArgs $args)
     {
@@ -66,7 +66,7 @@ class ActivitySubscriber implements EventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function postFlush(PostFlushEventArgs $args)
     {

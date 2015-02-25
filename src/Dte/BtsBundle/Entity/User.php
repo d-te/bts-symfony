@@ -257,7 +257,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getSalt()
     {
@@ -285,7 +285,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function eraseCredentials()
     {
@@ -318,7 +318,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isEqualTo(UserInterface $user)
     {

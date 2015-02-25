@@ -9,13 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Activity
  *
- * @ORM\Table(
- *     name="activity",
- *     indexes={
- *         @ORM\Index(name="IDX_AC74095A5E7AA58C", columns={"issue_id"}),
- *         @ORM\Index(name="IDX_AC74095AA76ED395", columns={"user_id"})
- *     }
- * )
+ * @ORM\Table(name="activity")
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Dte\BtsBundle\Entity\Repository\ActivityRepository")
  */

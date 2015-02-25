@@ -13,17 +13,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 /**
  * Issue
  *
- * @ORM\Table(
- *     name="issue",
- *     indexes={
- *         @ORM\Index(name="IDX_12AD233E6BF700BD", columns={"status_id"}),
- *         @ORM\Index(name="IDX_12AD233E59EC7D60", columns={"assignee_id"}),
- *         @ORM\Index(name="IDX_12AD233E497B19F9", columns={"priority_id"}),
- *         @ORM\Index(name="IDX_12AD233E12A1C43A", columns={"resolution_id"}),
- *         @ORM\Index(name="IDX_12AD233EE1CFE6F5", columns={"reporter_id"}),
- *         @ORM\Index(name="project_id", columns={"project_id"})
- *     }
- * )
+ * @ORM\Table(name="issue")
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Dte\BtsBundle\Entity\Repository\IssueRepository")
  * @Assert\Callback(methods={"isStorySelected"})

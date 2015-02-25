@@ -18,13 +18,13 @@ class ActivityRepository extends EntityRepository
     public function findActivitiesByProject(Project $project)
     {
         $q = $this
-            ->createQueryBuilder('a')
-            ->select('a, i')
-            ->leftJoin('a.issue', 'i')
-            ->leftJoin('i.project', 'p')
-            ->where('p.id = :project')
+            ->createQueryBuilder('activity')
+            ->select('activity, issue')
+            ->leftJoin('activity.issue', 'issue')
+            ->leftJoin('i.project', 'project')
+            ->where('project.id = :project')
             ->setParameter('project', $project->getId())
-            ->orderBy('a.created', 'DESC')
+            ->orderBy('activity.created', 'DESC')
             ->getQuery();
 
         return $q->getResult();
@@ -39,14 +39,14 @@ class ActivityRepository extends EntityRepository
     public function findActivitiesByUser(User $user)
     {
         $q = $this
-            ->createQueryBuilder('a')
-            ->select('a, i')
-            ->leftJoin('a.issue', 'i')
-            ->leftJoin('i.project', 'p')
-            ->leftJoin('p.members', 'm')
-            ->where('m.id = :user')
+            ->createQueryBuilder('activity')
+            ->select('activity, issue')
+            ->leftJoin('activity.issue', 'issue')
+            ->leftJoin('i.project', 'project')
+            ->leftJoin('p.members', 'member')
+            ->where('member.id = :user')
             ->setParameter('user', $user->getId())
-            ->orderBy('a.created', 'DESC')
+            ->orderBy('activity.created', 'DESC')
             ->getQuery();
 
         return $q->getResult();

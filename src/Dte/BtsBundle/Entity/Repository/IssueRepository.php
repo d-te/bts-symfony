@@ -18,10 +18,10 @@ class IssueRepository extends EntityRepository
     public function findStoriesByProject(Project $project)
     {
         $q = $this
-            ->createQueryBuilder('i')
-            ->select('i')
-            ->leftJoin('i.project', 'p')
-            ->where('i.project = :project AND i.type = :type')
+            ->createQueryBuilder('issue')
+            ->select('issue')
+            ->leftJoin('issue.project', 'project')
+            ->where('issue.project = :project AND issue.type = :type')
             ->setParameter('project', $project->getId())
             ->setParameter('type', 3)
             ->getQuery();
@@ -38,12 +38,12 @@ class IssueRepository extends EntityRepository
     public function findOpenedIssuesAssignedToUser(User $user)
     {
         $q = $this
-            ->createQueryBuilder('i')
-            ->select('i')
-            ->where('i.assignee = :user AND i.status <> :status')
+            ->createQueryBuilder('issue')
+            ->select('issue')
+            ->where('issue.assignee = :user AND issue.status <> :status')
             ->setParameter('user', $user->getId())
             ->setParameter('status', 3)
-            ->orderBy('i.id', 'DESC')
+            ->orderBy('issue.id', 'DESC')
             ->getQuery();
 
         return $q->getResult();
@@ -58,13 +58,13 @@ class IssueRepository extends EntityRepository
     public function findOpenedIssuesByCollaborator(User $user)
     {
         $q = $this
-            ->createQueryBuilder('i')
-            ->select('i')
-            ->leftJoin('i.collaborators', 'c')
-            ->where('c.id = :user AND i.status <> :status')
+            ->createQueryBuilder('issue')
+            ->select('issue')
+            ->leftJoin('issue.collaborators', 'collaborator')
+            ->where('collaborator.id = :user AND issue.status <> :status')
             ->setParameter('user', $user->getId())
             ->setParameter('status', 3)
-            ->orderBy('i.id', 'DESC')
+            ->orderBy('issue.id', 'DESC')
             ->getQuery();
 
         return $q->getResult();

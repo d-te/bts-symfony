@@ -29,10 +29,10 @@ class ProjectRepository extends EntityRepository
     public function findByMemberQueryBuilder(User $user)
     {
         $q = $this
-            ->createQueryBuilder('p')
-            ->select('p')
-            ->leftJoin('p.members', 'm')
-            ->where('m.id = :user')
+            ->createQueryBuilder('project')
+            ->select('project')
+            ->leftJoin('project.members', 'member')
+            ->where('member.id = :user')
             ->setParameter('user', $user->getId());
 
         return $q;

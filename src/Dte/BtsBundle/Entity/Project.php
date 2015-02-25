@@ -170,7 +170,7 @@ class Project
     }
 
     /**
-     * Add project`s member
+     * Add project's member
      *
      * @param  User $member
      * @return Project
@@ -187,7 +187,7 @@ class Project
     }
 
     /**
-     * Remove project`s member
+     * Remove project's member
      *
      * @param  User $member
      */
@@ -209,7 +209,7 @@ class Project
     /**
      * Return label for dropdown lists
      *
-     * @return array
+     * @return string
      */
     public function getSelectLabel()
     {

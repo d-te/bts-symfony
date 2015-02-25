@@ -11,6 +11,7 @@ class IssueRepository extends EntityRepository
 {
     /**
      * Load list of stories by project
+     *
      * @param  Project $project
      * @return  array
      */
@@ -30,6 +31,7 @@ class IssueRepository extends EntityRepository
 
     /**
      * Load list of opened issues  assigned to user
+     *
      * @param User $user
      * @return  array
      */
@@ -49,6 +51,7 @@ class IssueRepository extends EntityRepository
 
     /**
      * Load list of opened issues where user is collaborator
+     *
      * @param User $user
      * @return  array
      */

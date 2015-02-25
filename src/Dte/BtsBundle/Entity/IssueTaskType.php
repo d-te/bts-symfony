@@ -14,6 +14,7 @@ class IssueTaskType
 
     /**
      *  List of task types
+     *
      *  @var array
      */
     private static $items = array(

@@ -11,6 +11,7 @@ class ActivityRepository extends EntityRepository
 {
     /**
      * Load list of activities by project
+     *
      * @param  Project $project
      * @return  array
      */
@@ -31,6 +32,7 @@ class ActivityRepository extends EntityRepository
 
     /**
      * Load list of activities by user
+     *
      * @param  User $user
      * @return  array
      */

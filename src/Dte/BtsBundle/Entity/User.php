@@ -292,6 +292,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     }
 
     /**
+     * {@inheritDoc}
      * @see \Serializable::serialize()
      */
     public function serialize()
@@ -305,6 +306,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     }
 
     /**
+     * {@inheritDoc}
      * @see \Serializable::unserialize()
      */
     public function unserialize($serialized)
@@ -339,6 +341,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
 
     /**
      * Add user's roles
+     *
      * @param Role $role
      * @return User
      */
@@ -350,7 +353,8 @@ class User implements UserInterface, \Serializable, EquatableInterface
     }
 
     /**
-     * Remove user`s role
+     * Remove user's role
+     *
      * @param Role $role
      */
     public function removeRole(Role $role)
@@ -360,8 +364,9 @@ class User implements UserInterface, \Serializable, EquatableInterface
 
     /**
      * Add several roles
+     *
      * @param array $roles
-     * @return User`
+     * @return User
      */
     public function addRoles(array $roles)
     {

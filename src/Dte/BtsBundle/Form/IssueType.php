@@ -42,7 +42,8 @@ class IssueType extends AbstractType
     }
 
     /**
-     * get User
+     * Get User
+     *
      * @return Dte\BtsBundle\Entity\User
      */
     public function getUser()
@@ -51,7 +52,8 @@ class IssueType extends AbstractType
     }
 
     /**
-     * get project's members
+     * Get project's members
+     *
      * @param  Dte\BtsBundle\Entity\Project $project
      * @return array
      */
@@ -67,7 +69,8 @@ class IssueType extends AbstractType
     }
 
     /**
-     * get project's stories
+     * Get project's stories
+     *
      * @param  Dte\BtsBundle\Entity\Project $project
      * @return array
      */

@@ -317,6 +317,7 @@ class Issue
 
     /**
      *  Get children
+     *
      *  @return array
      */
     public function getChildren()
@@ -326,6 +327,7 @@ class Issue
 
     /**
      *  Get comments
+     *
      *  @return array
      */
     public function getComments()
@@ -335,6 +337,7 @@ class Issue
 
     /**
      *  Get activities
+     *
      *  @return array
      */
     public function getActivities()
@@ -344,6 +347,7 @@ class Issue
 
     /**
      *  Get collaborators
+     *
      *  @return array
      */
     public function getCollaborators()
@@ -541,6 +545,7 @@ class Issue
 
     /**
      * Add comment
+     *
      * @param  Comment $comment
      * @return Issue
      */
@@ -553,6 +558,7 @@ class Issue
 
     /**
      * Remove comment
+     *
      * @param Comment $comment
      */
     public function removeComment(Comment $comment)
@@ -562,6 +568,7 @@ class Issue
 
     /**
      * Add collaborator
+     *
      * @param User #user
      * @return Issue
      */
@@ -574,6 +581,7 @@ class Issue
 
     /**
      * Remove collaborator
+     *
      * @param User $user
      */
     public function removeCollaborator(User $user)
@@ -583,6 +591,7 @@ class Issue
 
     /**
      * Remove collaborator
+     *
      * @param  User $user
      * @return  boolean
      */
@@ -599,7 +608,7 @@ class Issue
     public function isStorySelected(ExecutionContextInterface $context)
     {
         if ($this->getType() === IssueTaskType::SUBTASK_TYPE && null === $this->getParent()) {
-            $context->addViolationAt('parent', 'This field is requiered for subtask type issue!', array(), null);
+            $context->addViolationAt('parent', 'This field is required for subtask type issue!', array(), null);
         }
     }
 }

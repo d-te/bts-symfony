@@ -11,6 +11,7 @@ class ProjectRepository extends EntityRepository
 
     /**
      * Load list of projects by member
+     *
      * @param  User $user
      * @return  array
      */
@@ -21,6 +22,7 @@ class ProjectRepository extends EntityRepository
 
     /**
      * Load list of projects by member
+     *
      * @param  User $user
      * @return \Doctrine\ORM\QueryBuilder
      */

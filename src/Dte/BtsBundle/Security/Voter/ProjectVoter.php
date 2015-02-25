@@ -19,6 +19,7 @@ class ProjectVoter implements VoterInterface
 
     /**
      * Constructor
+     *
      * @param RoleHierarchy $roleHierarchy
      */
     public function __construct(RoleHierarchy $roleHierarchy)
@@ -28,6 +29,7 @@ class ProjectVoter implements VoterInterface
 
     /**
      * Has role
+     *
      * @param  TokenInterface $token
      * @param  string         $targetRole
      * @return boolean

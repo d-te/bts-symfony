@@ -20,6 +20,7 @@ class ActivityManager
 
     /**
      * Activities to save
+     *
      * @var array
      */
     private $activities = array();
@@ -34,6 +35,7 @@ class ActivityManager
 
     /**
      * Get current User
+     *
      * @return User
      */
     public function getUser()
@@ -43,6 +45,7 @@ class ActivityManager
 
     /**
      * Get current EntityManager
+     *
      * @return EntityManager
      */
     public function getEntityManager()
@@ -84,7 +87,7 @@ class ActivityManager
     }
 
     /**
-     * add an activity entity
+     * Add an activity entity
      *
      * @param string $message
      * @param Issue $issue

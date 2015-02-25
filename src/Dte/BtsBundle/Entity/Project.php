@@ -172,6 +172,8 @@ class Project
     /**
      * Add project`s member
      *
+     * @param  User $member
+     * @return Project
      */
     public function addMember(User $member)
     {
@@ -187,6 +189,7 @@ class Project
     /**
      * Remove project`s member
      *
+     * @param  User $member
      */
     public function removeMember(User $member)
     {

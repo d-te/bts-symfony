@@ -13,6 +13,9 @@ class UserVoter implements VoterInterface
     const EDIT    = 'edit';
     const PROFILE = 'profile';
 
+    /**
+     *  @var \Symfony\Component\Security\Core\Role\RoleHierarchy
+     */
     protected $roleHierarchy;
 
     /**

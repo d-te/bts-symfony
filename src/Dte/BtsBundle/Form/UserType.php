@@ -52,7 +52,7 @@ class UserType extends AbstractType
             $builder
                 ->add('roles', 'entity', array(
                     'required' => true,
-                    'label'     => 'bts.entity.user.roles.label',
+                    'label'    => 'bts.entity.user.roles.label',
                     'property' => 'name',
                     'class'    => 'DteBtsBundle:Role',
                     'multiple' => true,

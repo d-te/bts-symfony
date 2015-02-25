@@ -33,8 +33,8 @@ class ActivityManager
     }
 
     /**
-     * get current User
-     * @var User
+     * Get current User
+     * @return User
      */
     public function getUser()
     {
@@ -42,8 +42,8 @@ class ActivityManager
     }
 
     /**
-     * get current EntityManager
-     * @var EntityManager
+     * Get current EntityManager
+     * @return EntityManager
      */
     public function getEntityManager()
     {
@@ -75,7 +75,7 @@ class ActivityManager
     /**
      * Log persist comment
      *
-     * @param Issue $issue
+     * @param Comment $comment
      */
     public function logPersistComment(Comment $comment)
     {

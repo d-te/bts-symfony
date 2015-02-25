@@ -12,6 +12,9 @@ class CommentVoter implements VoterInterface
     const DELETE = 'delete';
     const EDIT   = 'edit';
 
+    /**
+     *  @var \Symfony\Component\Security\Core\Role\RoleHierarchy
+     */
     protected $roleHierarchy;
 
     /**

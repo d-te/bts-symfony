@@ -35,6 +35,10 @@ class DefaultController extends Controller
     /**
      * @Route("/login", name="dte_bts_login")
      * @Template()
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array
      */
     public function loginAction(Request $request)
     {

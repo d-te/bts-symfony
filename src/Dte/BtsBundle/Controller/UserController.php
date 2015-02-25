@@ -26,6 +26,8 @@ class UserController extends Controller
      * @Route("/", name="user")
      * @Method("GET")
      * @Template()
+     *
+     * @return  array
      */
     public function indexAction()
     {
@@ -48,6 +50,10 @@ class UserController extends Controller
      * @Route("/", name="user_create")
      * @Method("POST")
      * @Template("DteBtsBundle:User:new.html.twig")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array
      */
     public function createAction(Request $request)
     {
@@ -84,15 +90,15 @@ class UserController extends Controller
     /**
      * Creates a form to create a User entity.
      *
-     * @param User $entity The entity
+     * @param \Dte\BtsBundle\Entity\User $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
     private function createCreateForm(User $entity)
     {
         $form = $this->createForm(new UserType(), $entity, array(
-            'action'      => $this->generateUrl('user_create'),
-            'method'      => 'POST',
+            'action'       => $this->generateUrl('user_create'),
+            'method'       => 'POST',
             'form_context' => 'create',
         ));
 
@@ -107,6 +113,8 @@ class UserController extends Controller
      * @Route("/new", name="user_new")
      * @Method("GET")
      * @Template()
+     *
+     * @return array
      */
     public function newAction()
     {
@@ -131,6 +139,10 @@ class UserController extends Controller
      * }))
      * @Method("GET")
      * @Template()
+     *
+     * @param mixed $id
+     *
+     * @return array
      */
     public function showAction($id)
     {
@@ -158,6 +170,10 @@ class UserController extends Controller
      * }))
      * @Method("GET")
      * @Template()
+     *
+     * @param mixed $id
+     *
+     * @return array
      */
     public function editAction($id)
     {
@@ -176,23 +192,23 @@ class UserController extends Controller
         $editForm = $this->createEditForm($entity);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity'    => $entity,
+            'edit_form' => $editForm->createView(),
         );
     }
 
     /**
     * Creates a form to edit a User entity.
     *
-    * @param User $entity The entity
+    * @param \Dte\BtsBundle\Entity\User $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
     private function createEditForm(User $entity)
     {
         $form = $this->createForm(new UserType(), $entity, array(
-            'action'      => $this->generateUrl('user_update', array('id' => $entity->getId())),
-            'method'      => 'PUT',
+            'action'       => $this->generateUrl('user_update', array('id' => $entity->getId())),
+            'method'       => 'PUT',
             'form_context' => 'edit',
         ));
 
@@ -206,6 +222,11 @@ class UserController extends Controller
      * @Route("/{id}", name="user_update")
      * @Method("PUT")
      * @Template("DteBtsBundle:User:edit.html.twig")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $id
+     *
+     * @return mixed
      */
     public function updateAction(Request $request, $id)
     {
@@ -270,6 +291,8 @@ class UserController extends Controller
      * @Route("/profile", name="user_profile")
      * @Method("GET")
      * @Template()
+     *
+     * @return  array
      */
     public function profileAction()
     {
@@ -290,6 +313,8 @@ class UserController extends Controller
      * @Route("/profile/edit", name="user_profile_edit")
      * @Method("GET")
      * @Template()
+     *
+     * @return  array
      */
     public function profileEditAction()
     {
@@ -306,15 +331,15 @@ class UserController extends Controller
         $editForm = $this->createProfileForm($entity);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity'    => $entity,
+            'edit_form' => $editForm->createView(),
         );
     }
 
     /**
     * Creates a form to edit a User profile.
     *
-    * @param User $entity The entity
+    * @param \Dte\BtsBundle\Entity\User $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */

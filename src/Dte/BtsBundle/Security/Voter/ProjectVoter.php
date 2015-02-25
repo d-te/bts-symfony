@@ -12,6 +12,9 @@ class ProjectVoter implements VoterInterface
     const VIEW    = 'view';
     const EDIT    = 'edit';
 
+    /**
+     *  @var \Symfony\Component\Security\Core\Role\RoleHierarchy
+     */
     protected $roleHierarchy;
 
     /**

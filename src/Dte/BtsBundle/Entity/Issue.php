@@ -185,7 +185,7 @@ class Issue
      * @ORM\JoinTable(name="issue_collaborators",
      *      joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
-     *      )
+     * )
      */
     private $collaborators;
 
@@ -317,6 +317,7 @@ class Issue
 
     /**
      *  Get children
+     *  @return array
      */
     public function getChildren()
     {
@@ -325,6 +326,7 @@ class Issue
 
     /**
      *  Get comments
+     *  @return array
      */
     public function getComments()
     {
@@ -333,6 +335,7 @@ class Issue
 
     /**
      *  Get activities
+     *  @return array
      */
     public function getActivities()
     {
@@ -341,6 +344,7 @@ class Issue
 
     /**
      *  Get collaborators
+     *  @return array
      */
     public function getCollaborators()
     {
@@ -537,7 +541,8 @@ class Issue
 
     /**
      * Add comment
-     *
+     * @param  Comment $comment
+     * @return Issue
      */
     public function addComment(Comment $comment)
     {
@@ -548,7 +553,7 @@ class Issue
 
     /**
      * Remove comment
-     *
+     * @param Comment $comment
      */
     public function removeComment(Comment $comment)
     {
@@ -557,7 +562,8 @@ class Issue
 
     /**
      * Add collaborator
-     *
+     * @param User #user
+     * @return Issue
      */
     public function addCollaborator(User $user)
     {
@@ -568,7 +574,7 @@ class Issue
 
     /**
      * Remove collaborator
-     *
+     * @param User $user
      */
     public function removeCollaborator(User $user)
     {
@@ -577,7 +583,8 @@ class Issue
 
     /**
      * Remove collaborator
-     *
+     * @param  User $user
+     * @return  boolean
      */
     public function hasCollaborator(User $user)
     {

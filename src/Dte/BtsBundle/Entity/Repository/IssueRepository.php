@@ -9,9 +9,10 @@ use Doctrine\ORM\EntityRepository;
 
 class IssueRepository extends EntityRepository
 {
-
     /**
      * Load list of stories by project
+     * @param  Project $project
+     * @return  array
      */
     public function findStoriesByProject(Project $project)
     {
@@ -30,6 +31,7 @@ class IssueRepository extends EntityRepository
     /**
      * Load list of opened issues  assigned to user
      * @param User $user
+     * @return  array
      */
     public function findOpenedIssuesAssignedToUser(User $user)
     {
@@ -48,6 +50,7 @@ class IssueRepository extends EntityRepository
     /**
      * Load list of opened issues where user is collaborator
      * @param User $user
+     * @return  array
      */
     public function findOpenedIssuesByCollaborator(User $user)
     {

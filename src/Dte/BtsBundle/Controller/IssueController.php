@@ -29,6 +29,8 @@ class IssueController extends Controller
      * @Route("/", name="issue")
      * @Method("GET")
      * @Template()
+     *
+     * @return array
      */
     public function indexAction()
     {
@@ -52,6 +54,10 @@ class IssueController extends Controller
      * @Route("/", name="issue_create")
      * @Method("POST")
      * @Template("DteBtsBundle:Issue:new.html.twig")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array
      */
     public function createAction(Request $request)
     {
@@ -80,7 +86,7 @@ class IssueController extends Controller
     /**
      * Creates a form to create a Issue entity.
      *
-     * @param Issue $entity The entity
+     * @param \Dte\BtsBundle\Entity\Issue $entity The entity
      * @param boolean $isSubtask creation of subtask from story
      *
      * @return \Symfony\Component\Form\Form The form
@@ -102,9 +108,8 @@ class IssueController extends Controller
     /**
      * Creates a form to create/edit Comment.
      *
-     * @param Issue $entity The entity
-     * @param Issue $story parent story
-     * @param Issue $project project
+     * @param \Dte\BtsBundle\Entity\Comment $entity The entity
+     * @param \Dte\BtsBundle\Entity\Issue $story parent story
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -126,6 +131,10 @@ class IssueController extends Controller
      * @Route("/new", name="issue_new")
      * @Method("GET")
      * @Template()
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array
      */
     public function newAction(Request $request)
     {
@@ -169,6 +178,10 @@ class IssueController extends Controller
      * @Route("/{id}", name="issue_show")
      * @Method("GET")
      * @Template()
+     *
+     * @param mixed $id
+     *
+     * @return array
      */
     public function showAction($id)
     {
@@ -199,6 +212,10 @@ class IssueController extends Controller
      * @Route("/{id}/edit", name="issue_edit")
      * @Method("GET")
      * @Template()
+     *
+     * @param mixed $id
+     *
+     * @return array
      */
     public function editAction($id)
     {
@@ -225,7 +242,7 @@ class IssueController extends Controller
     /**
     * Creates a form to edit a Issue entity.
     *
-    * @param Issue $entity The entity
+    * @param \Dte\BtsBundle\Entity\Issue $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
@@ -252,6 +269,11 @@ class IssueController extends Controller
      * }))
      * @Method("PUT")
      * @Template("DteBtsBundle:Issue:edit.html.twig")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $id
+     *
+     * @return array
      */
     public function updateAction(Request $request, $id)
     {
@@ -287,6 +309,12 @@ class IssueController extends Controller
      *
      * @Route("/{id}/{status}", name="issue_change_status", requirements={"status": "1|2|3"})
      * @Method("GET")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $id
+     * @param mixed $status
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function changeStatusAction(Request $request, $id, $status)
     {
@@ -322,6 +350,11 @@ class IssueController extends Controller
      * @Route("/{id}/collaborators/", name="issue_collaborators")
      * @Method("GET")
      * @Template("DteBtsBundle:Issue:collaborators.html.twig")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $id
+     *
+     * @return array
      */
     public function getCollaboratorsAction(Request $request, $id)
     {

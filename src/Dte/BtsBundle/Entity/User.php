@@ -82,7 +82,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @ORM\JoinTable(name="user_roles",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
-     *      )
+     * )
      */
     private $roles;
 

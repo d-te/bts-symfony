@@ -27,6 +27,8 @@ class ProjectController extends Controller
      * @Route("/", name="project")
      * @Method("GET")
      * @Template()
+     *
+     * @return  array
      */
     public function indexAction()
     {
@@ -49,6 +51,10 @@ class ProjectController extends Controller
      * @Route("/", name="project_create")
      * @Method("POST")
      * @Template("DteBtsBundle:Project:new.html.twig")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return array
      */
     public function createAction(Request $request)
     {
@@ -77,7 +83,7 @@ class ProjectController extends Controller
     /**
      * Creates a form to create a Project entity.
      *
-     * @param Project $entity The entity
+     * @param \Dte\BtsBundle\Entity\Project $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -99,6 +105,8 @@ class ProjectController extends Controller
      * @Route("/new", name="project_new")
      * @Method("GET")
      * @Template()
+     *
+     * @return array
      */
     public function newAction()
     {
@@ -121,6 +129,10 @@ class ProjectController extends Controller
      * @Route("/{id}", name="project_show")
      * @Method("GET")
      * @Template()
+     *
+     * @param mixed $id
+     *
+     * @return array
      */
     public function showAction($id)
     {
@@ -150,6 +162,10 @@ class ProjectController extends Controller
      * @Route("/{id}/edit", name="project_edit")
      * @Method("GET")
      * @Template()
+     *
+     * @param mixed $id
+     *
+     * @return array
      */
     public function editAction($id)
     {
@@ -176,7 +192,7 @@ class ProjectController extends Controller
     /**
     * Creates a form to edit a Project entity.
     *
-    * @param Project $entity The entity
+    * @param \Dte\BtsBundle\Entity\Project $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
@@ -198,6 +214,11 @@ class ProjectController extends Controller
      * @Route("/{id}", name="project_update")
      * @Method("PUT")
      * @Template("DteBtsBundle:Project:edit.html.twig")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $id
+     *
+     * @return array
      */
     public function updateAction(Request $request, $id)
     {
@@ -233,6 +254,11 @@ class ProjectController extends Controller
      *
      * @Route("/{id}/members", name="project_members_api")
      * @Method("GET")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $id
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getMembersAction(Request $request, $id)
     {
@@ -260,6 +286,11 @@ class ProjectController extends Controller
      *
      * @Route("/{id}/stories", name="project_stories_api")
      * @Method("GET")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $id
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getStoriesAction(Request $request, $id)
     {

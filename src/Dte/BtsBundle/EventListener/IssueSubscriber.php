@@ -33,7 +33,7 @@ class IssueSubscriber implements EventSubscriber
 
     /**
      * get current User
-     * @var User
+     * @return User
      */
     public function getUser()
     {
@@ -42,7 +42,7 @@ class IssueSubscriber implements EventSubscriber
 
     /**
      * get current EntityManager
-     * @var EntityManager
+     * @return EntityManager
      */
     public function getEntityManager()
     {

@@ -12,6 +12,10 @@ class IssueTaskType
 
     const SUBTASK_TYPE = 4;
 
+    /**
+     *  List of task types
+     *  @var array
+     */
     private static $items = array(
                 self::BUG_TYPE     => 'Bug',
                 self::TASK_TYPE    => 'Task',

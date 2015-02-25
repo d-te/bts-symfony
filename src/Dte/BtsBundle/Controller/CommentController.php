@@ -30,6 +30,10 @@ class CommentController extends Controller
      * @Route("/", name="issue_comment")
      * @Method("GET")
      * @Template()
+     *
+     * @param mixed $issueId
+     *
+     * @return  array
      */
     public function indexAction($issueId)
     {
@@ -71,6 +75,11 @@ class CommentController extends Controller
      *
      * @Route("/", name="issue_comment_create")
      * @Method("POST")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $issueId
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function createAction(Request $request, $issueId)
     {
@@ -107,8 +116,8 @@ class CommentController extends Controller
     /**
      * Creates a form to create a Comment entity.
      *
-     * @param Comment $entity The entity
-     * @param Issue $entity Issue
+     * @param \Dte\BtsBundle\Entity\Comment $entity The entity
+     * @param \Dte\BtsBundle\Entity\Issue $entity Issue
      *
      * @return \Symfony\Component\Form\Form The form
      */
@@ -127,8 +136,8 @@ class CommentController extends Controller
     /**
     * Creates a form to edit a Comment entity.
     *
-    * @param Comment $entity The entity
-    * @param Issue $entity Issue
+    * @param \Dte\BtsBundle\Entity\Comment $entity The entity
+    * @param \Dte\BtsBundle\Entity\Issue $entity Issue
     *
     * @return \Symfony\Component\Form\Form The form
     */
@@ -156,6 +165,12 @@ class CommentController extends Controller
      *     "id": "\d+"
      * }))
      * @Method("PUT")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $issueId
+     * @param mixed $id
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function updateAction(Request $request, $issueId, $id)
     {
@@ -198,6 +213,12 @@ class CommentController extends Controller
      *
      * @Route("/{id}", name="issue_comment_delete")
      * @Method("DELETE")
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $issueId
+     * @param mixed $id
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteAction(Request $request, $issueId, $id)
     {
@@ -239,7 +260,8 @@ class CommentController extends Controller
     /**
      * Creates a form to delete a Comment entity by id.
      *
-     * @param mixed $id The entity id
+     * @param mixed $id
+     * @param mixed $issueId
      *
      * @return \Symfony\Component\Form\Form The form
      */

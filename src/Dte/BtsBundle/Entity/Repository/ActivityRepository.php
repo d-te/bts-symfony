@@ -11,6 +11,8 @@ class ActivityRepository extends EntityRepository
 {
     /**
      * Load list of activities by project
+     * @param  Project $project
+     * @return  array
      */
     public function findActivitiesByProject(Project $project)
     {
@@ -29,6 +31,8 @@ class ActivityRepository extends EntityRepository
 
     /**
      * Load list of activities by user
+     * @param  User $user
+     * @return  array
      */
     public function findActivitiesByUser(User $user)
     {

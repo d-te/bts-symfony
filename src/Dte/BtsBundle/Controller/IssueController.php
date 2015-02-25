@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -40,10 +41,10 @@ class IssueController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('DteBtsBundle:Issue')->findAll();
+        $issues = $em->getRepository('DteBtsBundle:Issue')->findAll();
 
         return array(
-            'entities' => $entities,
+            'entities' => $issues,
             'types'    => IssueTaskType::getItems(),
         );
     }
@@ -65,20 +66,20 @@ class IssueController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $entity = new Issue();
-        $form = $this->createCreateForm($entity);
+        $issue = new Issue();
+        $form = $this->createCreateForm($issue);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($issue);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('issue_show', array('id' => $issue->getId())));
         }
 
         return array(
-            'entity' => $entity,
+            'entity' => $issue,
             'form'   => $form->createView(),
         );
     }
@@ -86,14 +87,14 @@ class IssueController extends Controller
     /**
      * Creates a form to create a Issue entity.
      *
-     * @param \Dte\BtsBundle\Entity\Issue $entity The entity
+     * @param \Dte\BtsBundle\Entity\Issue $issue The entity
      * @param boolean $isSubtask creation of subtask from story
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Issue $entity, $isSubtask = false)
+    private function createCreateForm(Issue $issue, $isSubtask = false)
     {
-        $form = $this->get('form.factory')->create('dte_btsbundle_issue', $entity, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_issue', $issue, array(
             'action'       => $this->generateUrl('issue_create'),
             'method'       => 'POST',
             'form_context' => 'create',
@@ -108,14 +109,14 @@ class IssueController extends Controller
     /**
      * Creates a form to create/edit Comment.
      *
-     * @param \Dte\BtsBundle\Entity\Comment $entity The entity
-     * @param \Dte\BtsBundle\Entity\Issue $story parent story
+     * @param \Dte\BtsBundle\Entity\Comment $comment The entity
+     * @param \Dte\BtsBundle\Entity\Issue $issue parent story
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCommentForm(Comment $entity, Issue $issue)
+    private function createCommentForm(Comment $comment, Issue $issue)
     {
-        $form = $this->createForm(new CommentType(), $entity, array(
+        $form = $this->createForm(new CommentType(), $comment, array(
             'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'POST',
         ));
@@ -144,11 +145,11 @@ class IssueController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity  = new Issue();
+        $issue  = new Issue();
 
         $status = $em->getRepository('DteBtsBundle:IssueStatus')->findOneBy(array('label' => 'Open'));
 
-        $entity->setStatus($status);
+        $issue->setStatus($status);
 
         $isSubtask = false;
 
@@ -156,18 +157,18 @@ class IssueController extends Controller
             $story = $em->getRepository('DteBtsBundle:Issue')->find(intval($request->get('story')));
 
             if ($story && $story->getType() === IssueTaskType::STORY_TYPE) {
-                $entity->setParent($story);
-                $entity->setProject($story->getProject());
-                $entity->setType(IssueTaskType::SUBTASK_TYPE);
+                $issue->setParent($story);
+                $issue->setProject($story->getProject());
+                $issue->setType(IssueTaskType::SUBTASK_TYPE);
 
                 $isSubtask = true;
             }
         }
 
-        $form   = $this->createCreateForm($entity, $isSubtask);
+        $form   = $this->createCreateForm($issue, $isSubtask);
 
         return array(
-            'entity' => $entity,
+            'entity' => $issue,
             'form'   => $form->createView(),
         );
     }
@@ -178,29 +179,22 @@ class IssueController extends Controller
      * @Route("/{id}", name="issue_show")
      * @Method("GET")
      * @Template()
+     * @ParamConverter("issue", class="DteBtsBundle:Issue")
      *
-     * @param mixed $id
+     * @param Issue $issue
      *
      * @return array
      */
-    public function showAction($id)
+    public function showAction(Issue $issue)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('view', $entity)) {
+        if (false === $this->get('security.context')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $commentForm = $this->createCommentForm(new Comment(), $entity);
+        $commentForm = $this->createCommentForm(new Comment(), $issue);
 
         return array(
-            'entity'       => $entity,
+            'entity'       => $issue,
             'comment_form' => $commentForm->createView(),
             'types'        => IssueTaskType::getItems(),
         );
@@ -212,29 +206,22 @@ class IssueController extends Controller
      * @Route("/{id}/edit", name="issue_edit")
      * @Method("GET")
      * @Template()
+     * @ParamConverter("issue", class="DteBtsBundle:Issue")
      *
-     * @param mixed $id
+     * @param Issue $issue
      *
      * @return array
      */
-    public function editAction($id)
+    public function editAction(Issue $issue)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($issue);
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $issue,
             'edit_form'   => $editForm->createView(),
         );
     }
@@ -242,16 +229,16 @@ class IssueController extends Controller
     /**
     * Creates a form to edit a Issue entity.
     *
-    * @param \Dte\BtsBundle\Entity\Issue $entity The entity
+    * @param \Dte\BtsBundle\Entity\Issue $issue The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Issue $entity)
+    private function createEditForm(Issue $issue)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->get('form.factory')->create('dte_btsbundle_issue', $entity, array(
-            'action'       => $this->generateUrl('issue_update', array('id' => $entity->getId())),
+        $form = $this->get('form.factory')->create('dte_btsbundle_issue', $issue, array(
+            'action'       => $this->generateUrl('issue_update', array('id' => $issue->getId())),
             'method'       => 'PUT',
             'form_context' => 'edit',
         ));
@@ -269,37 +256,32 @@ class IssueController extends Controller
      * }))
      * @Method("PUT")
      * @Template("DteBtsBundle:Issue:edit.html.twig")
+     * @ParamConverter("issue", class="DteBtsBundle:Issue")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param mixed $id
+     * @param Issue $issue
      *
      * @return array
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, Issue $issue)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($issue);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('issue_edit', array('id' => $issue->getId())));
         }
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $issue,
             'edit_form'   => $editForm->createView(),
         );
     }
@@ -309,38 +291,26 @@ class IssueController extends Controller
      *
      * @Route("/{id}/{status}", name="issue_change_status", requirements={"status": "1|2|3"})
      * @Method("GET")
+     * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "id"})
+     * @ParamConverter("status", class="DteBtsBundle:IssueStatus", options={"id" = "status"})
      *
-     * @param mixed $id
-     * @param mixed $status
+     * @param Issue $issue
+     * @param IssueStatus $status
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function changeStatusAction($id, $status)
+    public function changeStatusAction(Issue $issue, $status)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $status = $em->getRepository('DteBtsBundle:IssueStatus')->find($status);
-
-        if (!$status) {
-            throw $this->createNotFoundException(
-                $this->get('translator')->trans('bts.page.issue.error.not_found_status')
-            );
-        }
-
-        $entity->setStatus($status);
+        $issue->setStatus($status);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('issue_show', array('id' => $id)));
+        return $this->redirect($this->generateUrl('issue_show', array('id' => $issue->getId())));
     }
 
     /**
@@ -349,27 +319,20 @@ class IssueController extends Controller
      * @Route("/{id}/collaborators/", name="issue_collaborators")
      * @Method("GET")
      * @Template("DteBtsBundle:Issue:collaborators.html.twig")
+     * @ParamConverter("issue", class="DteBtsBundle:Issue")
      *
-     * @param mixed $id
+     * @param Issue $issue
      *
      * @return array
      */
-    public function getCollaboratorsAction($id)
+    public function getCollaboratorsAction(Issue $issue)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('DteBtsBundle:Issue')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('view', $entity)) {
+        if (false === $this->get('security.context')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
         return array(
-            'entity' => $entity,
+            'entity' => $issue,
         );
     }
 }

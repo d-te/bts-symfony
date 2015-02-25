@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -38,10 +39,10 @@ class ProjectController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('DteBtsBundle:Project')->findAll();
+        $projects = $em->getRepository('DteBtsBundle:Project')->findAll();
 
         return array(
-            'entities' => $entities,
+            'entities' => $projects,
         );
     }
 
@@ -62,20 +63,20 @@ class ProjectController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $entity = new Project();
-        $form = $this->createCreateForm($entity);
+        $project = new Project();
+        $form = $this->createCreateForm($project);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('project_show', array('id' => $project->getId())));
         }
 
         return array(
-            'entity' => $entity,
+            'entity' => $project,
             'form'   => $form->createView(),
         );
     }
@@ -83,13 +84,13 @@ class ProjectController extends Controller
     /**
      * Creates a form to create a Project entity.
      *
-     * @param \Dte\BtsBundle\Entity\Project $entity The entity
+     * @param \Dte\BtsBundle\Entity\Project $project The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Project $entity)
+    private function createCreateForm(Project $project)
     {
-        $form = $this->createForm(new ProjectType(), $entity, array(
+        $form = $this->createForm(new ProjectType(), $project, array(
             'action' => $this->generateUrl('project_create'),
             'method' => 'POST',
         ));
@@ -114,11 +115,11 @@ class ProjectController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $entity = new Project();
-        $form   = $this->createCreateForm($entity);
+        $project = new Project();
+        $form   = $this->createCreateForm($project);
 
         return array(
-            'entity' => $entity,
+            'entity' => $project,
             'form'   => $form->createView(),
         );
     }
@@ -129,30 +130,26 @@ class ProjectController extends Controller
      * @Route("/{id}", name="project_show")
      * @Method("GET")
      * @Template()
+     * @ParamConverter("project", class="DteBtsBundle:Project")
      *
-     * @param mixed $id
+     * @param Project $project
      *
      * @return array
      */
-    public function showAction($id)
+    public function showAction(Project $project)
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('view', $entity)) {
+        if (false === $this->get('security.context')->isGranted('view', $project)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $activities = $em->getRepository('DteBtsBundle:Activity')->findActivitiesByProject($entity);
+        $em = $this->getDoctrine()->getManager();
+
+        $activities = $em->getRepository('DteBtsBundle:Activity')->findActivitiesByProject($project);
 
         return array(
-            'entity'      => $entity,
-            'activities'  => $activities,
+            'entity'     => $project,
+            'activities' => $activities,
         );
     }
 
@@ -162,29 +159,22 @@ class ProjectController extends Controller
      * @Route("/{id}/edit", name="project_edit")
      * @Method("GET")
      * @Template()
+     * @ParamConverter("project", class="DteBtsBundle:Project")
      *
-     * @param mixed $id
+     * @param Project $project
      *
      * @return array
      */
-    public function editAction($id)
+    public function editAction(Project $project)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $project)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($project);
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $project,
             'edit_form'   => $editForm->createView(),
         );
     }
@@ -192,14 +182,14 @@ class ProjectController extends Controller
     /**
     * Creates a form to edit a Project entity.
     *
-    * @param \Dte\BtsBundle\Entity\Project $entity The entity
+    * @param \Dte\BtsBundle\Entity\Project $project The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Project $entity)
+    private function createEditForm(Project $project)
     {
-        $form = $this->createForm(new ProjectType(), $entity, array(
-            'action' => $this->generateUrl('project_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new ProjectType(), $project, array(
+            'action' => $this->generateUrl('project_update', array('id' => $project->getId())),
             'method' => 'PUT',
         ));
 
@@ -214,37 +204,32 @@ class ProjectController extends Controller
      * @Route("/{id}", name="project_update")
      * @Method("PUT")
      * @Template("DteBtsBundle:Project:edit.html.twig")
+     * @ParamConverter("project", class="DteBtsBundle:Project")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param mixed $id
+     * @param Project $project
      *
      * @return array
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, Project $project)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('DteBtsBundle:Project')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.project.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $project)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($project);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('project_edit', array('id' => $project->getId())));
         }
 
         return array(
-            'entity'      => $entity,
+            'entity'      => $project,
             'edit_form'   => $editForm->createView(),
         );
     }
@@ -254,16 +239,14 @@ class ProjectController extends Controller
      *
      * @Route("/{id}/members", name="project_members_api")
      * @Method("GET")
+     * @ParamConverter("project", class="DteBtsBundle:Project")
      *
-     * @param mixed $id
+     * @param Project $project
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getMembersAction($id)
+    public function getMembersAction(Project $project = null)
     {
-        $em = $this->getDoctrine()->getManager();
-        $project = $em->getRepository('DteBtsBundle:Project')->find($id);
-
         if ($project) {
             $members = array();
 
@@ -285,15 +268,15 @@ class ProjectController extends Controller
      *
      * @Route("/{id}/stories", name="project_stories_api")
      * @Method("GET")
+     * @ParamConverter("project", class="DteBtsBundle:Project")
      *
-     * @param mixed $id
+     * @param Project $project
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getStoriesAction($id)
+    public function getStoriesAction(Project $project = null)
     {
         $em = $this->getDoctrine()->getManager();
-        $project = $em->getRepository('DteBtsBundle:Project')->find($id);
 
         if ($project) {
             $issues = $em->getRepository('DteBtsBundle:Issue')->findStoriesByProject($project);

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -37,10 +38,10 @@ class UserController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('DteBtsBundle:User')->findAll();
+        $users = $em->getRepository('DteBtsBundle:User')->findAll();
 
         return array(
-            'entities' => $entities,
+            'entities' => $users,
         );
     }
 
@@ -61,28 +62,28 @@ class UserController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $entity = new User();
-        $form = $this->createCreateForm($entity);
+        $user = new User();
+        $form = $this->createCreateForm($user);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $plainPassword = $entity->getPassword();
+            $plainPassword = $user->getPassword();
 
             $factory = $this->get('security.encoder_factory');
-            $encoder = $factory->getEncoder($entity);
+            $encoder = $factory->getEncoder($user);
 
-            $password = $encoder->encodePassword($plainPassword, $entity->getSalt());
-            $entity->setPassword($password);
+            $password = $encoder->encodePassword($plainPassword, $user->getSalt());
+            $user->setPassword($password);
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($user);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('user_show', array('id' => $user->getId())));
         }
 
         return array(
-            'entity' => $entity,
+            'entity' => $user,
             'form'   => $form->createView(),
         );
     }
@@ -90,13 +91,13 @@ class UserController extends Controller
     /**
      * Creates a form to create a User entity.
      *
-     * @param \Dte\BtsBundle\Entity\User $entity The entity
+     * @param \Dte\BtsBundle\Entity\User $user The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(User $entity)
+    private function createCreateForm(User $user)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm(new UserType(), $user, array(
             'action'       => $this->generateUrl('user_create'),
             'method'       => 'POST',
             'form_context' => 'create',
@@ -122,11 +123,11 @@ class UserController extends Controller
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $entity = new User();
-        $form   = $this->createCreateForm($entity);
+        $user = new User();
+        $form   = $this->createCreateForm($user);
 
         return array(
-            'entity' => $entity,
+            'entity' => $user,
             'form'   => $form->createView(),
         );
     }
@@ -139,25 +140,20 @@ class UserController extends Controller
      * }))
      * @Method("GET")
      * @Template()
+     * @ParamConverter("user", class="DteBtsBundle:User")
      *
-     * @param mixed $id
+     * @param User $user
      *
      * @return array
      */
-    public function showAction($id)
+    public function showAction(User $user)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('DteBtsBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
-        }
-
-        $openedIssues = $em->getRepository('DteBtsBundle:Issue')->findOpenedIssuesAssignedToUser($entity);
+        $openedIssues = $em->getRepository('DteBtsBundle:Issue')->findOpenedIssuesAssignedToUser($user);
 
         return array(
-            'entity'       => $entity,
+            'entity'       => $user,
             'openedIssues' => $openedIssues,
         );
     }
@@ -170,29 +166,22 @@ class UserController extends Controller
      * }))
      * @Method("GET")
      * @Template()
+     * @ParamConverter("user", class="DteBtsBundle:User")
      *
-     * @param mixed $id
+     * @param User $user
      *
      * @return array
      */
-    public function editAction($id)
+    public function editAction(User $user)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('DteBtsBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $user)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($user);
 
         return array(
-            'entity'    => $entity,
+            'entity'    => $user,
             'edit_form' => $editForm->createView(),
         );
     }
@@ -200,14 +189,14 @@ class UserController extends Controller
     /**
     * Creates a form to edit a User entity.
     *
-    * @param \Dte\BtsBundle\Entity\User $entity The entity
+    * @param \Dte\BtsBundle\Entity\User $user The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(User $entity)
+    private function createEditForm(User $user)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action'       => $this->generateUrl('user_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new UserType(), $user, array(
+            'action'       => $this->generateUrl('user_update', array('id' => $user->getId())),
             'method'       => 'PUT',
             'form_context' => 'edit',
         ));
@@ -222,49 +211,44 @@ class UserController extends Controller
      * @Route("/{id}", name="user_update")
      * @Method("PUT")
      * @Template("DteBtsBundle:User:edit.html.twig")
+     * @ParamConverter("user", class="DteBtsBundle:User")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param mixed $id
+     * @param User $user
      *
      * @return mixed
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('DteBtsBundle:User')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $user)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $oldPassword = $entity->getPassword();
-        $oldRoles    = $entity->getRoles();
+        $oldPassword = $user->getPassword();
+        $oldRoles    = $user->getRoles();
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($user);
         $editForm->handleRequest($request);
 
         $isProfileContext = ($editForm->get('is_profile')->getData() == 1);
 
         if ($editForm->isValid()) {
-            $plainPassword = $entity->getPassword();
+            $plainPassword = $user->getPassword();
 
             if (!empty($plainPassword)) {
                 $factory = $this->get('security.encoder_factory');
-                $encoder = $factory->getEncoder($entity);
+                $encoder = $factory->getEncoder($user);
 
-                $password = $encoder->encodePassword($plainPassword, $entity->getSalt());
-                $entity->setPassword($password);
+                $password = $encoder->encodePassword($plainPassword, $user->getSalt());
+                $user->setPassword($password);
             } else {
-                $entity->setPassword($oldPassword);
+                $user->setPassword($oldPassword);
             }
 
             if ($isProfileContext) {
-                $entity->addRoles($oldRoles);
+                $user->addRoles($oldRoles);
             }
 
             $em->flush();
@@ -272,14 +256,14 @@ class UserController extends Controller
             if ($isProfileContext) {
                 $url = $this->generateUrl('user_profile_edit');
             } else {
-                $url = $this->generateUrl('user_edit', array('id' => $id));
+                $url = $this->generateUrl('user_edit', array('id' => $user->getId()));
             }
 
             return $this->redirect($url);
         }
 
         return array(
-            'entity'       => $entity,
+            'entity'       => $user,
             'edit_form'    => $editForm->createView(),
             'form_context' => ($isProfileContext) ? 'profile' : 'edit',
         );
@@ -318,20 +302,20 @@ class UserController extends Controller
      */
     public function profileEditAction()
     {
-        $entity = $this->get('security.context')->getToken()->getUser();
+        $user = $this->get('security.context')->getToken()->getUser();
 
-        if (!$entity) {
+        if (!$user) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
         }
 
-        if (false === $this->get('security.context')->isGranted('profile', $entity)) {
+        if (false === $this->get('security.context')->isGranted('profile', $user)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createProfileForm($entity);
+        $editForm = $this->createProfileForm($user);
 
         return array(
-            'entity'    => $entity,
+            'entity'    => $user,
             'edit_form' => $editForm->createView(),
         );
     }
@@ -339,14 +323,14 @@ class UserController extends Controller
     /**
     * Creates a form to edit a User profile.
     *
-    * @param \Dte\BtsBundle\Entity\User $entity The entity
+    * @param \Dte\BtsBundle\Entity\User $user The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createProfileForm(User $entity)
+    private function createProfileForm(User $user)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action'      => $this->generateUrl('user_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new UserType(), $user, array(
+            'action'      => $this->generateUrl('user_update', array('id' => $user->getId())),
             'method'      => 'PUT',
             'form_context' => 'profile',
         ));

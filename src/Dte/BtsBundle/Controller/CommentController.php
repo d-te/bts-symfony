@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -20,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  *
  * @Route("/issue/{issueId}/comment", requirements={
  *     "issueId": "\d+"
- * }))
+ * })
  */
 class CommentController extends Controller
 {
@@ -30,42 +31,35 @@ class CommentController extends Controller
      * @Route("/", name="issue_comment")
      * @Method("GET")
      * @Template()
+     * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "issueId"})
      *
-     * @param mixed $issueId
+     * @param Issue $issue
      *
      * @return  array
      */
-    public function indexAction($issueId)
+    public function indexAction(Issue $issue)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issueId);
-
-        if (!$issue) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-        }
-
         if (false === $this->get('security.context')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $entities = $issue->getComments();
+        $comments = $issue->getComments();
 
         $forms = array(
             'edit'   => array(),
             'delete' => array(),
         );
 
-        foreach ($entities as $entity) {
-            $editForm = $this->createEditForm($entity, $issue)->createView();
-            $deleteForm = $this->createDeleteForm($entity->getId(), $issue->getId())->createView();
+        foreach ($comments as $comment) {
+            $editForm   = $this->createEditForm($comment, $issue)->createView();
+            $deleteForm = $this->createDeleteForm($comment, $issue)->createView();
 
-            $forms['edit'][$entity->getId()]   = $editForm;
-            $forms['delete'][$entity->getId()] = $deleteForm;
+            $forms['edit'][$comment->getId()]   = $editForm;
+            $forms['delete'][$comment->getId()] = $deleteForm;
         }
 
         return array(
-            'entities' => $entities,
+            'entities' => $comments,
             'forms'    => $forms,
         );
     }
@@ -75,38 +69,32 @@ class CommentController extends Controller
      *
      * @Route("/", name="issue_comment_create")
      * @Method("POST")
+     * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "issueId"})
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param mixed $issueId
+     * @param Issue $issue
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function createAction(Request $request, $issueId)
+    public function createAction(Request $request, Issue $issue)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issueId);
-
-        if (!$issue) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-        }
-
         if (false === $this->get('security.context')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
         $user = $this->get('security.context')->getToken()->getUser();
 
-        $entity = new Comment();
+        $comment = new Comment();
 
-        $form = $this->createCreateForm($entity, $issue);
+        $form = $this->createCreateForm($comment, $issue);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $entity->setIssue($issue);
-            $entity->setUser($user);
+            $comment->setIssue($issue);
+            $comment->setUser($user);
 
-            $em->persist($entity);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
             $em->flush();
         }
 
@@ -116,14 +104,14 @@ class CommentController extends Controller
     /**
      * Creates a form to create a Comment entity.
      *
-     * @param \Dte\BtsBundle\Entity\Comment $entity The entity
-     * @param \Dte\BtsBundle\Entity\Issue $entity Issue
+     * @param \Dte\BtsBundle\Entity\Comment $comment The entity
+     * @param \Dte\BtsBundle\Entity\Issue $issue Issue
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Comment $entity, Issue $issue)
+    private function createCreateForm(Comment $comment, Issue $issue)
     {
-        $form = $this->createForm(new CommentType(), $entity, array(
+        $form = $this->createForm(new CommentType(), $comment, array(
             'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'POST',
         ));
@@ -136,14 +124,14 @@ class CommentController extends Controller
     /**
     * Creates a form to edit a Comment entity.
     *
-    * @param \Dte\BtsBundle\Entity\Comment $entity The entity
-    * @param \Dte\BtsBundle\Entity\Issue $entity Issue
+    * @param \Dte\BtsBundle\Entity\Comment $comment The entity
+    * @param \Dte\BtsBundle\Entity\Issue $issue Issue
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Comment $entity, Issue $issue)
+    private function createEditForm(Comment $comment, Issue $issue)
     {
-        $form = $this->createForm(new CommentType(), $entity, array(
+        $form = $this->createForm(new CommentType(), $comment, array(
             'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'PUT',
         ));
@@ -165,40 +153,27 @@ class CommentController extends Controller
      *     "id": "\d+"
      * }))
      * @Method("PUT")
+     * @ParamConverter("comment", class="DteBtsBundle:Comment")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param mixed $issueId
-     * @param mixed $id
+     * @param Issue $issue
+     * @param Comment $comment
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function updateAction(Request $request, $issueId, $id)
+    public function updateAction(Request $request, Issue $issue, Comment $comment)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issueId);
-
-        if (!$issue) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-        }
 
         if (false === $this->get('security.context')->isGranted('view', $issue)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException(
-                $this->get('translator')->trans('bts.page.issue.error.not_found_comment')
-            );
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $entity)) {
+        if (false === $this->get('security.context')->isGranted('edit', $comment)) {
             throw new AccessDeniedException('Unauthorised access!');
         }
 
-        $editForm = $this->createEditForm($entity, $issue);
+        $editForm = $this->createEditForm($comment, $issue);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
@@ -213,44 +188,30 @@ class CommentController extends Controller
      *
      * @Route("/{id}", name="issue_comment_delete")
      * @Method("DELETE")
+     * @ParamConverter("comment", class="DteBtsBundle:Comment")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param mixed $issueId
-     * @param mixed $id
+     * @param Issue $issue
+     * @param Comment $comment
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function deleteAction(Request $request, $issueId, $id)
+    public function deleteAction(Request $request, Issue $issue, Comment $comment)
     {
-        $form = $this->createDeleteForm($id, $issueId);
+        $form = $this->createDeleteForm($comment, $issue);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $issue = $em->getRepository('DteBtsBundle:Issue')->find($issueId);
-
-            if (!$issue) {
-                throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
-            }
-
             if (false === $this->get('security.context')->isGranted('view', $issue)) {
                 throw new AccessDeniedException('Unauthorised access!');
             }
 
-            $entity = $em->getRepository('DteBtsBundle:Comment')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException(
-                    $this->get('translator')->trans('bts.page.issue.error.not_found_comment')
-                );
-            }
-
-            if (false === $this->get('security.context')->isGranted('delete', $entity)) {
+            if (false === $this->get('security.context')->isGranted('delete', $comment)) {
                 throw new AccessDeniedException('Unauthorised access!');
             }
 
-            $em->remove($entity);
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
             $em->flush();
         }
 
@@ -260,15 +221,23 @@ class CommentController extends Controller
     /**
      * Creates a form to delete a Comment entity by id.
      *
-     * @param mixed $id
-     * @param mixed $issueId
+     * @param Comment $comment
+     * @param Issue $issue
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id, $issueId)
+    private function createDeleteForm(Comment $comment, Issue $issue)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('issue_comment_delete', array('id' => $id, 'issueId' => $issueId)))
+            ->setAction(
+                $this->generateUrl(
+                    'issue_comment_delete',
+                    array(
+                        'id' => $comment->getId(),
+                        'issueId' => $issue->getId()
+                    )
+                )
+            )
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
             ->getForm()

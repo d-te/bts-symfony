@@ -4,7 +4,6 @@ namespace Dte\BtsBundle\Controller;
 
 use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\Form\UserType;
-use Dte\BtsBundle\Security\Voter\UserVoter;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  */
 class UserController extends Controller
 {
-
     /**
      * Lists all User entities.
      *
@@ -43,6 +41,7 @@ class UserController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new User entity.
      *

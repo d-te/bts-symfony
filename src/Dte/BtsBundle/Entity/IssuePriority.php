@@ -35,8 +35,6 @@ class IssuePriority
      */
     private $id;
 
-
-
     /**
      * Set label
      *

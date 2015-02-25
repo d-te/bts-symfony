@@ -2,12 +2,10 @@
 
 namespace Dte\BtsBundle\Tests\Unit\Manager;
 
-use Dte\BtsBundle\Entity\Activity;
 use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssueStatus;
 use Dte\BtsBundle\Entity\User;
-use Dte\BtsBundle\Manager\ActivityManager;
 
 class ActivityManagerTest extends \PHPUnit_Framework_TestCase
 {

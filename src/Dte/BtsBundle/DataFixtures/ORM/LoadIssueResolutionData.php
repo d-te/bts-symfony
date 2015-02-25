@@ -15,7 +15,6 @@ class LoadIssueResolutionData extends AbstractFixture implements OrderedFixtureI
      */
     public function load(ObjectManager $manager)
     {
-
         $issueResolutionFixed = new IssueResolution();
         $issueResolutionFixed->setLabel('Fixed');
         $issueResolutionFixed->setOrder(10);

@@ -5,7 +5,6 @@ namespace Dte\BtsBundle\Tests\Functional\Entity\Repository;
 use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\Tests\FixturesWebTestCase;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserRepositoryTest extends FixturesWebTestCase

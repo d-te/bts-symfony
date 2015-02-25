@@ -15,7 +15,6 @@ class LoadIssuePriorityData extends AbstractFixture implements OrderedFixtureInt
      */
     public function load(ObjectManager $manager)
     {
-
         $issuePriorityTrivial = new IssuePriority();
         $issuePriorityTrivial->setLabel('Trivial');
         $issuePriorityTrivial->setOrder(10);

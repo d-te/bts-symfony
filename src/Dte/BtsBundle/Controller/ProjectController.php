@@ -21,7 +21,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  */
 class ProjectController extends Controller
 {
-
     /**
      * Lists all Project entities.
      *

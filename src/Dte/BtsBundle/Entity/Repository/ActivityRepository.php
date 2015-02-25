@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityRepository;
 
 class ActivityRepository extends EntityRepository
 {
-
     /**
      * Load list of activities by project
      */

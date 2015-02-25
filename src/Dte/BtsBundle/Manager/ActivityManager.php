@@ -14,7 +14,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ActivityManager
 {
     /**
-     *
      * @var ContainerInterface
      */
     protected $container;

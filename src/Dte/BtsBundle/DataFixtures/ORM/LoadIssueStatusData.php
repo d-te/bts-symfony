@@ -15,7 +15,6 @@ class LoadIssueStatusData extends AbstractFixture implements OrderedFixtureInter
      */
     public function load(ObjectManager $manager)
     {
-
         $issueStatusOpen = new IssueStatus();
         $issueStatusOpen->setLabel('Open');
         $issueStatusOpen->setOrder(10);

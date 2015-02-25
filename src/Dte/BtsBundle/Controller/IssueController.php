@@ -6,7 +6,6 @@ use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssueTaskType;
 use Dte\BtsBundle\Form\CommentType;
-use Dte\BtsBundle\Form\IssueType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +45,7 @@ class IssueController extends Controller
             'types'    => IssueTaskType::getItems(),
         );
     }
+
     /**
      * Creates a new Issue entity.
      *

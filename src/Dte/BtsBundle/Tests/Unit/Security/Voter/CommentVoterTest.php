@@ -3,8 +3,6 @@
 namespace Dte\BtsBundle\Tests\Unit\Security\Voter;
 
 use Dte\BtsBundle\Entity\Comment;
-use Dte\BtsBundle\Entity\Issue;
-use Dte\BtsBundle\Entity\Project;
 use Dte\BtsBundle\Entity\Role;
 use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\Security\Voter\CommentVoter;

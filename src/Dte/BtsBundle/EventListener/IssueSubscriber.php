@@ -1,4 +1,5 @@
 <?php
+
 namespace Dte\BtsBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
@@ -7,7 +8,6 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
-use Dte\BtsBundle\Entity\Project;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

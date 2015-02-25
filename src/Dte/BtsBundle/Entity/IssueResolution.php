@@ -35,8 +35,6 @@ class IssueResolution
      */
     private $id;
 
-
-
     /**
      * Set label
      *

@@ -4,7 +4,6 @@ namespace Dte\BtsBundle\Controller;
 
 use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
-use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\Form\CommentType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,13 +18,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
  * Comment controller.
  *
- * @Route("/issue/{issue_id}/comment", requirements={
- *     "issue_id": "\d+"
+ * @Route("/issue/{issueId}/comment", requirements={
+ *     "issueId": "\d+"
  * }))
  */
 class CommentController extends Controller
 {
-
     /**
      * Lists all Comment entities.
      *
@@ -33,11 +31,11 @@ class CommentController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction($issue_id)
+    public function indexAction($issueId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
+        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issueId);
 
         if (!$issue) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
@@ -74,11 +72,11 @@ class CommentController extends Controller
      * @Route("/", name="issue_comment_create")
      * @Method("POST")
      */
-    public function createAction(Request $request, $issue_id)
+    public function createAction(Request $request, $issueId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
+        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issueId);
 
         if (!$issue) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
@@ -117,7 +115,7 @@ class CommentController extends Controller
     private function createCreateForm(Comment $entity, Issue $issue)
     {
         $form = $this->createForm(new CommentType(), $entity, array(
-            'action' => $this->generateUrl('issue_comment_create', array('issue_id' => $issue->getId())),
+            'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'POST',
         ));
 
@@ -137,7 +135,7 @@ class CommentController extends Controller
     private function createEditForm(Comment $entity, Issue $issue)
     {
         $form = $this->createForm(new CommentType(), $entity, array(
-            'action' => $this->generateUrl('issue_comment_create', array('issue_id' => $issue->getId())),
+            'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'PUT',
         ));
 
@@ -159,11 +157,11 @@ class CommentController extends Controller
      * }))
      * @Method("PUT")
      */
-    public function updateAction(Request $request, $issue_id, $id)
+    public function updateAction(Request $request, $issueId, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
+        $issue = $em->getRepository('DteBtsBundle:Issue')->find($issueId);
 
         if (!$issue) {
             throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
@@ -201,15 +199,15 @@ class CommentController extends Controller
      * @Route("/{id}", name="issue_comment_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $issue_id, $id)
+    public function deleteAction(Request $request, $issueId, $id)
     {
-        $form = $this->createDeleteForm($id, $issue_id);
+        $form = $this->createDeleteForm($id, $issueId);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $issue = $em->getRepository('DteBtsBundle:Issue')->find($issue_id);
+            $issue = $em->getRepository('DteBtsBundle:Issue')->find($issueId);
 
             if (!$issue) {
                 throw $this->createNotFoundException($this->get('translator')->trans('bts.page.issue.error.not_found'));
@@ -245,10 +243,10 @@ class CommentController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id, $issue_id)
+    private function createDeleteForm($id, $issueId)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('issue_comment_delete', array('id' => $id, 'issue_id' => $issue_id)))
+            ->setAction($this->generateUrl('issue_comment_delete', array('id' => $id, 'issueId' => $issueId)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
             ->getForm()

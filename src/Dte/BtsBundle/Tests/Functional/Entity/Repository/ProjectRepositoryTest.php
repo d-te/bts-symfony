@@ -4,8 +4,6 @@ namespace Dte\BtsBundle\Tests\Functional\Entity\Repository;
 
 use Dte\BtsBundle\Tests\FixturesWebTestCase;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 class ProjectRepositoryTest extends FixturesWebTestCase
 {
     /**

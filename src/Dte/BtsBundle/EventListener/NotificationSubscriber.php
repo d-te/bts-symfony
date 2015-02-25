@@ -1,13 +1,12 @@
 <?php
+
 namespace Dte\BtsBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Dte\BtsBundle\Entity\Activity;
-use Dte\BtsBundle\Entity\Issue;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class NotificationSubscriber implements EventSubscriber

@@ -4,7 +4,6 @@ namespace Dte\BtsBundle\Entity;
 
 class IssueTaskType
 {
-
     const BUG_TYPE     = 1;
 
     const TASK_TYPE    = 2;

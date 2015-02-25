@@ -2,9 +2,6 @@
 
 namespace Dte\BtsBundle\Tests\Unit\EventListener;
 
-use Dte\BtsBundle\Entity\Activity;
-use Dte\BtsBundle\Entity\Issue;
-use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\EventListener\NotificationSubscriber;
 
 class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase

@@ -15,7 +15,6 @@ class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-
         $adminRole = new Role();
         $adminRole->setName('Administrator');
         $adminRole->setRole('ROLE_ADMIN');

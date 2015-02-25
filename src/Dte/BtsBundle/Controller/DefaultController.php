@@ -8,7 +8,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/")
@@ -20,7 +19,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
         $user = $this->get('security.context')->getToken()->getUser();
 
         $em = $this->getDoctrine()->getManager();

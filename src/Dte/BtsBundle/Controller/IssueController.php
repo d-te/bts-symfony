@@ -116,7 +116,7 @@ class IssueController extends Controller
     private function createCommentForm(Comment $entity, Issue $issue)
     {
         $form = $this->createForm(new CommentType(), $entity, array(
-            'action' => $this->generateUrl('issue_comment_create', array('issue_id' => $issue->getId())),
+            'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'POST',
         ));
 
@@ -310,13 +310,12 @@ class IssueController extends Controller
      * @Route("/{id}/{status}", name="issue_change_status", requirements={"status": "1|2|3"})
      * @Method("GET")
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param mixed $id
      * @param mixed $status
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function changeStatusAction(Request $request, $id, $status)
+    public function changeStatusAction($id, $status)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -351,12 +350,11 @@ class IssueController extends Controller
      * @Method("GET")
      * @Template("DteBtsBundle:Issue:collaborators.html.twig")
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param mixed $id
      *
      * @return array
      */
-    public function getCollaboratorsAction(Request $request, $id)
+    public function getCollaboratorsAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 

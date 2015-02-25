@@ -68,7 +68,6 @@ class IssueSubscriber implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
 
         if ($entity instanceof Issue) {
             $this->addIssueCode($entity);
@@ -85,7 +84,6 @@ class IssueSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
 
         if ($entity instanceof Issue) {
             $this->addIssueReporterAndAssignee($entity);
@@ -98,7 +96,6 @@ class IssueSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
 
         if ($entity instanceof Issue) {
             if ($args->hasChangedField('assignee')) {

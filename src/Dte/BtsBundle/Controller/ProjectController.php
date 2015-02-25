@@ -255,12 +255,11 @@ class ProjectController extends Controller
      * @Route("/{id}/members", name="project_members_api")
      * @Method("GET")
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param mixed $id
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getMembersAction(Request $request, $id)
+    public function getMembersAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $project = $em->getRepository('DteBtsBundle:Project')->find($id);
@@ -287,12 +286,11 @@ class ProjectController extends Controller
      * @Route("/{id}/stories", name="project_stories_api")
      * @Method("GET")
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param mixed $id
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getStoriesAction(Request $request, $id)
+    public function getStoriesAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $project = $em->getRepository('DteBtsBundle:Project')->find($id);

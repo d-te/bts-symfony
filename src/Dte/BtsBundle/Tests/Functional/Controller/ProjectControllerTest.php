@@ -76,7 +76,7 @@ class ProjectControllerTest extends FixturesWebTestCase
     {
         $this->logInByUsername('admin');
 
-        $crawler = $this->client->request('GET', '/project/1/members');
+        $this->client->request('GET', '/project/1/members');
         $this->assertEquals(
             200,
             $this->client->getResponse()->getStatusCode(),
@@ -94,7 +94,7 @@ class ProjectControllerTest extends FixturesWebTestCase
     {
         $this->logInByUsername('admin');
 
-        $crawler = $this->client->request('GET', '/project/111/members');
+        $this->client->request('GET', '/project/111/members');
         $this->assertEquals(
             404,
             $this->client->getResponse()->getStatusCode(),
@@ -110,7 +110,7 @@ class ProjectControllerTest extends FixturesWebTestCase
     {
         $this->logInByUsername('admin');
 
-        $crawler = $this->client->request('GET', '/project/1/stories');
+        $this->client->request('GET', '/project/1/stories');
         $this->assertEquals(
             200,
             $this->client->getResponse()->getStatusCode(),
@@ -126,7 +126,7 @@ class ProjectControllerTest extends FixturesWebTestCase
     {
         $this->logInByUsername('admin');
 
-        $crawler = $this->client->request('GET', '/project/111/stories');
+        $this->client->request('GET', '/project/111/stories');
         $this->assertEquals(
             404,
             $this->client->getResponse()->getStatusCode(),

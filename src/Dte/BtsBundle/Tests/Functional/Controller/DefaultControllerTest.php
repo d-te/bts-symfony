@@ -49,9 +49,9 @@ class DefaultControllerTest extends FixturesWebTestCase
 
         $this->assertGreaterThan(0, $crawler->selectLink('Admin A.A.')->count());
 
-        $crawler = $this->client->click($crawler->selectLink('Log Out')->link());
+        $this->client->click($crawler->selectLink('Log Out')->link());
 
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
 

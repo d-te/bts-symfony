@@ -51,7 +51,7 @@ class IssueControllerTest extends FixturesWebTestCase
 
         $this->assertEquals('btn btn-default  active disabled ', $crawler->selectLink('Open')->attr('class'));
 
-        $crawler = $this->client->click($crawler->selectLink('In progress')->link());
+        $this->client->click($crawler->selectLink('In progress')->link());
 
         $crawler = $this->client->followRedirect();
 

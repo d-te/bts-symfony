@@ -4,26 +4,32 @@ services:
         tags:
             - {name: form.type, alias: dte_btsbundle_issue}
         arguments: ["@security.context", "@doctrine"]
+
     dte_bts_issue.subscriber:
         class: Dte\BtsBundle\EventListener\IssueSubscriber
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         arguments: ["@service_container"]
+
     dte_bts_activity.manager:
         class: Dte\BtsBundle\Manager\ActivityManager
         arguments: ["@service_container"]
+
     dte_bts_activity.subscriber:
         class: Dte\BtsBundle\EventListener\ActivitySubscriber
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         arguments: ["@dte_bts_activity.manager"]
+
     dte_bts_notification.subscriber:
         class: Dte\BtsBundle\EventListener\NotificationSubscriber
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         arguments: ["@service_container"]
+
     dte_bts_role_hierarchy:
         alias: security.role_hierarchy
+
     security.access.user_voter:
         class:      Dte\BtsBundle\Security\Voter\UserVoter
         public:     false
@@ -31,6 +37,7 @@ services:
             - '@dte_bts_role_hierarchy'
         tags:
            - { name: security.voter }
+
     security.access.project_voter:
         class:      Dte\BtsBundle\Security\Voter\ProjectVoter
         public:     false
@@ -38,6 +45,7 @@ services:
             - '@dte_bts_role_hierarchy'
         tags:
            - { name: security.voter }
+
     security.access.issue_voter:
         class:      Dte\BtsBundle\Security\Voter\IssueVoter
         public:     false
@@ -45,6 +53,7 @@ services:
             - '@dte_bts_role_hierarchy'
         tags:
            - { name: security.voter }
+
     security.access.comment_voter:
         class:      Dte\BtsBundle\Security\Voter\CommentVoter
         public:     false

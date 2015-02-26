@@ -289,7 +289,7 @@ class IssueController extends Controller
     /**
      * Change a issue's status
      *
-     * @Route("/{id}/{status}", name="issue_change_status", requirements={"status": "1|2|3"})
+     * @Route("/{id}/{status}", name="issue_change_status", requirements={"status": "\d+"})
      * @Method("GET")
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "id"})
      * @ParamConverter("status", class="DteBtsBundle:IssueStatus", options={"id" = "status"})

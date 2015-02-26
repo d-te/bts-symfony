@@ -8,6 +8,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class UserType extends AbstractType
 {
+    const CREATE_CONTEXT  = 'create';
+
+    const EDIT_CONTEXT    = 'edit';
+
+    const PROFILE_CONTEXT = 'profile';
 
     /**
      * @param FormBuilderInterface $builder
@@ -16,9 +21,9 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $isCreateContext  = ($options['form_context'] === 'create');
-        $isEditContext    = ($options['form_context'] === 'edit');
-        $isProfileContext = ($options['form_context'] === 'profile');
+        $isCreateContext  = ($options['form_context'] === self::CREATE_CONTEXT);
+        $isEditContext    = ($options['form_context'] === self::EDIT_CONTEXT);
+        $isProfileContext = ($options['form_context'] === self::PROFILE_CONTEXT);
 
         $builder
             ->add('is_profile', 'hidden', array(

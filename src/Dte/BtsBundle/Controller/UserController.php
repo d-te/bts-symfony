@@ -3,6 +3,7 @@
 namespace Dte\BtsBundle\Controller;
 
 use Dte\BtsBundle\Entity\User;
+use Dte\BtsBundle\Form\UserType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -99,7 +100,7 @@ class UserController extends Controller
         $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
             'action'       => $this->generateUrl('user_create'),
             'method'       => 'POST',
-            'form_context' => 'create',
+            'form_context' => UserType::CREATE_CONTEXT,
         ));
 
         $form->add('submit', 'submit', array('label' => 'bts.default.action.create'));
@@ -193,7 +194,7 @@ class UserController extends Controller
         $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
             'action'       => $this->generateUrl('user_update', array('id' => $user->getId())),
             'method'       => 'PUT',
-            'form_context' => 'edit',
+            'form_context' => UserType::EDIT_CONTEXT,
         ));
 
         $form->add('submit', 'submit', array('label' => 'bts.default.action.update'));
@@ -260,7 +261,7 @@ class UserController extends Controller
         return array(
             'entity'       => $user,
             'edit_form'    => $editForm->createView(),
-            'form_context' => ($isProfileContext) ? 'profile' : 'edit',
+            'form_context' => ($isProfileContext) ? UserType::PROFILE_CONTEXT : UserType::EDIT_CONTEXT,
         );
     }
 
@@ -282,7 +283,7 @@ class UserController extends Controller
         }
 
         return array(
-            'entity'      => $user
+            'entity' => $user
         );
     }
 
@@ -325,9 +326,9 @@ class UserController extends Controller
     private function createProfileForm(User $user)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
-            'action'      => $this->generateUrl('user_update', array('id' => $user->getId())),
-            'method'      => 'PUT',
-            'form_context' => 'profile',
+            'action'       => $this->generateUrl('user_update', array('id' => $user->getId())),
+            'method'       => 'PUT',
+            'form_context' => UserType::PROFILE_CONTEXT,
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));

@@ -5,6 +5,7 @@ namespace Dte\BtsBundle\Controller;
 use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssueTaskType;
+use Dte\BtsBundle\Form\IssueType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
  */
 class IssueController extends Controller
 {
-
     /**
      * Lists all Issue entities.
      *
@@ -96,7 +96,7 @@ class IssueController extends Controller
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $issue, array(
             'action'       => $this->generateUrl('issue_create'),
             'method'       => 'POST',
-            'form_context' => 'create',
+            'form_context' => IssueType::CREATE_CONTEXT,
             'isSubtask'    => $isSubtask,
         ));
 
@@ -220,8 +220,8 @@ class IssueController extends Controller
         $editForm = $this->createEditForm($issue);
 
         return array(
-            'entity'      => $issue,
-            'edit_form'   => $editForm->createView(),
+            'entity'    => $issue,
+            'edit_form' => $editForm->createView(),
         );
     }
 
@@ -239,7 +239,7 @@ class IssueController extends Controller
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $issue, array(
             'action'       => $this->generateUrl('issue_update', array('id' => $issue->getId())),
             'method'       => 'PUT',
-            'form_context' => 'edit',
+            'form_context' => IssueType::EDIT_CONTEXT,
         ));
 
         $form->add('submit', 'submit', array('label' => 'bts.default.action.update'));

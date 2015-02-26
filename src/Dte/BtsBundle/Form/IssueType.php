@@ -18,6 +18,9 @@ use Symfony\Component\Security\Core\SecurityContext;
 
 class IssueType extends AbstractType
 {
+    const CREATE_CONTEXT = 'create';
+
+    const EDIT_CONTEXT   = 'edit';
 
     /**
      * @var \Symfony\Component\Security\Core\SecurityContext
@@ -91,8 +94,8 @@ class IssueType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $isCreateContext = ($options['form_context'] === 'create');
-        $isEditContext   = ($options['form_context'] === 'edit');
+        $isCreateContext = ($options['form_context'] === self::CREATE_CONTEXT);
+        $isEditContext   = ($options['form_context'] === self::EDIT_CONTEXT);
         $isSubtask       = $options['isSubtask'];
 
         $user = $this->getUser();
@@ -130,7 +133,7 @@ class IssueType extends AbstractType
             ))->add('parent', 'entity', array(
                 'label'       => 'bts.entity.issue.parent.label',
                 'required'    => false,
-                'read_only'   => ($issue->getType() !== 4 || ($isCreateContext && $isSubtask)),
+                'read_only'   => ($issue->getType() != IssueTaskType::SUBTASK_TYPE || ($isCreateContext && $isSubtask)),
                 'property'    => 'selectLabel',
                 'class'       => 'DteBtsBundle:Issue',
                 'empty_value' => 'bts.entity.issue.parent.empty_value',
@@ -196,7 +199,7 @@ class IssueType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class'   => 'Dte\BtsBundle\Entity\Issue',
-            'form_context' => 'default',
+            'form_context' => self::CREATE_CONTEXT,
             'isSubtask'    => false,
         ));
     }

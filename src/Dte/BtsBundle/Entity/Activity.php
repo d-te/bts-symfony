@@ -98,7 +98,7 @@ class Activity
      * @param \Dte\BtsBundle\Entity\Issue $issue
      * @return Activity
      */
-    public function setIssue(\Dte\BtsBundle\Entity\Issue $issue = null)
+    public function setIssue(Issue $issue = null)
     {
         $this->issue = $issue;
 
@@ -121,7 +121,7 @@ class Activity
      * @param \Dte\BtsBundle\Entity\User $user
      * @return Activity
      */
-    public function setUser(\Dte\BtsBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 

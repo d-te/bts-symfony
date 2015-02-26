@@ -107,7 +107,7 @@ class Comment
      * @param \Dte\BtsBundle\Entity\User $user
      * @return Comment
      */
-    public function setUser(\Dte\BtsBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -130,7 +130,7 @@ class Comment
      * @param \Dte\BtsBundle\Entity\Issue $issue
      * @return Comment
      */
-    public function setIssue(\Dte\BtsBundle\Entity\Issue $issue = null)
+    public function setIssue(Issue $issue = null)
     {
         $this->issue = $issue;
 

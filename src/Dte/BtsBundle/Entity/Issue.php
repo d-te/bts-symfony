@@ -288,7 +288,7 @@ class Issue
      * @param \Dte\BtsBundle\Entity\Issue $parent
      * @return Issue
      */
-    public function setParent(\Dte\BtsBundle\Entity\Issue $parent)
+    public function setParent(Issue $parent)
     {
         $this->parent = $parent;
 
@@ -381,7 +381,7 @@ class Issue
      * @param \Dte\BtsBundle\Entity\User $reporter
      * @return Issue
      */
-    public function setReporter(\Dte\BtsBundle\Entity\User $reporter = null)
+    public function setReporter(User $reporter = null)
     {
         $this->reporter = $reporter;
 
@@ -404,7 +404,7 @@ class Issue
      * @param \Dte\BtsBundle\Entity\Project $project
      * @return Issue
      */
-    public function setProject(\Dte\BtsBundle\Entity\Project $project = null)
+    public function setProject(Project $project = null)
     {
         $this->project = $project;
 
@@ -427,7 +427,7 @@ class Issue
      * @param \Dte\BtsBundle\Entity\IssueStatus $status
      * @return Issue
      */
-    public function setStatus(\Dte\BtsBundle\Entity\IssueStatus $status = null)
+    public function setStatus(IssueStatus $status = null)
     {
         $this->status = $status;
 
@@ -450,7 +450,7 @@ class Issue
      * @param \Dte\BtsBundle\Entity\User $assignee
      * @return Issue
      */
-    public function setAssignee(\Dte\BtsBundle\Entity\User $assignee = null)
+    public function setAssignee(User $assignee = null)
     {
         $this->assignee = $assignee;
 
@@ -473,7 +473,7 @@ class Issue
      * @param \Dte\BtsBundle\Entity\IssuePriority $priority
      * @return Issue
      */
-    public function setPriority(\Dte\BtsBundle\Entity\IssuePriority $priority = null)
+    public function setPriority(IssuePriority $priority = null)
     {
         $this->priority = $priority;
 
@@ -496,7 +496,7 @@ class Issue
      * @param \Dte\BtsBundle\Entity\IssueResolution $resolution
      * @return Issue
      */
-    public function setResolution(\Dte\BtsBundle\Entity\IssueResolution $resolution = null)
+    public function setResolution(IssueResolution $resolution = null)
     {
         $this->resolution = $resolution;
 

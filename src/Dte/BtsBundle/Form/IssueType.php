@@ -36,6 +36,7 @@ class IssueType extends AbstractType
      *  Constructor
      *
      * @param SecurityContext $securityContext
+     * @param Doctrine $doctrine
      */
     public function __construct(SecurityContext $securityContext, Doctrine $doctrine)
     {

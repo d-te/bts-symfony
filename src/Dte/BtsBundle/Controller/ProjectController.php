@@ -3,7 +3,6 @@
 namespace Dte\BtsBundle\Controller;
 
 use Dte\BtsBundle\Entity\Project;
-use Dte\BtsBundle\Form\ProjectType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -90,7 +89,7 @@ class ProjectController extends Controller
      */
     private function createCreateForm(Project $project)
     {
-        $form = $this->createForm(new ProjectType(), $project, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_project', $project, array(
             'action' => $this->generateUrl('project_create'),
             'method' => 'POST',
         ));
@@ -188,7 +187,7 @@ class ProjectController extends Controller
     */
     private function createEditForm(Project $project)
     {
-        $form = $this->createForm(new ProjectType(), $project, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_project', $project, array(
             'action' => $this->generateUrl('project_update', array('id' => $project->getId())),
             'method' => 'PUT',
         ));

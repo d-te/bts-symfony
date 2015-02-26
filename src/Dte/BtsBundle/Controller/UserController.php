@@ -3,7 +3,6 @@
 namespace Dte\BtsBundle\Controller;
 
 use Dte\BtsBundle\Entity\User;
-use Dte\BtsBundle\Form\UserType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,7 +96,7 @@ class UserController extends Controller
      */
     private function createCreateForm(User $user)
     {
-        $form = $this->createForm(new UserType(), $user, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
             'action'       => $this->generateUrl('user_create'),
             'method'       => 'POST',
             'form_context' => 'create',
@@ -191,7 +190,7 @@ class UserController extends Controller
     */
     private function createEditForm(User $user)
     {
-        $form = $this->createForm(new UserType(), $user, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
             'action'       => $this->generateUrl('user_update', array('id' => $user->getId())),
             'method'       => 'PUT',
             'form_context' => 'edit',
@@ -325,7 +324,7 @@ class UserController extends Controller
     */
     private function createProfileForm(User $user)
     {
-        $form = $this->createForm(new UserType(), $user, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
             'action'      => $this->generateUrl('user_update', array('id' => $user->getId())),
             'method'      => 'PUT',
             'form_context' => 'profile',

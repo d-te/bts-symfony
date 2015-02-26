@@ -5,7 +5,6 @@ namespace Dte\BtsBundle\Controller;
 use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssueTaskType;
-use Dte\BtsBundle\Form\CommentType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,7 +115,7 @@ class IssueController extends Controller
      */
     private function createCommentForm(Comment $comment, Issue $issue)
     {
-        $form = $this->createForm(new CommentType(), $comment, array(
+        $form = $this->get('form.factory')->create('dte_btsbundle_comment', $comment, array(
             'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'POST',
         ));

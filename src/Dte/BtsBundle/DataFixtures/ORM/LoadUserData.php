@@ -5,14 +5,13 @@ namespace Dte\BtsBundle\DataFixtures\ORM;
 use Dte\BtsBundle\Entity\User;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadUserData extends AbstractFixture implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
+class LoadUserData extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
     /**
      * @var ContainerInterface
@@ -85,8 +84,8 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, Containe
     /**
      * {@inheritDoc}
      */
-    public function getOrder()
+    public function getDependencies()
     {
-        return 2;
+        return array('Dte\BtsBundle\DataFixtures\ORM\LoadRoleData');
     }
 }

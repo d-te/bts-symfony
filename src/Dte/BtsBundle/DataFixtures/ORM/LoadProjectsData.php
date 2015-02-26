@@ -8,10 +8,10 @@ use Dte\BtsBundle\Entity\IssueTaskType;
 use Dte\BtsBundle\Entity\Project;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadProjectsData extends AbstractFixture implements OrderedFixtureInterface
+class LoadProjectsData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -152,8 +152,12 @@ class LoadProjectsData extends AbstractFixture implements OrderedFixtureInterfac
     /**
      * {@inheritDoc}
      */
-    public function getOrder()
+    public function getDependencies()
     {
-        return 6;
+        return array(
+            'Dte\BtsBundle\DataFixtures\ORM\LoadIssuePriorityData',
+            'Dte\BtsBundle\DataFixtures\ORM\LoadIssueResolutionData',
+            'Dte\BtsBundle\DataFixtures\ORM\LoadIssueStatusData',
+        );
     }
 }

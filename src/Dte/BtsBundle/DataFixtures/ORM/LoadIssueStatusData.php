@@ -5,10 +5,10 @@ namespace Dte\BtsBundle\DataFixtures\ORM;
 use Dte\BtsBundle\Entity\IssueStatus;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadIssueStatusData extends AbstractFixture implements OrderedFixtureInterface
+class LoadIssueStatusData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -40,8 +40,8 @@ class LoadIssueStatusData extends AbstractFixture implements OrderedFixtureInter
     /**
      * {@inheritDoc}
      */
-    public function getOrder()
+    public function getDependencies()
     {
-        return 5;
+        return array('Dte\BtsBundle\DataFixtures\ORM\LoadUserData');
     }
 }

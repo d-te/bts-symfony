@@ -5,10 +5,9 @@ namespace Dte\BtsBundle\DataFixtures\ORM;
 use Dte\BtsBundle\Entity\Role;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface
+class LoadRoleData extends AbstractFixture
 {
     /**
      * {@inheritDoc}
@@ -36,13 +35,5 @@ class LoadRoleData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('admin-role', $adminRole);
         $this->addReference('manager-role', $managerRole);
         $this->addReference('operator-role', $operatorRole);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getOrder()
-    {
-        return 1;
     }
 }

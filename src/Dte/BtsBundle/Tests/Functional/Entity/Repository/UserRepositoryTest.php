@@ -40,7 +40,7 @@ class UserRepositoryTest extends FixturesWebTestCase
     }
 
     /**
-     * @expectedException        Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     * @expectedException        \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      * @expectedExceptionMessage Unable to find an active admin DteBtsBundle:User object identified by "admin111".
      */
     public function testLoadUserByUsernameWithWrongUsername()

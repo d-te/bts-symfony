@@ -20,7 +20,7 @@ class IssueType extends AbstractType
 {
 
     /**
-     * @var Symfony\Component\Security\Core\SecurityContext
+     * @var \Symfony\Component\Security\Core\SecurityContext
      */
     private $securityContext;
 
@@ -44,7 +44,7 @@ class IssueType extends AbstractType
     /**
      * Get User
      *
-     * @return Dte\BtsBundle\Entity\User
+     * @return \Dte\BtsBundle\Entity\User
      */
     public function getUser()
     {
@@ -54,7 +54,7 @@ class IssueType extends AbstractType
     /**
      * Get project's members
      *
-     * @param  Dte\BtsBundle\Entity\Project $project
+     * @param  \Dte\BtsBundle\Entity\Project $project
      * @return array
      */
     public function getProjectMembers($project)
@@ -71,7 +71,7 @@ class IssueType extends AbstractType
     /**
      * Get project's stories
      *
-     * @param  Dte\BtsBundle\Entity\Project $project
+     * @param  \Dte\BtsBundle\Entity\Project $project
      * @return array
      */
     public function getProjectStories($project)

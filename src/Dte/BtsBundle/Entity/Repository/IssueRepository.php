@@ -2,6 +2,8 @@
 
 namespace Dte\BtsBundle\Entity\Repository;
 
+use Dte\BtsBundle\Entity\IssueStatus;
+use Dte\BtsBundle\Entity\IssueTaskType;
 use Dte\BtsBundle\Entity\Project;
 use Dte\BtsBundle\Entity\User;
 
@@ -23,7 +25,7 @@ class IssueRepository extends EntityRepository
             ->leftJoin('issue.project', 'project')
             ->where('issue.project = :project AND issue.type = :type')
             ->setParameter('project', $project->getId())
-            ->setParameter('type', 3)
+            ->setParameter('type', IssueTaskType::STORY_TYPE)
             ->getQuery();
 
         return $q->getResult();
@@ -40,9 +42,10 @@ class IssueRepository extends EntityRepository
         $q = $this
             ->createQueryBuilder('issue')
             ->select('issue')
-            ->where('issue.assignee = :user AND issue.status <> :status')
+            ->leftJoin('issue.status', 'status')
+            ->where('issue.assignee = :user AND status.label <> :label')
             ->setParameter('user', $user->getId())
-            ->setParameter('status', 3)
+            ->setParameter('label', IssueStatus::CLOSED_STATUS_NAME)
             ->orderBy('issue.id', 'DESC')
             ->getQuery();
 
@@ -63,7 +66,7 @@ class IssueRepository extends EntityRepository
             ->leftJoin('issue.collaborators', 'collaborator')
             ->where('collaborator.id = :user AND issue.status <> :status')
             ->setParameter('user', $user->getId())
-            ->setParameter('status', 3)
+            ->setParameter('status', IssueStatus::CLOSED_STATUS_NAME)
             ->orderBy('issue.id', 'DESC')
             ->getQuery();
 

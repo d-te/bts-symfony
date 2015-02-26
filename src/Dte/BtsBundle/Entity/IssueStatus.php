@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IssueStatus
 {
+    const CLOSED_STATUS_NAME = 'Closed';
+
     /**
      * @var string
      *

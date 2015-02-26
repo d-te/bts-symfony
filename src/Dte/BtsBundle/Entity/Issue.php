@@ -166,7 +166,7 @@ class Issue
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Activity", mappedBy="issue")
-     * @ORM\OrderBy({"id" = "desc"})
+     * @ORM\OrderBy({"created" = "desc"})
      */
     private $activities;
 

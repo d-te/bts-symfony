@@ -31,8 +31,8 @@ class ProjectRepository extends EntityRepository
         $q = $this
             ->createQueryBuilder('project')
             ->select('project')
-            ->leftJoin('project.members', 'member')
-            ->where('member.id = :user')
+            ->leftJoin('project.members', 'members')
+            ->where('members.id = :user')
             ->setParameter('user', $user->getId());
 
         return $q;

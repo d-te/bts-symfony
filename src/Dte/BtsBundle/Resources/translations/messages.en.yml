@@ -4,6 +4,7 @@ bts:
         actions.label:          Actions
         action:
             show:               Show
+            view:               View
             edit:               Edit
             create:             Create
             update:             Update
@@ -57,10 +58,6 @@ bts:
                 in_progress:        In progress
                 close:              Close
                 add_subtask:        Add Subtask
-            error:
-                not_found:          Unable to find Issue entity.
-                not_found_status:   Unable to find Issue status.
-                not_found_comment:  Unable to find Comment entity.
             tablist:
                 activities:         Activities
                 comments:           Comments
@@ -81,8 +78,6 @@ bts:
             no_avatar_label:        No avatar image
             action:
                 create:             Create a new user
-            error:
-                not_found:          Unable to find User entity.
             tablist:
                 activities:         Activities
                 issues:             Opened issues
@@ -151,3 +146,5 @@ bts:
             email.label:            Email
             password.label:         Password
             roles.label:            Roles
+    email:
+        notification: Issue %issue_link% has been updated by user %user_link% with message:

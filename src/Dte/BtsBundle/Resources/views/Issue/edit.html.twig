@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ 'bts.page.issue_edit.page_title'|trans }}&nbsp;&nbsp;<small><a href="{{ path('issue_show', { 'id': entity.id }) }}">view</a></small></h1>
+    <h1>{{ 'bts.page.issue_edit.page_title'|trans }}&nbsp;&nbsp;<small><a href="{{ path('issue_show', { 'id': entity.id }) }}">{{ 'bts.default.action.view'|trans }}</a></small></h1>
 
     {{ form(edit_form) }}
 

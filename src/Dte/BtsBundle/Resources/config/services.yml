@@ -1,9 +1,24 @@
 services:
+    form.type.dte_btsbundle_comment:
+        class: Dte\BtsBundle\Form\CommentType
+        tags:
+            - {name: form.type, alias: dte_btsbundle_comment}
+
     form.type.dte_btsbundle_issue:
         class: Dte\BtsBundle\Form\IssueType
         tags:
             - {name: form.type, alias: dte_btsbundle_issue}
         arguments: ["@security.context", "@doctrine"]
+
+    form.type.dte_btsbundle_project:
+        class: Dte\BtsBundle\Form\ProjectType
+        tags:
+            - {name: form.type, alias: dte_btsbundle_project}
+
+    form.type.dte_btsbundle_user:
+        class: Dte\BtsBundle\Form\UserType
+        tags:
+            - {name: form.type, alias: dte_btsbundle_user}
 
     dte_bts_issue.subscriber:
         class: Dte\BtsBundle\EventListener\IssueSubscriber

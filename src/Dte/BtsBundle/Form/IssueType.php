@@ -110,27 +110,54 @@ class IssueType extends AbstractType
             'query_builder' => function(EntityRepository $em) use ($user) {
                 return $em->findByMemberQueryBuilder($user);
             },
+        ))->add('code', 'text', array(
+            'required'  => false,
+            'read_only' => true,
+            'label'     => 'bts.entity.issue.code.label',
+        ))->add('type', 'choice', array(
+            'label'     => 'bts.entity.issue.type.label',
+            'read_only' => $isEditContext || ($isCreateContext && $isSubtask),
+            'choices'   => IssueTaskType::getItems(),
+        ))->add('summary', 'text', array(
+            'label'    => 'bts.entity.issue.summary.label',
+            'required' => true,
+        ))->add('description', 'textarea', array(
+            'required' => false,
+            'label'    => 'bts.entity.issue.description.label',
+        ))->add('status', 'entity', array(
+            'label'         => 'bts.entity.issue.status.label',
+            'required'      => true,
+            'read_only'     => $isCreateContext,
+            'property'      => 'label',
+            'class'         => 'DteBtsBundle:IssueStatus',
+            'query_builder' => function(EntityRepository $em) {
+                return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
+            },
+        ))->add('priority', 'entity', array(
+            'label'         => 'bts.entity.issue.priority.label',
+            'required'      => true,
+            'property'      => 'label',
+            'class'         => 'DteBtsBundle:IssuePriority',
+            'query_builder' => function(EntityRepository $em) {
+                return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
+            },
+        ))->add('resolution', 'entity', array(
+            'label'         => 'bts.entity.issue.resolution.label',
+            'read_only'     => $isCreateContext,
+            'required'      => false,
+            'property'      => 'label',
+            'class'         => 'DteBtsBundle:IssueResolution',
+            'empty_value'   => 'bts.entity.issue.resolution.empty_value',
+            'query_builder' => function(EntityRepository $em) {
+                return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
+            },
         ));
 
-        $formModifier = function ($form, $issue, $project) use ($isCreateContext, $isEditContext, $isSubtask) {
+        $formModifier = function ($form, Issue $issue, Project $project = null) use ($isCreateContext, $isSubtask) {
             $members = $this->getProjectMembers($project);
             $stories = $this->getProjectStories($project);
 
-            $form->add('code', 'text', array(
-                'required'  => false,
-                'read_only' => true,
-                'label'     => 'bts.entity.issue.code.label',
-            ))->add('type', 'choice', array(
-                'label'     => 'bts.entity.issue.type.label',
-                'read_only' => $isEditContext || ($isCreateContext && $isSubtask),
-                'choices'   => IssueTaskType::getItems(),
-            ))->add('summary', 'text', array(
-                'label'    => 'bts.entity.issue.summary.label',
-                'required' => true,
-            ))->add('description', 'textarea', array(
-                'required' => false,
-                'label'    => 'bts.entity.issue.description.label',
-            ))->add('parent', 'entity', array(
+            $form->add('parent', 'entity', array(
                 'label'       => 'bts.entity.issue.parent.label',
                 'required'    => false,
                 'read_only'   => ($issue->getType() != IssueTaskType::SUBTASK_TYPE || ($isCreateContext && $isSubtask)),
@@ -138,23 +165,6 @@ class IssueType extends AbstractType
                 'class'       => 'DteBtsBundle:Issue',
                 'empty_value' => 'bts.entity.issue.parent.empty_value',
                 'choices'     => $stories,
-            ))->add('status', 'entity', array(
-                'label'         => 'bts.entity.issue.status.label',
-                'required'      => true,
-                'read_only'     => $isCreateContext,
-                'property'      => 'label',
-                'class'         => 'DteBtsBundle:IssueStatus',
-                'query_builder' => function(EntityRepository $em) {
-                    return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
-                },
-            ))->add('priority', 'entity', array(
-                'label'         => 'bts.entity.issue.priority.label',
-                'required'      => true,
-                'property'      => 'label',
-                'class'         => 'DteBtsBundle:IssuePriority',
-                'query_builder' => function(EntityRepository $em) {
-                    return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
-                },
             ))->add('assignee', 'entity', array(
                 'label'       => 'bts.entity.issue.assignee.label',
                 'required'    => false,
@@ -162,16 +172,6 @@ class IssueType extends AbstractType
                 'class'       => 'DteBtsBundle:User',
                 'empty_value' => 'bts.entity.issue.assignee.empty_value',
                 'choices'     => $members,
-            ))->add('resolution', 'entity', array(
-                'label'         => 'bts.entity.issue.resolution.label',
-                'read_only'     => $isCreateContext,
-                'required'      => false,
-                'property'      => 'label',
-                'class'         => 'DteBtsBundle:IssueResolution',
-                'empty_value'   => 'bts.entity.issue.resolution.empty_value',
-                'query_builder' => function(EntityRepository $em) {
-                    return $em->createQueryBuilder('i')->orderBy('i.order', 'ASC');
-                },
             ));
         };
 

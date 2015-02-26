@@ -48,6 +48,7 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
     public function supportsAttributeDataProvider()
     {
         return array(
+            array('create', true),
             array('view', true),
             array('edit', true),
             array('profile', true),
@@ -94,17 +95,17 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
         $role->setRole('ROLE_ADMIN');
 
         $this->token
-                ->expects($this->once())
+                ->expects($this->atLeastOnce())
                 ->method('getRoles')
                 ->will($this->returnValue(array($role)));
 
         $this->token
-                ->expects($this->once())
+                ->expects($this->atLeastOnce())
                 ->method('getUser')
                 ->will($this->returnValue(new User()));
 
         $this->roleHierarchy
-                ->expects($this->once())
+                ->expects($this->atLeastOnce())
                 ->method('getReachableRoles')
                 ->will($this->returnValue(array($role)));
 
@@ -113,6 +114,10 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
         $object = new User();
 
         $this->assertEquals(VoterInterface::ACCESS_GRANTED, $voter->vote($this->token, $object, array('view')));
+        $this->assertEquals(
+            VoterInterface::ACCESS_GRANTED,
+            $voter->vote($this->token, 'Dte\\BtsBundle\\Entity\\User', array('view'))
+        );
     }
 
     /**
@@ -158,10 +163,12 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
         return array(
             array(1, 11, 'view', VoterInterface::ACCESS_GRANTED),
             array(1, 11, 'edit', VoterInterface::ACCESS_DENIED),
+            array(1, 11, 'create', VoterInterface::ACCESS_DENIED),
             array(1, 11, 'profile', VoterInterface::ACCESS_DENIED),
             array(11, 11, 'view', VoterInterface::ACCESS_GRANTED),
             array(11, 11, 'edit', VoterInterface::ACCESS_GRANTED),
             array(11, 11, 'profile', VoterInterface::ACCESS_GRANTED),
+            array(11, 11, 'create', VoterInterface::ACCESS_DENIED),
         );
     }
 }

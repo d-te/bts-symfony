@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProjectVoter extends AbstractRoleHierarchyVoter
 {
+    const CREATE  = 'create';
     const VIEW    = 'view';
     const EDIT    = 'edit';
 
@@ -17,6 +18,7 @@ class ProjectVoter extends AbstractRoleHierarchyVoter
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
+            self::CREATE,
             self::VIEW,
             self::EDIT,
         ));
@@ -34,11 +36,12 @@ class ProjectVoter extends AbstractRoleHierarchyVoter
 
     /**
      * {@inheritDoc}
-     * @var \Dte\BtsBundle\Entity\Project $object
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        $class = (is_object($object)) ? get_class($object) : $object;
+
+        if (!$this->supportsClass($class)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -58,12 +61,19 @@ class ProjectVoter extends AbstractRoleHierarchyVoter
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        switch($attribute) {
+        switch ($attribute) {
+            case self::CREATE:
+            case self::EDIT:
+                break;
             case self::VIEW:
-                foreach ($object->getMembers() as $member) {
-                    if ($member->getId() === $user->getId()) {
-                        return VoterInterface::ACCESS_GRANTED;
+                if (is_object($object)) {
+                    foreach ($object->getMembers() as $member) {
+                        if ($member->getId() === $user->getId()) {
+                            return VoterInterface::ACCESS_GRANTED;
+                        }
                     }
+                } elseif ($this->hasRole($token, 'ROLE_OPERATOR')) {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
                 break;
         }

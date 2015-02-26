@@ -51,7 +51,7 @@
         </tbody>
     </table>
 
-    {% if is_granted('ROLE_MANAGER') %}
+    {% if is_granted('view', 'Dte\\BtsBundle\\Entity\\Project') %}
     <div class="row">
         <a href="{{ path('project_new') }}" class="btn btn-default">{{ 'bts.page.project.action.create'|trans }}</a>
     </div>

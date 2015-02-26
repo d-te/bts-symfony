@@ -8,6 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVoter extends AbstractRoleHierarchyVoter
 {
+    const CREATE  = 'create';
     const VIEW    = 'view';
     const EDIT    = 'edit';
     const PROFILE = 'profile';
@@ -18,6 +19,7 @@ class UserVoter extends AbstractRoleHierarchyVoter
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
+            self::CREATE,
             self::VIEW,
             self::EDIT,
             self::PROFILE,
@@ -36,11 +38,12 @@ class UserVoter extends AbstractRoleHierarchyVoter
 
     /**
      * {@inheritDoc}
-     * @var \Dte\BtsBundle\Entity\User $object
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        $class = (is_object($object)) ? get_class($object) : $object;
+
+        if (!$this->supportsClass($class)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -60,11 +63,14 @@ class UserVoter extends AbstractRoleHierarchyVoter
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        switch($attribute) {
-            case self::VIEW:
-                return VoterInterface::ACCESS_GRANTED;
+        switch ($attribute) {
+            case self::CREATE:
                 break;
-
+            case self::VIEW:
+                if (is_object($object)) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
+                break;
             case self::EDIT:
             case self::PROFILE:
                 if ($object->getId() === $user->getId()) {

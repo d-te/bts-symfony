@@ -38,7 +38,7 @@
 
                 <li {% if app.request.uri == url("project") %} class="active" {% endif %}><a href="{{ url("project") }}">{{ 'bts.page.project.menu_label'|trans }}</a></li>
                 <li {% if app.request.uri == url("issue") %} class="active" {% endif %}><a href="{{ url("issue") }}">{{ 'bts.page.issue.menu_label'|trans }}</a></li>
-                {% if (is_granted('ROLE_ADMIN')) %}
+                {% if (is_granted('view', 'Dte\\BtsBundle\\Entity\\User')) %}
                 <li {% if app.request.uri == url("user") %} class="active" {% endif %}><a href="{{ url("user") }}">{{ 'bts.page.user.menu_label'|trans }}</a></li>
                 {% endif %}
 

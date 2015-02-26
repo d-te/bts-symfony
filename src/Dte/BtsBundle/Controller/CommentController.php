@@ -8,11 +8,11 @@ use Dte\BtsBundle\Entity\Issue;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -29,6 +29,7 @@ class CommentController extends Controller
      * @Method("GET")
      * @Template()
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "issueId"})
+     * @Security("is_granted('view', 'Dte\\BtsBundle\\Entity\\Comment')")
      *
      * @param Issue $issue
      *
@@ -36,10 +37,6 @@ class CommentController extends Controller
      */
     public function indexAction(Issue $issue)
     {
-        if (false === $this->get('security.context')->isGranted('view', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $comments = $issue->getComments();
 
         $forms = array(
@@ -67,6 +64,7 @@ class CommentController extends Controller
      * @Route("/", name="issue_comment_create")
      * @Method("POST")
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "issueId"})
+     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Comment')")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param Issue $issue
@@ -75,10 +73,6 @@ class CommentController extends Controller
      */
     public function createAction(Request $request, Issue $issue)
     {
-        if (false === $this->get('security.context')->isGranted('view', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $user = $this->get('security.context')->getToken()->getUser();
 
         $comment = new Comment();
@@ -149,6 +143,7 @@ class CommentController extends Controller
      * @Route("/{id}", name="issue_comment_update", requirements={"id": "\d+"})
      * @Method("PUT")
      * @ParamConverter("comment", class="DteBtsBundle:Comment")
+     * @Security("is_granted('edit', comment)")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param Issue $issue
@@ -159,14 +154,6 @@ class CommentController extends Controller
     public function updateAction(Request $request, Issue $issue, Comment $comment)
     {
         $em = $this->getDoctrine()->getManager();
-
-        if (false === $this->get('security.context')->isGranted('view', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
-        if (false === $this->get('security.context')->isGranted('edit', $comment)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
 
         $editForm = $this->createEditForm($comment, $issue);
         $editForm->handleRequest($request);
@@ -184,6 +171,7 @@ class CommentController extends Controller
      * @Route("/{id}", name="issue_comment_delete")
      * @Method("DELETE")
      * @ParamConverter("comment", class="DteBtsBundle:Comment")
+     * @Security("is_granted('delete', comment)")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param Issue $issue
@@ -197,14 +185,6 @@ class CommentController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            if (false === $this->get('security.context')->isGranted('view', $issue)) {
-                throw new AccessDeniedException('Unauthorised access!');
-            }
-
-            if (false === $this->get('security.context')->isGranted('delete', $comment)) {
-                throw new AccessDeniedException('Unauthorised access!');
-            }
-
             $em = $this->getDoctrine()->getManager();
             $em->remove($comment);
             $em->flush();

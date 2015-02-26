@@ -8,8 +8,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class IssueVoter extends AbstractRoleHierarchyVoter
 {
-    const VIEW    = 'view';
-    const EDIT    = 'edit';
+    const CREATE = 'create';
+    const VIEW   = 'view';
+    const EDIT   = 'edit';
 
     /**
      * {@inheritDoc}
@@ -17,6 +18,7 @@ class IssueVoter extends AbstractRoleHierarchyVoter
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
+            self::CREATE,
             self::VIEW,
             self::EDIT,
         ));
@@ -34,11 +36,12 @@ class IssueVoter extends AbstractRoleHierarchyVoter
 
     /**
      * {@inheritDoc}
-     * @var \Dte\BtsBundle\Entity\Issue $object
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        $class = (is_object($object)) ? get_class($object) : $object;
+
+        if (!$this->supportsClass($class)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -58,12 +61,19 @@ class IssueVoter extends AbstractRoleHierarchyVoter
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        switch($attribute) {
+        switch ($attribute) {
+            case self::CREATE:
+                if ($this->hasRole($token, 'ROLE_OPERATOR')) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
+                break;
             case self::EDIT:
             case self::VIEW:
-                foreach ($object->getProject()->getMembers() as $member) {
-                    if ($member->getId() === $user->getId() && $this->hasRole($token, 'ROLE_OPERATOR')) {
-                        return VoterInterface::ACCESS_GRANTED;
+                if (is_object($object)) {
+                    foreach ($object->getProject()->getMembers() as $member) {
+                        if ($member->getId() === $user->getId() && $this->hasRole($token, 'ROLE_OPERATOR')) {
+                            return VoterInterface::ACCESS_GRANTED;
+                        }
                     }
                 }
                 break;

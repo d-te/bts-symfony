@@ -9,11 +9,11 @@ use Dte\BtsBundle\Form\IssueType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -29,15 +29,12 @@ class IssueController extends Controller
      * @Route("/", name="issue")
      * @Method("GET")
      * @Template()
+     * @Security("is_granted('view', 'Dte\\BtsBundle\\Entity\\Issue')")
      *
      * @return array
      */
     public function indexAction()
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_OPERATOR')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
 
         $issues = $em->getRepository('DteBtsBundle:Issue')->findAll();
@@ -54,6 +51,7 @@ class IssueController extends Controller
      * @Route("/", name="issue_create")
      * @Method("POST")
      * @Template("DteBtsBundle:Issue:new.html.twig")
+     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Issue')")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -61,10 +59,6 @@ class IssueController extends Controller
      */
     public function createAction(Request $request)
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_OPERATOR')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $issue = new Issue();
         $form = $this->createCreateForm($issue);
         $form->handleRequest($request);
@@ -131,6 +125,7 @@ class IssueController extends Controller
      * @Route("/new", name="issue_new")
      * @Method("GET")
      * @Template()
+     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Issue')")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -138,10 +133,6 @@ class IssueController extends Controller
      */
     public function newAction(Request $request)
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_OPERATOR')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
 
         $issue  = new Issue();
@@ -179,6 +170,7 @@ class IssueController extends Controller
      * @Method("GET")
      * @Template()
      * @ParamConverter("issue", class="DteBtsBundle:Issue")
+     * @Security("is_granted('view', issue)")
      *
      * @param Issue $issue
      *
@@ -186,10 +178,6 @@ class IssueController extends Controller
      */
     public function showAction(Issue $issue)
     {
-        if (false === $this->get('security.context')->isGranted('view', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $commentForm = $this->createCommentForm(new Comment(), $issue);
 
         return array(
@@ -206,6 +194,7 @@ class IssueController extends Controller
      * @Method("GET")
      * @Template()
      * @ParamConverter("issue", class="DteBtsBundle:Issue")
+     * @Security("is_granted('edit', issue)")
      *
      * @param Issue $issue
      *
@@ -213,10 +202,6 @@ class IssueController extends Controller
      */
     public function editAction(Issue $issue)
     {
-        if (false === $this->get('security.context')->isGranted('edit', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $editForm = $this->createEditForm($issue);
 
         return array(
@@ -254,6 +239,7 @@ class IssueController extends Controller
      * @Method("PUT")
      * @Template("DteBtsBundle:Issue:edit.html.twig")
      * @ParamConverter("issue", class="DteBtsBundle:Issue")
+     * @Security("is_granted('edit', issue)")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param Issue $issue
@@ -262,12 +248,7 @@ class IssueController extends Controller
      */
     public function updateAction(Request $request, Issue $issue)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        if (false === $this->get('security.context')->isGranted('edit', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
+        $em       = $this->getDoctrine()->getManager();
         $editForm = $this->createEditForm($issue);
         $editForm->handleRequest($request);
 
@@ -290,6 +271,7 @@ class IssueController extends Controller
      * @Method("GET")
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "id"})
      * @ParamConverter("status", class="DteBtsBundle:IssueStatus", options={"id" = "status"})
+     * @Security("is_granted('edit', issue)")
      *
      * @param Issue $issue
      * @param IssueStatus $status
@@ -299,11 +281,6 @@ class IssueController extends Controller
     public function changeStatusAction(Issue $issue, $status)
     {
         $em = $this->getDoctrine()->getManager();
-
-        if (false === $this->get('security.context')->isGranted('edit', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $issue->setStatus($status);
         $em->flush();
 
@@ -317,6 +294,7 @@ class IssueController extends Controller
      * @Method("GET")
      * @Template("DteBtsBundle:Issue:collaborators.html.twig")
      * @ParamConverter("issue", class="DteBtsBundle:Issue")
+     * @Security("is_granted('view', issue)")
      *
      * @param Issue $issue
      *
@@ -324,10 +302,6 @@ class IssueController extends Controller
      */
     public function getCollaboratorsAction(Issue $issue)
     {
-        if (false === $this->get('security.context')->isGranted('view', $issue)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         return array(
             'entity' => $issue,
         );

@@ -7,11 +7,11 @@ use Dte\BtsBundle\Form\UserType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -27,15 +27,12 @@ class UserController extends Controller
      * @Route("/", name="user")
      * @Method("GET")
      * @Template()
+     * @Security("is_granted('view', 'Dte\\BtsBundle\\Entity\\User')")
      *
      * @return  array
      */
     public function indexAction()
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('DteBtsBundle:User')->findAll();
@@ -51,6 +48,7 @@ class UserController extends Controller
      * @Route("/", name="user_create")
      * @Method("POST")
      * @Template("DteBtsBundle:User:new.html.twig")
+     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\User')")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -58,10 +56,6 @@ class UserController extends Controller
      */
     public function createAction(Request $request)
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $user = new User();
         $form = $this->createCreateForm($user);
         $form->handleRequest($request);
@@ -114,15 +108,12 @@ class UserController extends Controller
      * @Route("/new", name="user_new")
      * @Method("GET")
      * @Template()
+     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\User')")
      *
      * @return array
      */
     public function newAction()
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $user = new User();
         $form   = $this->createCreateForm($user);
 
@@ -139,6 +130,7 @@ class UserController extends Controller
      * @Method("GET")
      * @Template()
      * @ParamConverter("user", class="DteBtsBundle:User")
+     * @Security("is_granted('view', user)")
      *
      * @param User $user
      *
@@ -163,6 +155,7 @@ class UserController extends Controller
      * @Method("GET")
      * @Template()
      * @ParamConverter("user", class="DteBtsBundle:User")
+     * @Security("is_granted('edit', user)")
      *
      * @param User $user
      *
@@ -170,10 +163,6 @@ class UserController extends Controller
      */
     public function editAction(User $user)
     {
-        if (false === $this->get('security.context')->isGranted('edit', $user)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $editForm = $this->createEditForm($user);
 
         return array(
@@ -208,6 +197,7 @@ class UserController extends Controller
      * @Method("PUT")
      * @Template("DteBtsBundle:User:edit.html.twig")
      * @ParamConverter("user", class="DteBtsBundle:User")
+     * @Security("is_granted('edit', user)")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param User $user
@@ -217,10 +207,6 @@ class UserController extends Controller
     public function updateAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
-
-        if (false === $this->get('security.context')->isGranted('edit', $user)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
 
         $oldPassword = $user->getPassword();
         $oldRoles    = $user->getRoles();
@@ -271,16 +257,13 @@ class UserController extends Controller
      * @Route("/profile", name="user_profile")
      * @Method("GET")
      * @Template()
+     * @Security("is_granted('profile', 'Dte\BtsBundle\Entity\User')")
      *
      * @return  array
      */
     public function profileAction()
     {
         $user = $this->get('security.context')->getToken()->getUser();
-
-        if (false === $this->get('security.context')->isGranted('profile', $user)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
 
         return array(
             'entity' => $user
@@ -293,20 +276,13 @@ class UserController extends Controller
      * @Route("/profile/edit", name="user_profile_edit")
      * @Method("GET")
      * @Template()
+     * @Security("is_granted('profile', 'Dte\BtsBundle\Entity\User'")
      *
      * @return  array
      */
     public function profileEditAction()
     {
         $user = $this->get('security.context')->getToken()->getUser();
-
-        if (!$user) {
-            throw $this->createNotFoundException($this->get('translator')->trans('bts.page.user.error.not_found'));
-        }
-
-        if (false === $this->get('security.context')->isGranted('profile', $user)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
 
         $editForm = $this->createProfileForm($user);
 

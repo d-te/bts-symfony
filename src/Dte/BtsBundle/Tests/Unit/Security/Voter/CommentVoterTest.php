@@ -49,7 +49,8 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
     public function supportsAttributeDataProvider()
     {
         return array(
-            array('view', false),
+            array('create', true),
+            array('view', true),
             array('edit', true),
             array('delete', true),
             array('profile', false),
@@ -164,8 +165,12 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
         return array(
             array(1, 11, 'delete', VoterInterface::ACCESS_DENIED),
             array(1, 11, 'edit', VoterInterface::ACCESS_DENIED),
+            array(1, 11, 'view', VoterInterface::ACCESS_GRANTED),
+            array(1, 11, 'create', VoterInterface::ACCESS_GRANTED),
             array(11, 11, 'delete', VoterInterface::ACCESS_GRANTED),
             array(11, 11, 'edit', VoterInterface::ACCESS_GRANTED),
+            array(11, 11, 'view', VoterInterface::ACCESS_GRANTED),
+            array(11, 11, 'create', VoterInterface::ACCESS_GRANTED),
         );
     }
 }

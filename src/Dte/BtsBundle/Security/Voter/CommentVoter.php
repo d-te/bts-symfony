@@ -8,8 +8,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CommentVoter extends AbstractRoleHierarchyVoter
 {
-    const DELETE = 'delete';
+    const CREATE = 'create';
     const EDIT   = 'edit';
+    const VIEW   = 'view';
+    const DELETE = 'delete';
 
     /**
      * {@inheritDoc}
@@ -17,8 +19,10 @@ class CommentVoter extends AbstractRoleHierarchyVoter
     public function supportsAttribute($attribute)
     {
         return in_array($attribute, array(
-            self::DELETE,
+            self::CREATE,
             self::EDIT,
+            self::VIEW,
+            self::DELETE,
         ));
     }
 
@@ -34,11 +38,12 @@ class CommentVoter extends AbstractRoleHierarchyVoter
 
     /**
      * {@inheritDoc}
-     * @var \Dte\BtsBundle\Entity\Comment $object
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        $class = (is_object($object)) ? get_class($object) : $object;
+
+        if (!$this->supportsClass($class)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -58,7 +63,15 @@ class CommentVoter extends AbstractRoleHierarchyVoter
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        switch($attribute) {
+        switch ($attribute) {
+            case self::VIEW:
+                return VoterInterface::ACCESS_GRANTED;
+                break;
+            case self::CREATE:
+                if ($this->hasRole($token, 'ROLE_OPERATOR')) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
+                break;
             case self::EDIT:
             case self::DELETE:
                 if ($object->getUser()->getId() === $user->getId()) {

@@ -7,11 +7,11 @@ use Dte\BtsBundle\Entity\Project;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -27,15 +27,12 @@ class ProjectController extends Controller
      * @Route("/", name="project")
      * @Method("GET")
      * @Template()
+     * @Security("is_granted('view', 'Dte\\BtsBundle\\Entity\\Project')")
      *
      * @return  array
      */
     public function indexAction()
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_OPERATOR')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
 
         $projects = $em->getRepository('DteBtsBundle:Project')->findAll();
@@ -51,6 +48,7 @@ class ProjectController extends Controller
      * @Route("/", name="project_create")
      * @Method("POST")
      * @Template("DteBtsBundle:Project:new.html.twig")
+     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Project')")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -58,10 +56,6 @@ class ProjectController extends Controller
      */
     public function createAction(Request $request)
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_MANAGER')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $project = new Project();
         $form = $this->createCreateForm($project);
         $form->handleRequest($request);
@@ -105,15 +99,12 @@ class ProjectController extends Controller
      * @Route("/new", name="project_new")
      * @Method("GET")
      * @Template()
+     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Project')")
      *
      * @return array
      */
     public function newAction()
     {
-        if (false === $this->get('security.context')->isGranted('ROLE_MANAGER')) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $project = new Project();
         $form   = $this->createCreateForm($project);
 
@@ -130,6 +121,7 @@ class ProjectController extends Controller
      * @Method("GET")
      * @Template()
      * @ParamConverter("project", class="DteBtsBundle:Project")
+     * @Security("is_granted('view', project)")
      *
      * @param Project $project
      *
@@ -137,11 +129,6 @@ class ProjectController extends Controller
      */
     public function showAction(Project $project)
     {
-
-        if (false === $this->get('security.context')->isGranted('view', $project)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $em = $this->getDoctrine()->getManager();
 
         $activities = $em->getRepository('DteBtsBundle:Activity')->findActivitiesByProject($project);
@@ -159,6 +146,7 @@ class ProjectController extends Controller
      * @Method("GET")
      * @Template()
      * @ParamConverter("project", class="DteBtsBundle:Project")
+     * @Security("is_granted('edit', project)")
      *
      * @param Project $project
      *
@@ -166,10 +154,6 @@ class ProjectController extends Controller
      */
     public function editAction(Project $project)
     {
-        if (false === $this->get('security.context')->isGranted('edit', $project)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-
         $editForm = $this->createEditForm($project);
 
         return array(
@@ -204,6 +188,7 @@ class ProjectController extends Controller
      * @Method("PUT")
      * @Template("DteBtsBundle:Project:edit.html.twig")
      * @ParamConverter("project", class="DteBtsBundle:Project")
+     * @Security("is_granted('edit', project)")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param Project $project
@@ -213,10 +198,6 @@ class ProjectController extends Controller
     public function updateAction(Request $request, Project $project)
     {
         $em = $this->getDoctrine()->getManager();
-
-        if (false === $this->get('security.context')->isGranted('edit', $project)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
 
         $editForm = $this->createEditForm($project);
         $editForm->handleRequest($request);
@@ -239,6 +220,7 @@ class ProjectController extends Controller
      * @Route("/{id}/members", name="project_members_api")
      * @Method("GET")
      * @ParamConverter("project", class="DteBtsBundle:Project")
+     * @Security("is_granted('view', project)")
      *
      * @param Project $project
      *
@@ -268,6 +250,7 @@ class ProjectController extends Controller
      * @Route("/{id}/stories", name="project_stories_api")
      * @Method("GET")
      * @ParamConverter("project", class="DteBtsBundle:Project")
+     * @Security("is_granted('view', project)")
      *
      * @param Project $project
      *

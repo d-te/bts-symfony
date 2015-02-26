@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Comment
  *
@@ -18,6 +20,8 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="body", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Length(max = 255)
      */
     private $body;
 

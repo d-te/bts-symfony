@@ -6,6 +6,7 @@ use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -87,9 +88,11 @@ class CommentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
+
+            return new JsonResponse(array('saved'));
         }
 
-        return new JsonResponse(array('saved'));
+        return new JsonResponse($this->getFormErrors($form), 400);
     }
 
     /**
@@ -160,9 +163,11 @@ class CommentController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
+
+            return new JsonResponse(array('saved'));
         }
 
-        return new JsonResponse(array('saved'));
+        return new JsonResponse($this->getFormErrors($form), 400);
     }
 
     /**
@@ -188,9 +193,11 @@ class CommentController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($comment);
             $em->flush();
+
+            return new JsonResponse(array('deleted'));
         }
 
-        return new JsonResponse(array('deleted'));
+        return new JsonResponse($this->getFormErrors($form), 400);
     }
 
     /**
@@ -217,5 +224,27 @@ class CommentController extends Controller
             ->add('submit', 'submit', array('label' => 'bts.default.action.delete'))
             ->getForm()
         ;
+    }
+
+    /**
+     * Creates a form to delete a Comment entity by id.
+     *
+     * @param \Symfony\Component\Form\Form $form
+     *
+     * @return array
+     */
+    private function getFormErrors(Form $form)
+    {
+        $errors = array();
+
+        foreach ($form->all() as $item) {
+            $errors[$item->getName()] = array();
+
+            foreach ($item->getErrors() as $error) {
+                $errors[$item->getName()] = $error->getMessage();
+            }
+        }
+
+        return $errors;
     }
 }

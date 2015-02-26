@@ -180,11 +180,23 @@
                     type: 'POST',
                     url: url,
                     data: data,
-                    success: function() {
-                        refresh();
-                        refreshCollaborators();
-                        enableAddForm();
-                    },
+                }).done(function() {
+                    refresh();
+                    refreshCollaborators();
+                })
+                .fail(function(jqXHR, textStatus) {
+                    var error = '';
+                    if (jqXHR.responseJSON !== 'undefined') {
+                        $.each(jqXHR.responseJSON, function( index, value ) {
+                            error += value;
+                        });
+                        alert(error);
+                    } else {
+                        alert('Some error');
+                    }
+                })
+                .always(function() {
+                    enableAddForm();
                 });
             }
 
@@ -194,9 +206,19 @@
                     type: 'PUT',
                     url: url +  commentId,
                     data: data,
-                    success: function() {
-                        refresh();
-                    },
+                }).done(function() {
+                    refresh();
+                })
+                .fail(function(jqXHR, textStatus) {
+                    var error = '';
+                    if (jqXHR.responseJSON !== 'undefined') {
+                        $.each(jqXHR.responseJSON, function( index, value ) {
+                            error += value;
+                        });
+                        alert(error);
+                    } else {
+                        alert('Some error');
+                    }
                 });
             }
 
@@ -206,9 +228,19 @@
                     type: 'DELETE',
                     url: url +  commentId,
                     data: data,
-                    success: function() {
-                        refresh();
-                    },
+                }).done(function() {
+                    refresh();
+                })
+                .fail(function(jqXHR, textStatus) {
+                    var error = '';
+                    if (jqXHR.responseJSON !== 'undefined') {
+                        $.each(jqXHR.responseJSON, function( index, value ) {
+                            error += value;
+                        });
+                        alert(error);
+                    } else {
+                        alert('Some error');
+                    }
                 });
             }
         }

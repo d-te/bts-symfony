@@ -135,9 +135,7 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="user_show", requirements={
-     *     "id": "\d+"
-     * }))
+     * @Route("/{id}", name="user_show", requirements={"id": "\d+"})
      * @Method("GET")
      * @Template()
      * @ParamConverter("user", class="DteBtsBundle:User")
@@ -161,9 +159,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="user_edit", requirements={
-     *     "id": "\d+"
-     * }))
+     * @Route("/{id}/edit", name="user_edit", requirements={"id": "\d+"})
      * @Method("GET")
      * @Template()
      * @ParamConverter("user", class="DteBtsBundle:User")

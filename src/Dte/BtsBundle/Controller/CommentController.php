@@ -19,9 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 /**
  * Comment controller.
  *
- * @Route("/issue/{issueId}/comment", requirements={
- *     "issueId": "\d+"
- * })
+ * @Route("/issue/{issueId}/comment", requirements={"issueId": "\d+"})
  */
 class CommentController extends Controller
 {
@@ -149,9 +147,7 @@ class CommentController extends Controller
     /**
      * Edits an existing Comment entity.
      *
-     * @Route("/{id}", name="issue_comment_update", requirements={
-     *     "id": "\d+"
-     * }))
+     * @Route("/{id}", name="issue_comment_update", requirements={"id": "\d+"})
      * @Method("PUT")
      * @ParamConverter("comment", class="DteBtsBundle:Comment")
      *

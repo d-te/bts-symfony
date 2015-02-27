@@ -4,6 +4,8 @@ namespace Dte\BtsBundle\Tests\Controller;
 
 use Dte\BtsBundle\Tests\FixturesWebTestCase;
 
+use Dte\BtsBundle\Entity\IssueTaskType;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class IssueControllerTest extends FixturesWebTestCase
@@ -32,7 +34,7 @@ class IssueControllerTest extends FixturesWebTestCase
 
         $form = $crawler->selectButton('Create')->form(array(
             'dte_btsbundle_issue[project]'     => 1,
-            'dte_btsbundle_issue[type]'        => 2,
+            'dte_btsbundle_issue[type]'        => IssueTaskType::TASK_TYPE,
             'dte_btsbundle_issue[summary]'     => 'Test issue summary',
             'dte_btsbundle_issue[description]' => 'Test issue summary descrption',
             'dte_btsbundle_issue[status]'      => 1,
@@ -88,7 +90,7 @@ class IssueControllerTest extends FixturesWebTestCase
 
         $form = $crawler->selectButton('Create')->form(array(
             'dte_btsbundle_issue[project]'     => 1,
-            'dte_btsbundle_issue[type]'        => 4,
+            'dte_btsbundle_issue[type]'        => IssueTaskType::SUBTASK_TYPE,
             'dte_btsbundle_issue[summary]'     => 'Test issue summary',
             'dte_btsbundle_issue[description]' => 'Test issue summary descrption',
             'dte_btsbundle_issue[status]'      => 1,

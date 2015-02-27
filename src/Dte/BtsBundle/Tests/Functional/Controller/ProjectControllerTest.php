@@ -96,13 +96,9 @@ class ProjectControllerTest extends FixturesWebTestCase
 
         $this->client->request('GET', '/project/111/members');
         $this->assertEquals(
-            404,
+            403,
             $this->client->getResponse()->getStatusCode(),
             "Unexpected HTTP status code for GET /project/"
-        );
-        $this->assertEquals(
-            '{"error":"Unable to find Project entity."}',
-            $this->client->getResponse()->getContent()
         );
     }
 
@@ -128,13 +124,9 @@ class ProjectControllerTest extends FixturesWebTestCase
 
         $this->client->request('GET', '/project/111/stories');
         $this->assertEquals(
-            404,
+            403,
             $this->client->getResponse()->getStatusCode(),
             "Unexpected HTTP status code for GET /project/"
-        );
-        $this->assertEquals(
-            '{"error":"Unable to find Project entity."}',
-            $this->client->getResponse()->getContent()
         );
     }
 }

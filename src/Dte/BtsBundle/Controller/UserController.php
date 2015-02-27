@@ -257,7 +257,7 @@ class UserController extends Controller
      * @Route("/profile", name="dte_bts_user_profile")
      * @Method("GET")
      * @Template()
-     * @Security("is_granted('profile', 'Dte\BtsBundle\Entity\User')")
+     * @Security("is_granted('profile', 'Dte\\BtsBundle\\Entity\\User')")
      *
      * @return  array
      */
@@ -276,7 +276,7 @@ class UserController extends Controller
      * @Route("/profile/edit", name="dte_bts_user_profile_edit")
      * @Method("GET")
      * @Template()
-     * @Security("is_granted('profile', 'Dte\BtsBundle\Entity\User'")
+     * @Security("is_granted('profile', 'Dte\\BtsBundle\\Entity\\User')")
      *
      * @return  array
      */

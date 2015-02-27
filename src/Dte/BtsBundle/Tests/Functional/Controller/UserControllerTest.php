@@ -64,6 +64,36 @@ class UserControllerTest extends FixturesWebTestCase
         );
     }
 
+    public function testCreateWithErrorsScenario()
+    {
+        $this->logInByUsername('admin');
+
+        $crawler = $this->client->request('GET', '/user/');
+        $this->assertEquals(
+            200,
+            $this->client->getResponse()->getStatusCode(),
+            "Unexpected HTTP status code for GET /user/"
+        );
+
+        $crawler = $this->client->click($crawler->selectLink('Create a new user')->link());
+
+        $form = $crawler->selectButton('Create')->form(array(
+            'dte_btsbundle_user[email]'    => 'admin@bts.dev',
+            'dte_btsbundle_user[username]' => 'tester',
+            'dte_btsbundle_user[fullname]' => 'Tester T.T.',
+            'dte_btsbundle_user[password]' => 'tester',
+            'dte_btsbundle_user[avatar]'   => 'https://avatars3.githubusercontent.com/u/3748005?v=3&s=460',
+        ));
+
+        $crawler = $this->client->submit($form);
+        //$crawler = $this->client->followRedirect();
+
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('li:contains("This value is already used.")')->count()
+        );
+    }
+
     public function testProfileScenario()
     {
         $this->logInByUsername('admin');

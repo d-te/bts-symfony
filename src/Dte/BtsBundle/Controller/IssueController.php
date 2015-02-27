@@ -2,7 +2,6 @@
 
 namespace Dte\BtsBundle\Controller;
 
-use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssueTaskType;
 use Dte\BtsBundle\Form\IssueType;
@@ -100,26 +99,6 @@ class IssueController extends Controller
     }
 
     /**
-     * Creates a form to create/edit Comment.
-     *
-     * @param \Dte\BtsBundle\Entity\Comment $comment The entity
-     * @param \Dte\BtsBundle\Entity\Issue $issue parent story
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCommentForm(Comment $comment, Issue $issue)
-    {
-        $form = $this->get('form.factory')->create('dte_btsbundle_comment', $comment, array(
-            'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
-            'method' => 'POST',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'bts.page.issue.action.comment'));
-
-        return $form;
-    }
-
-    /**
      * Displays a form to create a new Issue entity.
      *
      * @Route("/new", name="issue_new")
@@ -178,11 +157,8 @@ class IssueController extends Controller
      */
     public function showAction(Issue $issue)
     {
-        $commentForm = $this->createCommentForm(new Comment(), $issue);
-
         return array(
             'entity'       => $issue,
-            'comment_form' => $commentForm->createView(),
             'types'        => IssueTaskType::getItems(),
         );
     }

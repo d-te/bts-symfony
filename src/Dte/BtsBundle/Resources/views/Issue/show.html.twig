@@ -117,7 +117,7 @@
             </div>
             <div class="row">
                 <div class="col-md-10">
-                    {{ form(comment_form) }}
+                    {{ render(controller('DteBtsBundle:Comment:new', { 'issue': entity })) }}
                 </div>
             </div>
             <div class="row">

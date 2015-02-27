@@ -60,6 +60,29 @@ class CommentController extends Controller
     }
 
     /**
+     * Displays a form to create a new Comment entity.
+     *
+     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Comment')")
+     * @Template()
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Issue $issue
+     *
+     * @return array
+     */
+    public function newAction(Issue $issue)
+    {
+        $comment = new Comment();
+
+        $form   = $this->createCreateForm($comment, $issue);
+
+        return array(
+            'entity' => $comment,
+            'form'   => $form->createView(),
+        );
+    }
+
+    /**
      * Creates a new Comment entity.
      *
      * @Route("/", name="issue_comment_create")

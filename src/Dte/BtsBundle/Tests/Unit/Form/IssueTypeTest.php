@@ -36,22 +36,6 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
             ->setConstructorArgs(array($this->securityContext, $this->em))
             ->setMethods(array('getUser', 'getProjectMembers', 'getProjectStories'))
             ->getMock();
-
-        $this->form
-            ->expects($this->any())
-            ->method('getUser')
-            ->will($this->returnValue(new User()));
-
-        $this->form
-            ->expects($this->any())
-            ->method('getProjectMembers')
-            ->will($this->returnValue(array()));
-
-        $this->form
-            ->expects($this->any())
-            ->method('getProjectStories')
-            ->will($this->returnValue(array()));
-
     }
 
     public function tearDown()

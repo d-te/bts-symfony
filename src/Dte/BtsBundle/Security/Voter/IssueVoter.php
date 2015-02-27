@@ -71,7 +71,7 @@ class IssueVoter extends AbstractRoleHierarchyVoter
             case self::VIEW:
                 if (is_object($object)) {
                     foreach ($object->getProject()->getMembers() as $member) {
-                        if ($member->getId() === $user->getId() && $this->hasRole($token, 'ROLE_OPERATOR')) {
+                        if ($member->isEqualTo($user) && $this->hasRole($token, 'ROLE_OPERATOR')) {
                             return VoterInterface::ACCESS_GRANTED;
                         }
                     }

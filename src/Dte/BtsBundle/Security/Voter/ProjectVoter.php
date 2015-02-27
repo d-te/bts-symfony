@@ -68,7 +68,7 @@ class ProjectVoter extends AbstractRoleHierarchyVoter
             case self::VIEW:
                 if (is_object($object)) {
                     foreach ($object->getMembers() as $member) {
-                        if ($member->getId() === $user->getId()) {
+                        if ($member->isEqualTo($user)) {
                             return VoterInterface::ACCESS_GRANTED;
                         }
                     }

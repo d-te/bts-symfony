@@ -74,7 +74,7 @@ class CommentVoter extends AbstractRoleHierarchyVoter
                 break;
             case self::EDIT:
             case self::DELETE:
-                if ($object->getUser()->getId() === $user->getId()) {
+                if ($object->getUser()->isEqualTo($user)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;

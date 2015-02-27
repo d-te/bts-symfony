@@ -194,7 +194,7 @@ class ActivityManager
         );
 
         foreach ($collaborators as $collaborator) {
-            if ($collaborator->getId() !== $activity->getUser()->getId()) {
+            if (!$collaborator->isEqualTo($activity->getUser())) {
                 $message = $this->mailer->createMessage()
                     ->setFrom($this->noreplyEmail)
                     ->setSubject($subject)

@@ -10,14 +10,14 @@ use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class IssueListener
 {
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContext
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
      */
-    private $securityContext;
+    private $tokenStorage;
 
     /**
      * @var array
@@ -25,11 +25,18 @@ class IssueListener
     private $collaborators = [];
 
     /**
-     * Constructor
+     * @var Boolean
      */
-    public function __construct(SecurityContext $securityContext)
+    private $needsFlush = false;
+
+    /**
+     * Constructor
+     *
+     * @param TokenStorageInterface $tokenStorage
+     */
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
-        $this->securityContext = $securityContext;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -39,7 +46,7 @@ class IssueListener
      */
     public function getUser()
     {
-        return $this->securityContext->getToken()->getUser();
+        return $this->tokenStorage->getToken()->getUser();
     }
 
    /**
@@ -48,10 +55,9 @@ class IssueListener
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $em     = $args->getEntityManager();
 
         if ($entity instanceof Issue) {
-            $this->addIssueCode($entity, $em);
+            $this->addIssueCode($entity);
             $this->addIssueReporterCollaborator($entity);
             $this->addIssueAssigneeCollaborator($entity);
         } elseif ($entity instanceof Comment) {
@@ -122,10 +128,10 @@ class IssueListener
      *
      * @param Issue $issue
      */
-    public function addIssueCode(Issue $issue, EntityManagerInterface $em)
+    public function addIssueCode(Issue $issue)
     {
         $issue->setCode($issue->generateCode());
-        $em->flush();
+        $this->needsFlush = true;
     }
 
     /**
@@ -161,6 +167,11 @@ class IssueListener
             }
 
             $this->collaborators = [];
+            $this->needsFlush = true;
+        }
+
+        if ($this->needsFlush) {
+            $this->needsFlush = false;
             $em->flush();
         }
     }

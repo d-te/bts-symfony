@@ -1,8 +1,0 @@
-<html>
-<body>
-	{% set issue_link %} <a href="{{ url('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a> {% endset %}
-	{% set user_link %} <a href="{{ url('user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a> {% endset %}
-    <p>{{ 'bts.email.notification'|trans({'%issue_link%': issue_link, '%user_link%': user_link}) }}</p>
-    <p>{{ activity.message }}</p>
-</body>
-</html>

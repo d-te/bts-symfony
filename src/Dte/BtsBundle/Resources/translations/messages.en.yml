@@ -147,4 +147,4 @@ bts:
             password.label:         Password
             roles.label:            Roles
     email:
-        notification: Issue %issue_link% has been updated by user %user_link% with message:
+        notification: <html><body><p>Issue <a href="%issue_url%">%issue_code%</a> has been updated by user<a href="%user_url%">%user_name%</a> with message:</p><p>%message%</p></body></html>

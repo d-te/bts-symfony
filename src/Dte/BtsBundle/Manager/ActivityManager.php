@@ -2,6 +2,7 @@
 
 namespace Dte\BtsBundle\Manager;
 
+use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\ORM\EntityManager;
 
 use Dte\BtsBundle\Entity\Activity;
@@ -9,14 +10,41 @@ use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\User;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class ActivityManager
 {
     /**
-     * @var ContainerInterface
+     *  @var \Doctrine\Bundle\DoctrineBundle\Registry
      */
-    protected $container;
+    private $doctrine;
+
+    /**
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    /**
+     * @var \Swift_Mailer
+     */
+    private $mailer;
+
+    /**
+     * @var \Symfony\Component\Translation\TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var \Symfony\Component\Routing\RouterInterface
+     */
+    private $router;
+
+    /**
+     *  @var string
+     */
+    private $noreplyEmail;
 
     /**
      * Activities to save
@@ -27,10 +55,28 @@ class ActivityManager
 
     /**
      * Constructor
+     *
+     * @param TokenStorageInterface $tokenStorage
+     * @param Doctrine              $doctrine
+     * @param \Swift_Mailer         $mailer
+     * @param TranslatorInterface   $translator
+     * @param RouterInterface       $router
+     * @param string                $noreplyEmail
      */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        Doctrine $doctrine,
+        \Swift_Mailer $mailer,
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        $noreplyEmail
+    ) {
+        $this->tokenStorage = $tokenStorage;
+        $this->doctrine     = $doctrine;
+        $this->mailer       = $mailer;
+        $this->translator   = $translator;
+        $this->router       = $router;
+        $this->noreplyEmail = $noreplyEmail;
     }
 
     /**
@@ -40,7 +86,7 @@ class ActivityManager
      */
     public function getUser()
     {
-        return $this->container->get('security.context')->getToken()->getUser();
+        return $this->tokenStorage->getToken()->getUser();
     }
 
     /**
@@ -50,7 +96,7 @@ class ActivityManager
      */
     public function getEntityManager()
     {
-        return $this->container->get('doctrine')->getManager();
+        return $this->doctrine->getManager();
     }
 
     /**
@@ -109,15 +155,54 @@ class ActivityManager
      */
     public function saveActivities()
     {
-        if (!empty($this->activities)) {
-            $em = $this->getEntityManager();
+        $em = $this->getEntityManager();
 
+        if (!empty($this->activities)) {
             foreach ($this->activities as $activity) {
                 $em->persist($activity);
+
+                $this->sendCollaboratorsNotification($activity);
             }
 
             $this->activities = [];
             $em->flush();
+        }
+    }
+
+    /**
+     *  Send notification email to issue's collaborators
+     *
+     *  @param Activity $activity
+     */
+    public function sendCollaboratorsNotification(Activity $activity)
+    {
+        $collaborators = $activity->getIssue()->getCollaborators();
+        $subject       = sprintf('[BTS] [%s] notification', $activity->getIssue()->getCode());
+        $body          = $this->translator->trans(
+            'bts.email.notification',
+            array(
+                '%issue_url%'  => $this
+                    ->router
+                    ->generate('issue_show', array('id' => $activity->getIssue()->getId()), true),
+                '%issue_code%' => $activity->getIssue()->getCode(),
+                '%user_url%'   => $this
+                    ->router
+                    ->generate('user_show', array('id' => $activity->getUser()->getId()), true),
+                '%user_name%'  => $activity->getUser()->getFullname(),
+                '%message%'    => $activity->getMessage(),
+            )
+        );
+
+        foreach ($collaborators as $collaborator) {
+            if ($collaborator->getId() !== $activity->getUser()->getId()) {
+                $message = $this->mailer->createMessage()
+                    ->setFrom($this->noreplyEmail)
+                    ->setSubject($subject)
+                    ->setTo($collaborator->getEmail())
+                    ->setBody($body, 'text/html');
+
+                $this->mailer->send($message);
+            }
         }
     }
 }

@@ -20,18 +20,18 @@ services:
         tags:
             - {name: form.type, alias: dte_btsbundle_user}
 
-#    dte_bts_issue.listener:
-#        class: Dte\BtsBundle\EventListener\IssueListener
-#        tags:
-#            - { name: doctrine.event_listener, event: prePersist }
-#            - { name: doctrine.event_listener, event: postPersist }
-#            - { name: doctrine.event_listener, event: preUpdate }
-#            - { name: doctrine.event_listener, event: postFlush }
-#        arguments: ["@security.context"]
+    dte_bts_issue.listener:
+        class: Dte\BtsBundle\EventListener\IssueListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postFlush }
+        arguments: ["@security.token_storage"]
 
     dte_bts_activity.manager:
         class: Dte\BtsBundle\Manager\ActivityManager
-        arguments: ["@service_container"]
+        arguments: ["@security.token_storage", "@doctrine", "@mailer", "@translator", "@router", %dte_bts.noreply_email%]
 
     dte_bts_activity.listener:
         class: Dte\BtsBundle\EventListener\ActivityListener
@@ -40,12 +40,6 @@ services:
             - { name: doctrine.event_listener, event: preUpdate }
             - { name: doctrine.event_listener, event: postFlush }
         arguments: ["@dte_bts_activity.manager"]
-
-    dte_bts_notification.subscriber:
-        class: Dte\BtsBundle\EventListener\NotificationSubscriber
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        arguments: ["@service_container"]
 
     dte_bts_role_hierarchy:
         alias: security.role_hierarchy

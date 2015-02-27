@@ -4,6 +4,7 @@ namespace Dte\BtsBundle\Tests\Unit\Entity;
 
 use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
+use Dte\BtsBundle\Entity\IssueTaskType;
 use Dte\BtsBundle\Entity\IssuePriority;
 use Dte\BtsBundle\Entity\IssueResolution;
 use Dte\BtsBundle\Entity\IssueStatus;
@@ -268,12 +269,12 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     public function testGenerateCode()
     {
         $issue = $this->getMockBuilder('Dte\BtsBundle\Entity\Issue')
-                        ->setMethods(array('getId'))
-                        ->getMock();
+            ->setMethods(array('getId'))
+            ->getMock();
         $issue
-              ->expects($this->once())
-              ->method('getId')
-              ->will($this->returnValue(5));
+            ->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(5));
 
         $project = new Project();
         $project->setCode('CODE');
@@ -281,5 +282,48 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $issue->setProject($project);
 
         $this->assertEquals('CODE-5', $issue->generateCode());
+    }
+
+    public function testIsStorySelectedWithViolation()
+    {
+        $issue = new Issue();
+        $issue->setType(IssueTaskType::SUBTASK_TYPE);
+
+        $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
+            ->disableOriginalConstructor()
+            ->setMethods(array('addViolationAt'))
+            ->getMock();
+
+        $context
+            ->expects($this->once())
+            ->method('addViolationAt')
+            ->with(
+                $this->equalTo('parent'),
+                $this->equalTo('This field is required for subtask type issue!'),
+                $this->equalTo(array()),
+                $this->equalTo(null)
+            );
+
+        $issue->isStorySelected($context);
+    }
+
+    public function testIsStorySelected()
+    {
+        $story = new Issue();
+
+        $issue = new Issue();
+        $issue->setType(IssueTaskType::SUBTASK_TYPE);
+        $issue->setParent($story);
+
+        $context = $this->getMockBuilder('Symfony\Component\Validator\ExecutionContext')
+            ->disableOriginalConstructor()
+            ->setMethods(array('addViolationAt'))
+            ->getMock();
+
+        $context
+            ->expects($this->never())
+            ->method('addViolationAt');
+
+        $issue->isStorySelected($context);
     }
 }

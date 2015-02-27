@@ -41,15 +41,15 @@ class UserVoter extends AbstractRoleHierarchyVoter
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        $class = (is_object($object)) ? get_class($object) : $object;
-
-        if (!$this->supportsClass($class)) {
-            return VoterInterface::ACCESS_ABSTAIN;
+        if (is_object($object)) {
+            $class = get_class($object);
+        } else {
+            $class = $object;
         }
 
         $attribute = $attributes[0];
 
-        if (!$this->supportsAttribute($attribute)) {
+        if (!$this->supportsClass($class) || !$this->supportsAttribute($attribute)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -73,7 +73,7 @@ class UserVoter extends AbstractRoleHierarchyVoter
                 break;
             case self::EDIT:
             case self::PROFILE:
-                if ($object->getId() === $user->getId()) {
+                if ($object->isEqualTo($user)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;

@@ -129,7 +129,7 @@ class CommentController extends Controller
     private function createCreateForm(Comment $comment, Issue $issue)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_comment', $comment, array(
-            'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
+            'action' => $this->generateUrl('dte_bts_issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'POST',
         ));
 
@@ -149,7 +149,7 @@ class CommentController extends Controller
     private function createEditForm(Comment $comment, Issue $issue)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_comment', $comment, array(
-            'action' => $this->generateUrl('issue_comment_create', array('issueId' => $issue->getId())),
+            'action' => $this->generateUrl('dte_bts_issue_comment_create', array('issueId' => $issue->getId())),
             'method' => 'PUT',
         ));
 

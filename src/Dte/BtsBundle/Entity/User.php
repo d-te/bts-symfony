@@ -78,7 +78,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Role")
      * @ORM\JoinTable(name="user_roles",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
@@ -289,6 +289,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     public function eraseCredentials()
     {
+        $this->password = null;
     }
 
     /**

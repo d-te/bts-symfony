@@ -39,19 +39,6 @@ class Role implements RoleInterface
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
-     */
-    private $users;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
-
-    /**
      * Set name
      *
      * @param string $name

@@ -24,7 +24,7 @@ class ProjectController extends Controller
     /**
      * Lists all Project entities.
      *
-     * @Route("/", name="project")
+     * @Route("/", name="dte_bts_project")
      * @Method("GET")
      * @Template()
      * @Security("is_granted('view', 'Dte\\BtsBundle\\Entity\\Project')")
@@ -45,7 +45,7 @@ class ProjectController extends Controller
     /**
      * Creates a new Project entity.
      *
-     * @Route("/", name="project_create")
+     * @Route("/", name="dte_bts_project_create")
      * @Method("POST")
      * @Template("DteBtsBundle:Project:new.html.twig")
      * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Project')")
@@ -65,7 +65,7 @@ class ProjectController extends Controller
             $em->persist($project);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_show', array('id' => $project->getId())));
+            return $this->redirect($this->generateUrl('dte_bts_project_show', array('id' => $project->getId())));
         }
 
         return array(
@@ -84,7 +84,7 @@ class ProjectController extends Controller
     private function createCreateForm(Project $project)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_project', $project, array(
-            'action' => $this->generateUrl('project_create'),
+            'action' => $this->generateUrl('dte_bts_project_create'),
             'method' => 'POST',
         ));
 
@@ -96,7 +96,7 @@ class ProjectController extends Controller
     /**
      * Displays a form to create a new Project entity.
      *
-     * @Route("/new", name="project_new")
+     * @Route("/new", name="dte_bts_project_new")
      * @Method("GET")
      * @Template()
      * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Project')")
@@ -117,7 +117,7 @@ class ProjectController extends Controller
     /**
      * Finds and displays a Project entity.
      *
-     * @Route("/{id}", name="project_show")
+     * @Route("/{id}", name="dte_bts_project_show")
      * @Method("GET")
      * @Template()
      * @ParamConverter("project", class="DteBtsBundle:Project")
@@ -142,7 +142,7 @@ class ProjectController extends Controller
     /**
      * Displays a form to edit an existing Project entity.
      *
-     * @Route("/{id}/edit", name="project_edit")
+     * @Route("/{id}/edit", name="dte_bts_project_edit")
      * @Method("GET")
      * @Template()
      * @ParamConverter("project", class="DteBtsBundle:Project")
@@ -172,7 +172,7 @@ class ProjectController extends Controller
     private function createEditForm(Project $project)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_project', $project, array(
-            'action' => $this->generateUrl('project_update', array('id' => $project->getId())),
+            'action' => $this->generateUrl('dte_bts_project_update', array('id' => $project->getId())),
             'method' => 'PUT',
         ));
 
@@ -184,7 +184,7 @@ class ProjectController extends Controller
     /**
      * Edits an existing Project entity.
      *
-     * @Route("/{id}", name="project_update")
+     * @Route("/{id}", name="dte_bts_project_update")
      * @Method("PUT")
      * @Template("DteBtsBundle:Project:edit.html.twig")
      * @ParamConverter("project", class="DteBtsBundle:Project")
@@ -205,7 +205,7 @@ class ProjectController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('project_edit', array('id' => $project->getId())));
+            return $this->redirect($this->generateUrl('dte_bts_project_edit', array('id' => $project->getId())));
         }
 
         return array(
@@ -217,7 +217,7 @@ class ProjectController extends Controller
     /**
      * Get project's members
      *
-     * @Route("/{id}/members", name="project_members_api")
+     * @Route("/{id}/members", name="dte_bts_project_members_api")
      * @Method("GET")
      * @ParamConverter("project", class="DteBtsBundle:Project")
      * @Security("is_granted('view', project)")
@@ -247,7 +247,7 @@ class ProjectController extends Controller
     /**
      * Get project's stories
      *
-     * @Route("/{id}/stories", name="project_stories_api")
+     * @Route("/{id}/stories", name="dte_bts_project_stories_api")
      * @Method("GET")
      * @ParamConverter("project", class="DteBtsBundle:Project")
      * @Security("is_granted('view', project)")

@@ -36,24 +36,24 @@
                 <li {% if app.request.uri == url("dte_bts_homepage") %} class="active" {% endif %}><a href="{{ url("dte_bts_homepage") }}">{{ 'bts.page.main.menu_label'|trans }}</a></li>
                 {% if app.user is not null %}
 
-                <li {% if app.request.uri == url("project") %} class="active" {% endif %}><a href="{{ url("project") }}">{{ 'bts.page.project.menu_label'|trans }}</a></li>
-                <li {% if app.request.uri == url("issue") %} class="active" {% endif %}><a href="{{ url("issue") }}">{{ 'bts.page.issue.menu_label'|trans }}</a></li>
+                <li {% if app.request.uri == url("dte_bts_project") %} class="active" {% endif %}><a href="{{ url("dte_bts_project") }}">{{ 'bts.page.project.menu_label'|trans }}</a></li>
+                <li {% if app.request.uri == url("dte_bts_issue") %} class="active" {% endif %}><a href="{{ url("dte_bts_issue") }}">{{ 'bts.page.issue.menu_label'|trans }}</a></li>
                 {% if (is_granted('view', 'Dte\\BtsBundle\\Entity\\User')) %}
-                <li {% if app.request.uri == url("user") %} class="active" {% endif %}><a href="{{ url("user") }}">{{ 'bts.page.user.menu_label'|trans }}</a></li>
+                <li {% if app.request.uri == url("dte_bts_user") %} class="active" {% endif %}><a href="{{ url("dte_bts_user") }}">{{ 'bts.page.user.menu_label'|trans }}</a></li>
                 {% endif %}
 
                 {% endif %}
               </ul>
 
               {% if app.user is not null %}
-              <a class="btn btn-primary navbar-btn" href="{{ path("issue_new") }}" role="button">{{ 'bts.page.main.action.new_issue'|trans }}</a>
+              <a class="btn btn-primary navbar-btn" href="{{ path("dte_bts_issue_new") }}" role="button">{{ 'bts.page.main.action.new_issue'|trans }}</a>
               {% endif %}
 
               <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
 
-                <li {% if app.request.uri == url("user_profile") %} class="active" {% endif %}>
-                    <a href="{{ url("user_profile") }}">
+                <li {% if app.request.uri == url("dte_bts_user_profile") %} class="active" {% endif %}>
+                    <a href="{{ url("dte_bts_user_profile") }}">
                         {% if app.user.avatar %}
                         <img src="{{app.user.avatar}}" width="18" height="18">
                         {% else %}
@@ -61,8 +61,8 @@
                         {% endif %}
                     </a>
                 </li>
-                <li {% if app.request.uri == url("user_profile") %} class="active" {% endif %}>
-                    <a href="{{ url("user_profile") }}">{{ app.user.fullname }}</a>
+                <li {% if app.request.uri == url("dte_bts_user_profile") %} class="active" {% endif %}>
+                    <a href="{{ url("dte_bts_user_profile") }}">{{ app.user.fullname }}</a>
                 </li>
                 <li><a href="{{ url("dte_bts_logout") }}">{{ 'bts.page.main.action.logout'|trans }}</a></li>
                 {% endif %}

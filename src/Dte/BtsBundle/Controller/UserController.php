@@ -24,7 +24,7 @@ class UserController extends Controller
     /**
      * Lists all User entities.
      *
-     * @Route("/", name="user")
+     * @Route("/", name="dte_bts_user")
      * @Method("GET")
      * @Template()
      * @Security("is_granted('view', 'Dte\\BtsBundle\\Entity\\User')")
@@ -45,7 +45,7 @@ class UserController extends Controller
     /**
      * Creates a new User entity.
      *
-     * @Route("/", name="user_create")
+     * @Route("/", name="dte_bts_user_create")
      * @Method("POST")
      * @Template("DteBtsBundle:User:new.html.twig")
      * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\User')")
@@ -73,7 +73,7 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $user->getId())));
+            return $this->redirect($this->generateUrl('dte_bts_user_show', array('id' => $user->getId())));
         }
 
         return array(
@@ -92,7 +92,7 @@ class UserController extends Controller
     private function createCreateForm(User $user)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
-            'action'       => $this->generateUrl('user_create'),
+            'action'       => $this->generateUrl('dte_bts_user_create'),
             'method'       => 'POST',
             'form_context' => UserType::CREATE_CONTEXT,
         ));
@@ -105,7 +105,7 @@ class UserController extends Controller
     /**
      * Displays a form to create a new User entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/new", name="dte_bts_user_new")
      * @Method("GET")
      * @Template()
      * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\User')")
@@ -126,7 +126,7 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="user_show", requirements={"id": "\d+"})
+     * @Route("/{id}", name="dte_bts_user_show", requirements={"id": "\d+"})
      * @Method("GET")
      * @Template()
      * @ParamConverter("user", class="DteBtsBundle:User")
@@ -151,7 +151,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="user_edit", requirements={"id": "\d+"})
+     * @Route("/{id}/edit", name="dte_bts_user_edit", requirements={"id": "\d+"})
      * @Method("GET")
      * @Template()
      * @ParamConverter("user", class="DteBtsBundle:User")
@@ -181,7 +181,7 @@ class UserController extends Controller
     private function createEditForm(User $user)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
-            'action'       => $this->generateUrl('user_update', array('id' => $user->getId())),
+            'action'       => $this->generateUrl('dte_bts_user_update', array('id' => $user->getId())),
             'method'       => 'PUT',
             'form_context' => UserType::EDIT_CONTEXT,
         ));
@@ -193,7 +193,7 @@ class UserController extends Controller
     /**
      * Edits an existing User entity.
      *
-     * @Route("/{id}", name="user_update")
+     * @Route("/{id}", name="dte_bts_user_update")
      * @Method("PUT")
      * @Template("DteBtsBundle:User:edit.html.twig")
      * @ParamConverter("user", class="DteBtsBundle:User")
@@ -236,9 +236,9 @@ class UserController extends Controller
             $em->flush();
 
             if ($isProfileContext) {
-                $url = $this->generateUrl('user_profile_edit');
+                $url = $this->generateUrl('dte_bts_user_profile_edit');
             } else {
-                $url = $this->generateUrl('user_edit', array('id' => $user->getId()));
+                $url = $this->generateUrl('dte_bts_user_edit', array('id' => $user->getId()));
             }
 
             return $this->redirect($url);
@@ -254,7 +254,7 @@ class UserController extends Controller
     /**
      * User Profile.
      *
-     * @Route("/profile", name="user_profile")
+     * @Route("/profile", name="dte_bts_user_profile")
      * @Method("GET")
      * @Template()
      * @Security("is_granted('profile', 'Dte\BtsBundle\Entity\User')")
@@ -273,7 +273,7 @@ class UserController extends Controller
     /**
      * User Profile edit action.
      *
-     * @Route("/profile/edit", name="user_profile_edit")
+     * @Route("/profile/edit", name="dte_bts_user_profile_edit")
      * @Method("GET")
      * @Template()
      * @Security("is_granted('profile', 'Dte\BtsBundle\Entity\User'")
@@ -302,7 +302,7 @@ class UserController extends Controller
     private function createProfileForm(User $user)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_user', $user, array(
-            'action'       => $this->generateUrl('user_update', array('id' => $user->getId())),
+            'action'       => $this->generateUrl('dte_bts_user_update', array('id' => $user->getId())),
             'method'       => 'PUT',
             'form_context' => UserType::PROFILE_CONTEXT,
         ));

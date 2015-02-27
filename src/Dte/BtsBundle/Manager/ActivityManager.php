@@ -183,11 +183,11 @@ class ActivityManager
             array(
                 '%issue_url%'  => $this
                     ->router
-                    ->generate('issue_show', array('id' => $activity->getIssue()->getId()), true),
+                    ->generate('dte_bts_issue_show', array('id' => $activity->getIssue()->getId()), true),
                 '%issue_code%' => $activity->getIssue()->getCode(),
                 '%user_url%'   => $this
                     ->router
-                    ->generate('user_show', array('id' => $activity->getUser()->getId()), true),
+                    ->generate('dte_bts_user_show', array('id' => $activity->getUser()->getId()), true),
                 '%user_name%'  => $activity->getUser()->getFullname(),
                 '%message%'    => $activity->getMessage(),
             )

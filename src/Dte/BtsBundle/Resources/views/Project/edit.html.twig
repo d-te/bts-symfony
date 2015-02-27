@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ 'bts.page.project_edit.page_title'|trans }}&nbsp;&nbsp;<small><a href="{{ path('project_show', { 'id': entity.id }) }}">{{ 'bts.default.action.view'|trans }}</a></small></h1>
+    <h1>{{ 'bts.page.project_edit.page_title'|trans }}&nbsp;&nbsp;<small><a href="{{ path('dte_bts_project_show', { 'id': entity.id }) }}">{{ 'bts.default.action.view'|trans }}</a></small></h1>
 
     {{ form(edit_form) }}
 

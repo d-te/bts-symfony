@@ -26,7 +26,7 @@ class CommentController extends Controller
     /**
      * Lists all Comment entities.
      *
-     * @Route("/", name="issue_comment")
+     * @Route("/", name="dte_bts_issue_comment")
      * @Method("GET")
      * @Template()
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "issueId"})
@@ -85,7 +85,7 @@ class CommentController extends Controller
     /**
      * Creates a new Comment entity.
      *
-     * @Route("/", name="issue_comment_create")
+     * @Route("/", name="dte_bts_issue_comment_create")
      * @Method("POST")
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "issueId"})
      * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Comment')")
@@ -166,7 +166,7 @@ class CommentController extends Controller
     /**
      * Edits an existing Comment entity.
      *
-     * @Route("/{id}", name="issue_comment_update", requirements={"id": "\d+"})
+     * @Route("/{id}", name="dte_bts_issue_comment_update", requirements={"id": "\d+"})
      * @Method("PUT")
      * @ParamConverter("comment", class="DteBtsBundle:Comment")
      * @Security("is_granted('edit', comment)")
@@ -196,7 +196,7 @@ class CommentController extends Controller
     /**
      * Deletes a Comment entity.
      *
-     * @Route("/{id}", name="issue_comment_delete")
+     * @Route("/{id}", name="dte_bts_issue_comment_delete")
      * @Method("DELETE")
      * @ParamConverter("comment", class="DteBtsBundle:Comment")
      * @Security("is_granted('delete', comment)")

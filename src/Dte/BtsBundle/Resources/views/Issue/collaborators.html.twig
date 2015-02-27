@@ -8,7 +8,7 @@
                 <tbody>
                     {% for user in entity.getCollaborators() %}
                     <tr>
-                        <td><a href="{{ path('user_show', { 'id': user.id }) }}">{{ user.fullname }}</a></td>
+                        <td><a href="{{ path('dte_bts_user_show', { 'id': user.id }) }}">{{ user.fullname }}</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

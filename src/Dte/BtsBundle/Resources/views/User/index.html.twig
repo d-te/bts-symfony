@@ -30,14 +30,14 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
-                <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.email }}</a></td>
+                <td><a href="{{ path('dte_bts_user_show', { 'id': entity.id }) }}">{{ entity.email }}</a></td>
                 <td>{{ entity.username }}</td>
                 <td>{{ entity.fullname }}</td>
                 <td>{% if entity.avatar %} <img src="{{ entity.avatar }}" width="32" >{% else %} - {% endif %}</td>
                 <td>
-                    <a href="{{ path('user_show', { 'id': entity.id }) }}">{{ 'bts.default.action.show'|trans }}</a>
+                    <a href="{{ path('dte_bts_user_show', { 'id': entity.id }) }}">{{ 'bts.default.action.show'|trans }}</a>
                     <br />
-                    <a href="{{ path('user_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
+                    <a href="{{ path('dte_bts_user_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
                 </td>
             </tr>
         {% endfor %}
@@ -45,6 +45,6 @@
     </table>
 
     <div class="row">
-        <a href="{{ path('user_new') }}" class="btn btn-default">{{ 'bts.page.user.action.create'|trans }}</a>
+        <a href="{{ path('dte_bts_user_new') }}" class="btn btn-default">{{ 'bts.page.user.action.create'|trans }}</a>
     </div>
     {% endblock %}

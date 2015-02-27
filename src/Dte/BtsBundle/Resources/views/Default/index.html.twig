@@ -33,10 +33,10 @@
                 {% for activity in activities %}
                     <tr>
                         <td>{% if activity.created %}{{ activity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                        <td><a href="{{ path('user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a></td>
+                        <td><a href="{{ path('dte_bts_user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a></td>
                         <td>
                             {% if is_granted('view', activity.issue) %}
-                            <a href="{{ path('issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a>
+                            <a href="{{ path('dte_bts_issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a>
                             {% else %}
                             {{ activity.issue.code }}
                             {% endif %}
@@ -71,14 +71,14 @@
                     <tr>
                         <td>
                             {% if is_granted('view', issue) %}
-                            <a href="{{ path('issue_show', { 'id': issue.id }) }}">{{ issue.code }}</a>
+                            <a href="{{ path('dte_bts_issue_show', { 'id': issue.id }) }}">{{ issue.code }}</a>
                             {% else %}
                             {{ issue.code }}
                             {% endif %}
                         </td>
                         <td>{{ issue.summary }}</td>
                         <td>{{ issue.status.label }}</td>
-                        <td><a href="{{ path('user_show', { 'id': issue.assignee.id }) }}">{{ issue.assignee.fullname }}</a></td>
+                        <td><a href="{{ path('dte_bts_user_show', { 'id': issue.assignee.id }) }}">{{ issue.assignee.fullname }}</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

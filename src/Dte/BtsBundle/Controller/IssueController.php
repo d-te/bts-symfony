@@ -25,7 +25,7 @@ class IssueController extends Controller
     /**
      * Lists all Issue entities.
      *
-     * @Route("/", name="issue")
+     * @Route("/", name="dte_bts_issue")
      * @Method("GET")
      * @Template()
      * @Security("is_granted('view', 'Dte\\BtsBundle\\Entity\\Issue')")
@@ -47,7 +47,7 @@ class IssueController extends Controller
     /**
      * Creates a new Issue entity.
      *
-     * @Route("/", name="issue_create")
+     * @Route("/", name="dte_bts_issue_create")
      * @Method("POST")
      * @Template("DteBtsBundle:Issue:new.html.twig")
      * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Issue')")
@@ -67,7 +67,7 @@ class IssueController extends Controller
             $em->persist($issue);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_show', array('id' => $issue->getId())));
+            return $this->redirect($this->generateUrl('dte_bts_issue_show', array('id' => $issue->getId())));
         }
 
         return array(
@@ -87,7 +87,7 @@ class IssueController extends Controller
     private function createCreateForm(Issue $issue, $isSubtask = false)
     {
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $issue, array(
-            'action'       => $this->generateUrl('issue_create'),
+            'action'       => $this->generateUrl('dte_bts_issue_create'),
             'method'       => 'POST',
             'form_context' => IssueType::CREATE_CONTEXT,
             'isSubtask'    => $isSubtask,
@@ -101,7 +101,7 @@ class IssueController extends Controller
     /**
      * Displays a form to create a new Issue entity.
      *
-     * @Route("/new", name="issue_new")
+     * @Route("/new", name="dte_bts_issue_new")
      * @Method("GET")
      * @Template()
      * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Issue')")
@@ -145,7 +145,7 @@ class IssueController extends Controller
     /**
      * Finds and displays a Issue entity.
      *
-     * @Route("/{id}", name="issue_show")
+     * @Route("/{id}", name="dte_bts_issue_show")
      * @Method("GET")
      * @Template()
      * @ParamConverter("issue", class="DteBtsBundle:Issue")
@@ -166,7 +166,7 @@ class IssueController extends Controller
     /**
      * Displays a form to edit an existing Issue entity.
      *
-     * @Route("/{id}/edit", name="issue_edit")
+     * @Route("/{id}/edit", name="dte_bts_issue_edit")
      * @Method("GET")
      * @Template()
      * @ParamConverter("issue", class="DteBtsBundle:Issue")
@@ -198,7 +198,7 @@ class IssueController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $issue, array(
-            'action'       => $this->generateUrl('issue_update', array('id' => $issue->getId())),
+            'action'       => $this->generateUrl('dte_bts_issue_update', array('id' => $issue->getId())),
             'method'       => 'PUT',
             'form_context' => IssueType::EDIT_CONTEXT,
         ));
@@ -211,7 +211,7 @@ class IssueController extends Controller
     /**
      * Edits an existing Issue entity.
      *
-     * @Route("/{id}", name="issue_update", requirements={"id": "\d+"})
+     * @Route("/{id}", name="dte_bts_issue_update", requirements={"id": "\d+"})
      * @Method("PUT")
      * @Template("DteBtsBundle:Issue:edit.html.twig")
      * @ParamConverter("issue", class="DteBtsBundle:Issue")
@@ -231,7 +231,7 @@ class IssueController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('issue_edit', array('id' => $issue->getId())));
+            return $this->redirect($this->generateUrl('dte_bts_issue_edit', array('id' => $issue->getId())));
         }
 
         return array(
@@ -243,7 +243,7 @@ class IssueController extends Controller
     /**
      * Change a issue's status
      *
-     * @Route("/{id}/{status}", name="issue_change_status", requirements={"status": "\d+"})
+     * @Route("/{id}/{status}", name="dte_bts_issue_change_status", requirements={"status": "\d+"})
      * @Method("GET")
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "id"})
      * @ParamConverter("status", class="DteBtsBundle:IssueStatus", options={"id" = "status"})
@@ -260,13 +260,13 @@ class IssueController extends Controller
         $issue->setStatus($status);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('issue_show', array('id' => $issue->getId())));
+        return $this->redirect($this->generateUrl('dte_bts_issue_show', array('id' => $issue->getId())));
     }
 
     /**
      * Get issue collaborators
      *
-     * @Route("/{id}/collaborators/", name="issue_collaborators")
+     * @Route("/{id}/collaborators/", name="dte_bts_issue_collaborators")
      * @Method("GET")
      * @Template("DteBtsBundle:Issue:collaborators.html.twig")
      * @ParamConverter("issue", class="DteBtsBundle:Issue")

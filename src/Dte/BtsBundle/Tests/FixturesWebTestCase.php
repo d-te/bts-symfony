@@ -11,8 +11,14 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FixturesWebTestCase extends WebTestCase
 {
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Console\Application
+     */
     protected $application;
 
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Client
+     */
     protected $client = null;
 
     public function setUp()
@@ -24,6 +30,10 @@ class FixturesWebTestCase extends WebTestCase
         $this->runCommand('doctrine:fixtures:load -n');
     }
 
+    /**
+     * Login by username
+     * @param  string $username
+     */
     public function logInByUsername($username)
     {
 
@@ -60,6 +70,10 @@ class FixturesWebTestCase extends WebTestCase
         return self::getApplication()->run(new StringInput($command));
     }
 
+    /**
+     * Get Console Application
+     * @return  \Symfony\Bundle\FrameworkBundle\Console\Application
+     */
     protected function getApplication()
     {
         if (null === $this->application) {

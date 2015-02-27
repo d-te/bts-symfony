@@ -10,23 +10,28 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class UserVoterTest extends \PHPUnit_Framework_TestCase
 {
-
+    /**
+     * @var \Symfony\Component\Security\Core\Role\RoleHierarchy
+     */
     private $roleHierarchy;
 
+    /**
+     * @var \Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+     */
     private $token;
 
     public function setUp()
     {
         $this->roleHierarchy = $this
-                    ->getMockBuilder('Symfony\Component\Security\Core\Role\RoleHierarchy')
-                    ->disableOriginalConstructor()
-                    ->setMethods(array('getReachableRoles'))
-                    ->getMock();
+            ->getMockBuilder('Symfony\Component\Security\Core\Role\RoleHierarchy')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getReachableRoles'))
+            ->getMock();
         $this->token = $this
-                    ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
-                    ->disableOriginalConstructor()
-                    ->setMethods(array('getUser', 'getRoles'))
-                    ->getMock();
+            ->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getUser', 'getRoles'))
+            ->getMock();
     }
 
     public function tearDown()
@@ -37,6 +42,9 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider supportsAttributeDataProvider
+     *
+     * @param string $attribute
+     * @param boolean $expected
      */
     public function testSupportsAttribute($attribute, $expected)
     {
@@ -45,6 +53,11 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $voter->supportsAttribute($attribute));
     }
 
+    /**
+     * Dataprovider for  testSupportsAttribute
+     *
+     * @return array
+     */
     public function supportsAttributeDataProvider()
     {
         return array(
@@ -68,7 +81,7 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
     {
         $voter = new UserVoter($this->roleHierarchy);
 
-        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $voter->vote($this->token, new \StdClass(), array()));
+        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $voter->vote($this->token, new \StdClass(), array('view')));
     }
 
     public function testVoteWithNotSupportedAttribute()
@@ -122,53 +135,58 @@ class UserVoterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider voteWithUserRoleDataProvider
+     *
+     * @param  string $currentUserEmail
+     * @param  string $memberEmail
+     * @param  string $attribute
+     * @param  boolean $expected
      */
-    public function testVoteWithUserRole($currentUserId, $objectId, $attribute, $expected)
+    public function testVoteWithUserRole($currentUserEmail, $memberEmail, $attribute, $expected)
     {
         $role = new Role();
         $role->setRole('ROLE_USER');
 
-        $currentUser = $this->getMockBuilder('Dte\BtsBundle\Entity\User')
-                        ->setMethods(array('getId'))
-                        ->getMock();
-        $currentUser->expects($this->any())->method('getId')->will($this->returnValue($currentUserId));
+        $currentUser = new User();
+        $currentUser->setEmail($currentUserEmail);
 
         $this->token
-                ->expects($this->any())
-                ->method('getRoles')
-                ->will($this->returnValue(array($role)));
+            ->expects($this->atLeastOnce())
+            ->method('getRoles')
+            ->will($this->returnValue(array($role)));
 
         $this->token
-                ->expects($this->any())
-                ->method('getUser')
-                ->will($this->returnValue($currentUser));
+            ->expects($this->atLeastOnce())
+            ->method('getUser')
+            ->will($this->returnValue($currentUser));
 
         $this->roleHierarchy
-                ->expects($this->any())
-                ->method('getReachableRoles')
-                ->will($this->returnValue(array($role)));
+            ->expects($this->atLeastOnce())
+            ->method('getReachableRoles')
+            ->will($this->returnValue(array($role)));
 
         $voter = new UserVoter($this->roleHierarchy);
 
-        $object = $this->getMockBuilder('Dte\BtsBundle\Entity\User')
-                        ->setMethods(array('getId'))
-                        ->getMock();
-        $object->expects($this->any())->method('getId')->will($this->returnValue($objectId));
+        $object = new User();
+        $object->setEmail($memberEmail);
 
         $this->assertEquals($expected, $voter->vote($this->token, $object, array($attribute)));
     }
 
+    /**
+     * Dataprovider for testVoteWithUserRole
+     * @return  array
+     */
     public function voteWithUserRoleDataProvider()
     {
         return array(
-            array(1, 11, 'view', VoterInterface::ACCESS_GRANTED),
-            array(1, 11, 'edit', VoterInterface::ACCESS_DENIED),
-            array(1, 11, 'create', VoterInterface::ACCESS_DENIED),
-            array(1, 11, 'profile', VoterInterface::ACCESS_DENIED),
-            array(11, 11, 'view', VoterInterface::ACCESS_GRANTED),
-            array(11, 11, 'edit', VoterInterface::ACCESS_GRANTED),
-            array(11, 11, 'profile', VoterInterface::ACCESS_GRANTED),
-            array(11, 11, 'create', VoterInterface::ACCESS_DENIED),
+            array('e1@email', 'e11@email', 'view', VoterInterface::ACCESS_GRANTED),
+            array('e1@email', 'e11@email', 'edit', VoterInterface::ACCESS_DENIED),
+            array('e1@email', 'e11@email', 'create', VoterInterface::ACCESS_DENIED),
+            array('e1@email', 'e11@email', 'profile', VoterInterface::ACCESS_DENIED),
+            array('e11@email', 'e11@email', 'view', VoterInterface::ACCESS_GRANTED),
+            array('e11@email', 'e11@email', 'edit', VoterInterface::ACCESS_GRANTED),
+            array('e11@email', 'e11@email', 'profile', VoterInterface::ACCESS_GRANTED),
+            array('e11@email', 'e11@email', 'create', VoterInterface::ACCESS_DENIED),
         );
     }
 }

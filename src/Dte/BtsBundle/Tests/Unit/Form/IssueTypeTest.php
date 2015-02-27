@@ -6,41 +6,51 @@ use Dte\BtsBundle\Entity\User;
 
 class IssueTypeTest extends \PHPUnit_Framework_TestCase
 {
-
+    /**
+     * @var \Doctrine\Bundle\DoctrineBundle\Registry
+     */
     private $em;
+
+    /**
+     * @var \Dte\BtsBundle\Form\IssueType
+     */
     private $form;
+
+    /**
+     * @var \Symfony\Component\Security\Core\SecurityContext
+     */
     private $securityContext;
 
     public function setUp()
     {
         $this->securityContext = $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
-                        ->disableOriginalConstructor()
-                        ->setMethods(array('getToken'))
-                        ->getMock();
+                ->disableOriginalConstructor()
+                ->setMethods(array('getToken'))
+                ->getMock();
 
         $this->em = $this->getMockBuilder('Doctrine\Bundle\DoctrineBundle\Registry')
-                        ->disableOriginalConstructor()
-                        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->form = $this->getMockBuilder('Dte\BtsBundle\Form\IssueType')
-                        ->setConstructorArgs(array($this->securityContext, $this->em))
-                        ->setMethods(array('getUser', 'getProjectMembers', 'getProjectStories'))
-                        ->getMock();
+            ->setConstructorArgs(array($this->securityContext, $this->em))
+            ->setMethods(array('getUser', 'getProjectMembers', 'getProjectStories'))
+            ->getMock();
 
         $this->form
-                ->expects($this->any())
-                ->method('getUser')
-                ->will($this->returnValue(new User()));
+            ->expects($this->any())
+            ->method('getUser')
+            ->will($this->returnValue(new User()));
 
         $this->form
-                ->expects($this->any())
-                ->method('getProjectMembers')
-                ->will($this->returnValue(array()));
+            ->expects($this->any())
+            ->method('getProjectMembers')
+            ->will($this->returnValue(array()));
 
         $this->form
-                ->expects($this->any())
-                ->method('getProjectStories')
-                ->will($this->returnValue(array()));
+            ->expects($this->any())
+            ->method('getProjectStories')
+            ->will($this->returnValue(array()));
 
     }
 
@@ -60,19 +70,19 @@ class IssueTypeTest extends \PHPUnit_Framework_TestCase
     {
         $options = array(
             'data_class'   => 'Dte\BtsBundle\Entity\Issue',
-            'form_context' => 'default',
+            'form_context' => 'create',
             'isSubtask'    => false,
         );
 
         $resolver = $this->getMockBuilder('Symfony\Component\OptionsResolver\OptionsResolver')
-                        ->disableOriginalConstructor()
-                        ->setMethods(array('setDefaults'))
-                        ->getMock();
+            ->disableOriginalConstructor()
+            ->setMethods(array('setDefaults'))
+            ->getMock();
 
         $resolver
-                ->expects($this->once())
-                ->method('setDefaults')
-                ->with($this->equalTo($options));
+            ->expects($this->once())
+            ->method('setDefaults')
+            ->with($this->equalTo($options));
 
         $this->form->setDefaultOptions($resolver);
     }

@@ -337,6 +337,10 @@ class User implements UserInterface, \Serializable, EquatableInterface
             return false;
         }
 
+        if ($this->email !== $user->getEmail()) {
+            return false;
+        }
+
         return true;
     }
 

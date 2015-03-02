@@ -5,6 +5,7 @@ namespace Dte\BtsBundle\Form;
 use Dte\BtsBundle\Entity\Issue;
 use Dte\BtsBundle\Entity\IssueTaskType;
 use Dte\BtsBundle\Entity\Project;
+use Dte\BtsBundle\Entity\Repository\ProjectRepository;
 
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
 use Doctrine\ORM\EntityRepository;
@@ -108,7 +109,7 @@ class IssueType extends AbstractType
             'property'      => 'selectLabel',
             'class'         => 'DteBtsBundle:Project',
             'empty_value'   => 'bts.entity.issue.project.empty_value',
-            'query_builder' => function(EntityRepository $em) use ($user) {
+            'query_builder' => function(ProjectRepository $em) use ($user) {
                 return $em->findByMemberQueryBuilder($user);
             },
         ))->add('code', 'text', array(

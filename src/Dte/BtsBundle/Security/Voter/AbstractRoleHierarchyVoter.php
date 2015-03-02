@@ -40,19 +40,4 @@ abstract class AbstractRoleHierarchyVoter implements VoterInterface
         }
         return false;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    abstract public function supportsAttribute($attribute);
-
-    /**
-     * {@inheritDoc}
-     */
-    abstract public function supportsClass($class);
-
-    /**
-     * {@inheritDoc}
-     */
-    abstract public function vote(TokenInterface $token, $object, array $attributes);
 }

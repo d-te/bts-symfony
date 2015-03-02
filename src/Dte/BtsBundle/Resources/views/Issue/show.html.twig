@@ -115,11 +115,13 @@
             <div class="row">
                 <div class="col-md-1">&nbsp;</div>
             </div>
+            {% if is_granted('create', {'object': 'Dte\\BtsBundle\\Entity\\Comment', 'issue': entity}) %}
             <div class="row">
                 <div class="col-md-10">
                     {{ render(controller('DteBtsBundle:Comment:new', { 'issue': entity })) }}
                 </div>
             </div>
+            {% endif %}
             <div class="row">
                 <div class="col-md-1">&nbsp;</div>
             </div>

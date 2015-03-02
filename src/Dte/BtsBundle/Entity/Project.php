@@ -197,6 +197,23 @@ class Project
     }
 
     /**
+     * Check if User is a member of Project
+     *
+     * @param  User $user
+     * @return  boolean
+     */
+    public function hasMember(User $user)
+    {
+        foreach ($this->getMembers() as $member) {
+            if ($member->isEqualTo($user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Get project issues
      *
      * @return array

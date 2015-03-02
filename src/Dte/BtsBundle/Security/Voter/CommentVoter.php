@@ -37,19 +37,34 @@ class CommentVoter extends AbstractRoleHierarchyVoter
     }
 
     /**
+     * Get class from mixed $object
+     *
+     * @param  mixed $object
+     * @return  string
+     */
+    private function getObjectClass($object)
+    {
+        $calss = '';
+
+        if (is_object($object)) {
+            $class = get_class($object);
+        } elseif (is_string($object)) {
+            $class = $object;
+        } elseif (is_array($object) && array_key_exists('object', $object) && array_key_exists('issue', $object)) {
+            $class = $object['object'];
+        }
+
+        return $class;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if (is_object($object)) {
-            $class = get_class($object);
-        } else {
-            $class = $object;
-        }
-
         $attribute = $attributes[0];
 
-        if (!$this->supportsClass($class) || !$this->supportsAttribute($attribute)) {
+        if (!$this->supportsClass($this->getObjectClass($object)) || !$this->supportsAttribute($attribute)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -65,16 +80,14 @@ class CommentVoter extends AbstractRoleHierarchyVoter
 
         switch ($attribute) {
             case self::VIEW:
-                return VoterInterface::ACCESS_GRANTED;
-                break;
             case self::CREATE:
-                if ($this->hasRole($token, 'ROLE_OPERATOR')) {
+                if (is_array($object) && $object['issue']->getProject()->hasMember($user)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;
             case self::EDIT:
             case self::DELETE:
-                if ($object->getUser()->isEqualTo($user)) {
+                if (is_object($object) && $object->getUser()->isEqualTo($user)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;

@@ -30,7 +30,7 @@ class CommentController extends Controller
      * @Method("GET")
      * @Template()
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "issueId"})
-     * @Security("is_granted('view', 'Dte\\BtsBundle\\Entity\\Comment')")
+     * @Security("is_granted('view', {'object': 'Dte\\BtsBundle\\Entity\\Comment', 'issue': issue})")
      *
      * @param Issue $issue
      *
@@ -62,7 +62,7 @@ class CommentController extends Controller
     /**
      * Displays a form to create a new Comment entity.
      *
-     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Comment')")
+     * @Security("is_granted('create', {'object': 'Dte\\BtsBundle\\Entity\\Comment', 'issue': issue})")
      * @Template()
      *
      * @param Issue $issue
@@ -87,7 +87,7 @@ class CommentController extends Controller
      * @Route("/", name="dte_bts_issue_comment_create")
      * @Method("POST")
      * @ParamConverter("issue", class="DteBtsBundle:Issue", options={"id" = "issueId"})
-     * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Comment')")
+     * @Security("is_granted('create', {'object': 'Dte\\BtsBundle\\Entity\\Comment', 'issue': issue})")
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param Issue $issue

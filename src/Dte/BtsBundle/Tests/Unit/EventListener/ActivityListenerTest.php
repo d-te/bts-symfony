@@ -71,7 +71,7 @@ class ActivityListenerTest extends \PHPUnit_Framework_TestCase
     {
         $issue = new Issue();
 
-        $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+        $args = $this->getMockBuilder('Doctrine\ORM\Event\PreUpdateEventArgs')
             ->disableOriginalConstructor()
             ->setMethods(array(
                 'getEntity',
@@ -103,7 +103,7 @@ class ActivityListenerTest extends \PHPUnit_Framework_TestCase
     {
         $issue = new Issue();
 
-        $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+        $args = $this->getMockBuilder('Doctrine\ORM\Event\PreUpdateEventArgs')
             ->disableOriginalConstructor()
             ->setMethods(array(
                 'getEntity',

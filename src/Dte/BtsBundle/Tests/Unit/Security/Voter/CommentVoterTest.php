@@ -3,6 +3,8 @@
 namespace Dte\BtsBundle\Tests\Unit\Security\Voter;
 
 use Dte\BtsBundle\Entity\Comment;
+use Dte\BtsBundle\Entity\Issue;
+use Dte\BtsBundle\Entity\Project;
 use Dte\BtsBundle\Entity\Role;
 use Dte\BtsBundle\Entity\User;
 use Dte\BtsBundle\Security\Voter\CommentVoter;
@@ -168,8 +170,15 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
         $user = new User();
         $user->setEmail($memberEmail);
 
+        $project = new Project();
+        $project->addMember($user);
+
+        $issue = new Issue();
+        $issue->setProject($project);
+
         $object = new Comment();
         $object->setUser($user);
+        $object->setIssue($issue);
 
         $this->assertEquals($expected, $voter->vote($this->token, $object, array($attribute)));
     }
@@ -183,12 +192,78 @@ class CommentVoterTest extends \PHPUnit_Framework_TestCase
         return array(
             array('e1@email', 'e11@email', 'delete', VoterInterface::ACCESS_DENIED),
             array('e1@email', 'e11@email', 'edit', VoterInterface::ACCESS_DENIED),
-            array('e1@email', 'e11@email', 'view', VoterInterface::ACCESS_GRANTED),
-            array('e1@email', 'e11@email', 'create', VoterInterface::ACCESS_GRANTED),
             array('e11@email', 'e11@email', 'delete', VoterInterface::ACCESS_GRANTED),
             array('e11@email', 'e11@email', 'edit', VoterInterface::ACCESS_GRANTED),
-            array('e11@email', 'e11@email', 'view', VoterInterface::ACCESS_GRANTED),
+        );
+    }
+
+    /**
+     * @dataProvider voteWithUserRoleDataProviderViewCreate
+     *
+     * @param  string $currentUserEmail
+     * @param  string $memberEmail
+     * @param  string $attribute
+     * @param  boolean $expected
+     */
+    public function testVoteWithUserRoleViewCreate($currentUserEmail, $memberEmail, $attribute, $expected)
+    {
+        $role = new Role();
+        $role->setRole('ROLE_OPERATOR');
+
+        $currentUser = new User();
+        $currentUser->setEmail($currentUserEmail);
+
+        $this->token
+            ->expects($this->atLeastOnce())
+            ->method('getRoles')
+            ->will($this->returnValue(array($role)));
+
+        $this->token
+            ->expects($this->atLeastOnce())
+            ->method('getUser')
+            ->will($this->returnValue($currentUser));
+
+        $this->roleHierarchy
+            ->expects($this->atLeastOnce())
+            ->method('getReachableRoles')
+            ->will($this->returnValue(array($role)));
+
+        $voter = new CommentVoter($this->roleHierarchy);
+
+        $user = new User();
+        $user->setEmail($memberEmail);
+
+        $project = new Project();
+        $project->addMember($user);
+
+        $issue = new Issue();
+        $issue->setProject($project);
+
+        $object = new Comment();
+        $object->setUser($user);
+        $object->setIssue($issue);
+
+        $this->assertEquals(
+            $expected,
+            $voter->vote(
+                $this->token,
+                array('object' => 'Dte\\BtsBundle\\Entity\\Comment', 'issue' => $issue),
+                array($attribute)
+            )
+        );
+    }
+
+    /**
+     * Dataprovider for testVoteWithUserRoleViewCreate
+     * @return  array
+     */
+    public function voteWithUserRoleDataProviderViewCreate()
+    {
+        return array(
+            array('e1@email', 'e11@email', 'create', VoterInterface::ACCESS_DENIED),
+            array('e1@email', 'e11@email', 'view', VoterInterface::ACCESS_DENIED),
             array('e11@email', 'e11@email', 'create', VoterInterface::ACCESS_GRANTED),
+            array('e11@email', 'e11@email', 'view', VoterInterface::ACCESS_GRANTED),
         );
     }
 }

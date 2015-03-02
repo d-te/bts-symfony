@@ -94,4 +94,21 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('( CODE ) Test project', $project->getSelectLabel());
     }
+
+    public function testHasMember()
+    {
+        $project = new Project();
+
+        $user = new User();
+        $user->setEmail('user@email');
+
+        $project->addMember($user);
+
+
+        $user1 = new User();
+        $user1->setEmail('user1@email');
+
+        $this->assertTrue($project->hasMember($user));
+        $this->assertFalse($project->hasMember($user1));
+    }
 }

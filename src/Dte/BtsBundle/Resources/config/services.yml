@@ -1,21 +1,21 @@
 services:
-    form.type.dte_btsbundle_comment:
+    dte_bts_form.type.dte_btsbundle_comment:
         class: Dte\BtsBundle\Form\CommentType
         tags:
             - {name: form.type, alias: dte_btsbundle_comment}
 
-    form.type.dte_btsbundle_issue:
+    dte_bts_form.type.dte_btsbundle_issue:
         class: Dte\BtsBundle\Form\IssueType
         tags:
             - {name: form.type, alias: dte_btsbundle_issue}
         arguments: ["@security.context", "@doctrine"]
 
-    form.type.dte_btsbundle_project:
+    dte_bts_form.type.dte_btsbundle_project:
         class: Dte\BtsBundle\Form\ProjectType
         tags:
             - {name: form.type, alias: dte_btsbundle_project}
 
-    form.type.dte_btsbundle_user:
+    dte_bts_form.type.dte_btsbundle_user:
         class: Dte\BtsBundle\Form\UserType
         tags:
             - {name: form.type, alias: dte_btsbundle_user}
@@ -44,7 +44,7 @@ services:
     dte_bts_role_hierarchy:
         alias: security.role_hierarchy
 
-    security.access.user_voter:
+    dte_bts_security.access.user_voter:
         class:      Dte\BtsBundle\Security\Voter\UserVoter
         public:     false
         arguments:
@@ -52,7 +52,7 @@ services:
         tags:
            - { name: security.voter }
 
-    security.access.project_voter:
+    dte_bts_security.access.project_voter:
         class:      Dte\BtsBundle\Security\Voter\ProjectVoter
         public:     false
         arguments:
@@ -60,7 +60,7 @@ services:
         tags:
            - { name: security.voter }
 
-    security.access.issue_voter:
+    dte_bts_security.access.issue_voter:
         class:      Dte\BtsBundle\Security\Voter\IssueVoter
         public:     false
         arguments:
@@ -68,7 +68,7 @@ services:
         tags:
            - { name: security.voter }
 
-    security.access.comment_voter:
+    dte_bts_security.access.comment_voter:
         class:      Dte\BtsBundle\Security\Voter\CommentVoter
         public:     false
         arguments:

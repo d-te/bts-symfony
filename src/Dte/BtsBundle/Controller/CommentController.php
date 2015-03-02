@@ -65,7 +65,6 @@ class CommentController extends Controller
      * @Security("is_granted('create', 'Dte\\BtsBundle\\Entity\\Comment')")
      * @Template()
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
      * @param Issue $issue
      *
      * @return array
@@ -190,7 +189,7 @@ class CommentController extends Controller
             return new JsonResponse(array('saved'));
         }
 
-        return new JsonResponse($this->getFormErrors($form), 400);
+        return new JsonResponse($this->getFormErrors($editForm), 400);
     }
 
     /**
@@ -236,7 +235,7 @@ class CommentController extends Controller
         return $this->createFormBuilder()
             ->setAction(
                 $this->generateUrl(
-                    'issue_comment_delete',
+                    'dte_bts_issue_comment_delete',
                     array(
                         'id' => $comment->getId(),
                         'issueId' => $issue->getId()

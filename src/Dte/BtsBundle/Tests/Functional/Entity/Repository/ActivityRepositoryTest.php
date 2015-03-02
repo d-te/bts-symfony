@@ -50,13 +50,4 @@ class ActivityRepositoryTest extends FixturesWebTestCase
 
         $this->assertCount(9, $activities);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->em->close();
-    }
 }

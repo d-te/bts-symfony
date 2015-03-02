@@ -2,15 +2,14 @@
 
 {% block content %}
     <div role="tabpanel">
-      <!-- Nav tabs -->
-      <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">{{ 'bts.page.main.tablist.activities'|trans }}</a></li>
-        <li role="presentation"><a href="#issues_pane" aria-controls="issues_pane" role="tab" data-toggle="tab">{{ 'bts.page.main.tablist.issues'|trans }}</a></li>
-      </ul>
-
-      <!-- Tab panes -->
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="activities_pane">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">{{ 'bts.page.main.tablist.activities'|  trans }}</a></li>
+            <li role="presentation"><a href="#issues_pane" aria-controls="issues_pane" role="tab" data-toggle="tab">{{ 'bts.page.main.tablist.issues'|trans }}</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="activities_pane">
             <div class="row">
                 <div class="col-md-1">&nbsp;</div>
             </div>
@@ -46,10 +45,10 @@
                 {% endfor %}
                 </tbody>
             </table>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="issues_pane">
+        </div>
+        <div role="tabpanel" class="tab-pane" id="issues_pane">
             <div class="row">
-                <div class="col-md-1">&nbsp;</div>
+                  <div class="col-md-1">&nbsp;</div>
             </div>
             <table class="table table-striped">
                 <colgroup>
@@ -83,6 +82,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-      </div>
+        </div>
     </div>
 {% endblock %}

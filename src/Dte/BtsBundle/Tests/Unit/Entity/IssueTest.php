@@ -136,17 +136,17 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($resolution, $entity->getResolution());
     }
 
-    public function testparentSetterGetter()
+    public function testParentSetterGetter()
     {
         $entity = new Issue();
 
-        $this->assertNull($entity->getparent());
+        $this->assertNull($entity->getParent());
 
         $parent = new Issue();
 
-        $entity->setparent($parent);
+        $entity->setParent($parent);
 
-        $this->assertEquals($parent, $entity->getparent());
+        $this->assertEquals($parent, $entity->getParent());
     }
 
     public function testChildrenGetter()

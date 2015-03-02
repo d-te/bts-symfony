@@ -63,13 +63,4 @@ class IssueRepositoryTest extends FixturesWebTestCase
 
         $this->assertCount(1, $issues);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->em->close();
-    }
 }

@@ -45,7 +45,7 @@ class IssueRepository extends EntityRepository
             ->leftJoin('issue.status', 'status')
             ->where('issue.assignee = :user AND status.label <> :label')
             ->setParameter('user', $user->getId())
-            ->setParameter('label', IssueStatus::CLOSED_STATUS_NAME)
+            ->setParameter('label', IssueStatus::CLOSED_STATUS_LABEL)
             ->orderBy('issue.id', 'DESC')
             ->getQuery();
 
@@ -66,7 +66,7 @@ class IssueRepository extends EntityRepository
             ->leftJoin('issue.collaborators', 'collaborator')
             ->where('collaborator.id = :user AND issue.status <> :status')
             ->setParameter('user', $user->getId())
-            ->setParameter('status', IssueStatus::CLOSED_STATUS_NAME)
+            ->setParameter('status', IssueStatus::CLOSED_STATUS_LABEL)
             ->orderBy('issue.id', 'DESC')
             ->getQuery();
 

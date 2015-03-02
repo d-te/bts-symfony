@@ -2,20 +2,18 @@
 
 namespace Dte\BtsBundle\EventListener;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class IssueListener
 {
     /**
-     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
+     * @var TokenStorageInterface
      */
     private $tokenStorage;
 
@@ -42,15 +40,15 @@ class IssueListener
     /**
      * Get current User
      *
-     * @return User
+     * @return \Dte\BtsBundle\Entity\User
      */
     public function getUser()
     {
         return $this->tokenStorage->getToken()->getUser();
     }
 
-   /**
-     * {@inheritDoc}
+    /**
+     * @param LifecycleEventArgs $args
      */
     public function postPersist(LifecycleEventArgs $args)
     {
@@ -66,7 +64,7 @@ class IssueListener
     }
 
     /**
-     * {@inheritDoc}
+     * @param LifecycleEventArgs $args
      */
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -78,7 +76,7 @@ class IssueListener
     }
 
     /**
-     * {@inheritDoc}
+     * @param LifecycleEventArgs $args
      */
     public function preUpdate(LifecycleEventArgs $args)
     {
@@ -151,13 +149,13 @@ class IssueListener
     }
 
     /**
-     * {@inheritDoc}
+     * @param PostFlushEventArgs $args
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        if (!empty($this->collaborators)) {
-            $em = $args->getEntityManager();
+        $em = $args->getEntityManager();
 
+        if (!empty($this->collaborators)) {
             foreach ($this->collaborators as $item) {
                 $item['issue']->getCollaborators();
 

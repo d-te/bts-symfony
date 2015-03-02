@@ -249,7 +249,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     /**
      * Get user roles
      *
-     * @return array
+     * @return Role[]
      */
     public function getRoles()
     {
@@ -267,7 +267,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     /**
      * Get user projects
      *
-     * @return array
+     * @return Project[]
      */
     public function getProjects()
     {
@@ -277,7 +277,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     /**
      * Get user activities
      *
-     * @return array
+     * @return Activity[]
      */
     public function getActivities()
     {

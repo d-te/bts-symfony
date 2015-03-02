@@ -3,6 +3,7 @@
 namespace Dte\BtsBundle\Controller;
 
 use Dte\BtsBundle\Entity\Issue;
+use Dte\BtsBundle\Entity\IssueStatus;
 use Dte\BtsBundle\Entity\IssueTaskType;
 use Dte\BtsBundle\Form\IssueType;
 
@@ -116,7 +117,9 @@ class IssueController extends Controller
 
         $issue  = new Issue();
 
-        $status = $em->getRepository('DteBtsBundle:IssueStatus')->findOneBy(array('label' => 'Open'));
+        $status = $em
+            ->getRepository('DteBtsBundle:IssueStatus')
+            ->findOneBy(array('label' => IssueStatus::OPEN_STATUS_LABEL));
 
         $issue->setStatus($status);
 
@@ -195,8 +198,6 @@ class IssueController extends Controller
     */
     private function createEditForm(Issue $issue)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $form = $this->get('form.factory')->create('dte_btsbundle_issue', $issue, array(
             'action'       => $this->generateUrl('dte_bts_issue_update', array('id' => $issue->getId())),
             'method'       => 'PUT',
@@ -254,7 +255,7 @@ class IssueController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function changeStatusAction(Issue $issue, $status)
+    public function changeStatusAction(Issue $issue, IssueStatus $status)
     {
         $em = $this->getDoctrine()->getManager();
         $issue->setStatus($status);

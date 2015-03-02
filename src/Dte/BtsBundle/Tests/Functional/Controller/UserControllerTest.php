@@ -86,7 +86,6 @@ class UserControllerTest extends FixturesWebTestCase
         ));
 
         $crawler = $this->client->submit($form);
-        //$crawler = $this->client->followRedirect();
 
         $this->assertGreaterThan(
             0,

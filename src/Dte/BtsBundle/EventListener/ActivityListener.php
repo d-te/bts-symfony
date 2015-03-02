@@ -3,6 +3,7 @@
 namespace Dte\BtsBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Dte\BtsBundle\Entity\Comment;
@@ -18,6 +19,8 @@ class ActivityListener
 
     /**
      * Constructor
+     *
+     * @param ActivityManager $activityManager
      */
     public function __construct(ActivityManager $activityManager)
     {
@@ -25,7 +28,7 @@ class ActivityListener
     }
 
     /**
-     * {@inheritDoc}
+     * @param LifecycleEventArgs $args
      */
     public function postPersist(LifecycleEventArgs $args)
     {
@@ -39,9 +42,9 @@ class ActivityListener
     }
 
     /**
-     * {@inheritDoc}
+     * @param PreUpdateEventArgs $args
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
 
@@ -53,9 +56,9 @@ class ActivityListener
     }
 
     /**
-     * {@inheritDoc}
+     * PostFlush event handler
      */
-    public function postFlush(PostFlushEventArgs $args)
+    public function postFlush()
     {
         $this->activityManager->saveActivities();
     }

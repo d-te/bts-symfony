@@ -220,7 +220,7 @@ class ProjectController extends Controller
      * @Route("/{id}/members", name="dte_bts_project_members_api")
      * @Method("GET")
      * @ParamConverter("project", class="DteBtsBundle:Project")
-     * @Security("is_granted('view', project)")
+     * @Security("!project || is_granted('view', project)")
      *
      * @param Project $project
      *
@@ -250,7 +250,7 @@ class ProjectController extends Controller
      * @Route("/{id}/stories", name="dte_bts_project_stories_api")
      * @Method("GET")
      * @ParamConverter("project", class="DteBtsBundle:Project")
-     * @Security("is_granted('view', project)")
+     * @Security("!project || is_granted('view', project)")
      *
      * @param Project $project
      *

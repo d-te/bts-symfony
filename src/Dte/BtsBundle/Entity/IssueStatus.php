@@ -12,7 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IssueStatus
 {
-    const CLOSED_STATUS_NAME = 'Closed';
+    const CLOSED_STATUS_LABEL = 'Closed';
+
+    const OPEN_STATUS_LABEL = 'Open';
 
     /**
      * @var string

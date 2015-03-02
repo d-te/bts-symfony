@@ -45,17 +45,8 @@ class UserRepositoryTest extends FixturesWebTestCase
      */
     public function testLoadUserByUsernameWithWrongUsername()
     {
-        $user = $this->em
+        $this->em
             ->getRepository('DteBtsBundle:User')
             ->loadUserByUsername('admin111');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->em->close();
     }
 }

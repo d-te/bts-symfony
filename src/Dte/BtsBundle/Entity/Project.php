@@ -162,7 +162,7 @@ class Project
     /**
      * Get project members
      *
-     * @return array
+     * @return User[]
      */
     public function getMembers()
     {

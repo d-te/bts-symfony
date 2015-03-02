@@ -2,8 +2,6 @@
 
 namespace Dte\BtsBundle\Tests\Unit\Form;
 
-use Dte\BtsBundle\Entity\User;
-
 class IssueTypeTest extends \PHPUnit_Framework_TestCase
 {
     /**

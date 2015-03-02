@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FixturesWebTestCase extends WebTestCase
@@ -36,7 +35,6 @@ class FixturesWebTestCase extends WebTestCase
      */
     public function logInByUsername($username)
     {
-
         $this->client->getCookieJar()->set(new Cookie(session_name(), true));
         $this->client->request('GET', '/');
 
@@ -60,8 +58,10 @@ class FixturesWebTestCase extends WebTestCase
     }
 
     /**
-     * run symfony command
+     * Run symfony command
+     *
      * @param  string $command
+     * @return int
      */
     protected function runCommand($command)
     {

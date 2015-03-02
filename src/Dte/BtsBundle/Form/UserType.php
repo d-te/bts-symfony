@@ -20,7 +20,6 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $isCreateContext  = ($options['form_context'] === self::CREATE_CONTEXT);
         $isEditContext    = ($options['form_context'] === self::EDIT_CONTEXT);
         $isProfileContext = ($options['form_context'] === self::PROFILE_CONTEXT);

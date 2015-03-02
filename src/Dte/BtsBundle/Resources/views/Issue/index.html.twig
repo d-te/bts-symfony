@@ -59,7 +59,7 @@
         </tbody>
     </table>
 
-    {% if is_granted('view', 'Dte\\BtsBundle\\Entity\\Issue') %}
+    {% if is_granted('create', 'Dte\\BtsBundle\\Entity\\Issue') %}
     <div class="row">
         <a href="{{ path('dte_bts_issue_new') }}" class="btn btn-default">{{ 'bts.page.issue.action.create'|trans }}</a>
     </div>

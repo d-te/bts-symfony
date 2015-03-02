@@ -37,13 +37,4 @@ class ProjectRepositoryTest extends FixturesWebTestCase
 
         $this->assertCount(2, $projects);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        $this->em->close();
-    }
 }

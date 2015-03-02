@@ -262,7 +262,7 @@ class Issue
     /**
      * Set type
      *
-     * @param boolean $type
+     * @param int $type
      * @return Issue
      */
     public function setType($type)
@@ -275,7 +275,7 @@ class Issue
     /**
      * Get type
      *
-     * @return boolean
+     * @return int
      */
     public function getType()
     {
@@ -308,7 +308,7 @@ class Issue
     /**
      *  Get children
      *
-     *  @return array
+     *  @return Issue[]
      */
     public function getChildren()
     {
@@ -318,7 +318,7 @@ class Issue
     /**
      *  Get comments
      *
-     *  @return array
+     *  @return Comment[]
      */
     public function getComments()
     {
@@ -328,7 +328,7 @@ class Issue
     /**
      *  Get activities
      *
-     *  @return array
+     *  @return Activity[]
      */
     public function getActivities()
     {
@@ -338,7 +338,7 @@ class Issue
     /**
      *  Get collaborators
      *
-     *  @return array
+     *  @return User[]
      */
     public function getCollaborators()
     {

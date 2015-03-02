@@ -30,21 +30,33 @@
         {% for entity in entities %}
             <tr>
                 <td>{{ entity.id }}</td>
-                <td><a href="{{ path('dte_bts_user_show', { 'id': entity.id }) }}">{{ entity.email }}</a></td>
+                <td>
+                    {% if is_granted('view', entity) %}
+                    <a href="{{ path('dte_bts_user_show', { 'id': entity.id }) }}">{{ entity.email }}</a>
+                    {% else %}
+                    {{ entity.email }}
+                    {% endif %}
+                </td>
                 <td>{{ entity.username }}</td>
                 <td>{{ entity.fullname }}</td>
                 <td>{% if entity.avatar %} <img src="{{ entity.avatar }}" width="32" >{% else %} - {% endif %}</td>
                 <td>
+                    {% if is_granted('view', entity) %}
                     <a href="{{ path('dte_bts_user_show', { 'id': entity.id }) }}">{{ 'bts.default.action.show'|trans }}</a>
                     <br />
+                    {% endif %}
+                    {% if is_granted('edit', entity) %}
                     <a href="{{ path('dte_bts_user_edit', { 'id': entity.id }) }}">{{ 'bts.default.action.edit'|trans }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
+    {% if is_granted('create', 'Dte\\BtsBundle\\Entity\\User') %}
     <div class="row">
         <a href="{{ path('dte_bts_user_new') }}" class="btn btn-default">{{ 'bts.page.user.action.create'|trans }}</a>
     </div>
-    {% endblock %}
+    {% endif %}
+{% endblock %}

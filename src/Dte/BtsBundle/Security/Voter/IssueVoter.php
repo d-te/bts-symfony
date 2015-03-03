@@ -35,19 +35,32 @@ class IssueVoter extends AbstractRoleHierarchyVoter
     }
 
     /**
-     * {@inheritDoc}
+     * Get class from mixed $object
+     *
+     * @param  mixed $object
+     * @return  string
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    private function getObjectClass($object)
     {
+        $class = '';
+
         if (is_object($object)) {
             $class = get_class($object);
         } else {
             $class = $object;
         }
 
+        return $class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function vote(TokenInterface $token, $object, array $attributes)
+    {
         $attribute = $attributes[0];
 
-        if (!$this->supportsClass($class) || !$this->supportsAttribute($attribute)) {
+        if (!$this->supportsClass($this->getObjectClass($object)) || !$this->supportsAttribute($attribute)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 

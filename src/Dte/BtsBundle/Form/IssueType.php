@@ -157,13 +157,22 @@ class IssueType extends AbstractType
 
         $formModifier = function (FormEvent $event) use ($isCreateContext, $isSubtask) {
             $issue   = $event->getData();
-            $members = $this->getProjectMembers($issue->getProject());
-            $stories = $this->getProjectStories($issue->getProject());
+
+            if (is_array($issue)) {
+                $type    = intval($issue['type']);
+                $project = $this->em->getRepository('DteBtsBundle:Project')->find($issue['project']);
+            } else {
+                $type    = $issue->getType();
+                $project = $issue->getProject();
+            }
+
+            $members = $this->getProjectMembers($project);
+            $stories = $this->getProjectStories($project);
 
             $event->getForm()->add('parent', 'entity', array(
                 'label'       => 'bts.entity.issue.parent.label',
                 'required'    => false,
-                'read_only'   => ($issue->getType() != IssueTaskType::SUBTASK_TYPE || ($isCreateContext && $isSubtask)),
+                'read_only'   => ($type != IssueTaskType::SUBTASK_TYPE || ($isCreateContext && $isSubtask)),
                 'property'    => 'selectLabel',
                 'class'       => 'DteBtsBundle:Issue',
                 'empty_value' => 'bts.entity.issue.parent.empty_value',
@@ -179,7 +188,7 @@ class IssueType extends AbstractType
         };
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, $formModifier);
-        $builder->addEventListener(FormEvents::SUBMIT, $formModifier);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, $formModifier);
     }
 
     /**

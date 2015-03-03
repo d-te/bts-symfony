@@ -155,11 +155,12 @@ class IssueType extends AbstractType
             },
         ));
 
-        $formModifier = function ($form, Issue $issue, Project $project = null) use ($isCreateContext, $isSubtask) {
-            $members = $this->getProjectMembers($project);
-            $stories = $this->getProjectStories($project);
+        $formModifier = function (FormEvent $event) use ($isCreateContext, $isSubtask) {
+            $issue   = $event->getData();
+            $members = $this->getProjectMembers($issue->getProject());
+            $stories = $this->getProjectStories($issue->getProject());
 
-            $form->add('parent', 'entity', array(
+            $event->getForm()->add('parent', 'entity', array(
                 'label'       => 'bts.entity.issue.parent.label',
                 'required'    => false,
                 'read_only'   => ($issue->getType() != IssueTaskType::SUBTASK_TYPE || ($isCreateContext && $isSubtask)),
@@ -177,21 +178,8 @@ class IssueType extends AbstractType
             ));
         };
 
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
-                $formModifier($event->getForm(), $event->getData(), $event->getData()->getProject());
-            }
-        );
-
-        $builder->get('project')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                $project   = $event->getForm()->getData();
-                $issue     = $event->getForm()->getParent()->getData();
-                $formModifier($event->getForm()->getParent(), $issue, $project);
-            }
-        );
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, $formModifier);
+        $builder->addEventListener(FormEvents::SUBMIT, $formModifier);
     }
 
     /**

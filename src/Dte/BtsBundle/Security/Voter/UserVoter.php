@@ -72,8 +72,12 @@ class UserVoter extends AbstractRoleHierarchyVoter
                 }
                 break;
             case self::EDIT:
+                if (is_object($object) && $object->isEqualTo($user)) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
+                break;
             case self::PROFILE:
-                if ($object->isEqualTo($user)) {
+                if ($this->hasRole($token, 'ROLE_OPERATOR')) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
                 break;

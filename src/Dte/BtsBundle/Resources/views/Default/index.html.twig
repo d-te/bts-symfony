@@ -2,53 +2,51 @@
 
 {% block content %}
     <div role="tabpanel">
-        <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#activities_pane" aria-controls="activities_pane" role="tab" data-toggle="tab">{{ 'bts.page.main.tablist.activities'|  trans }}</a></li>
             <li role="presentation"><a href="#issues_pane" aria-controls="issues_pane" role="tab" data-toggle="tab">{{ 'bts.page.main.tablist.issues'|trans }}</a></li>
         </ul>
-        <!-- Tab panes -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="activities_pane">
-            <div class="row">
-                <div class="col-md-1">&nbsp;</div>
-            </div>
-            <table class="table table-striped">
-                <colgroup>
-                    <col class="col-md-2">
-                    <col class="col-md-2">
-                    <col class="col-md-1">
-                    <col class="col-md-7">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>{{ 'bts.entity.activity.created.label'|trans }}</th>
-                        <th>{{ 'bts.entity.activity.user.label'|trans }}</th>
-                        <th>{{ 'bts.entity.activity.issue.label'|trans }}</th>
-                        <th>{{ 'bts.entity.activity.message.label'|trans }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for activity in activities %}
-                    <tr>
-                        <td>{% if activity.created %}{{ activity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                        <td><a href="{{ path('dte_bts_user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a></td>
-                        <td>
-                            {% if is_granted('view', activity.issue) %}
-                            <a href="{{ path('dte_bts_issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a>
-                            {% else %}
-                            {{ activity.issue.code }}
-                            {% endif %}
-                        </td>
-                        <td>{{ activity.message }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            <div role="tabpanel" class="tab-pane active" id="activities_pane">
+                <div class="row">
+                    <div class="col-md-1">&nbsp;</div>
+                </div>
+                <table class="table table-striped">
+                    <colgroup>
+                        <col class="col-md-2">
+                        <col class="col-md-2">
+                        <col class="col-md-1">
+                        <col class="col-md-7">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>{{ 'bts.entity.activity.created.label'|trans }}</th>
+                            <th>{{ 'bts.entity.activity.user.label'|trans }}</th>
+                            <th>{{ 'bts.entity.activity.issue.label'|trans }}</th>
+                            <th>{{ 'bts.entity.activity.message.label'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for activity in activities %}
+                        <tr>
+                            <td>{% if activity.created %}{{ activity.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td><a href="{{ path('dte_bts_user_show', { 'id': activity.user.id }) }}">{{ activity.user.fullname }}</a></td>
+                            <td>
+                                {% if is_granted('view', activity.issue) %}
+                                <a href="{{ path('dte_bts_issue_show', { 'id': activity.issue.id }) }}">{{ activity.issue.code }}</a>
+                                {% else %}
+                                {{ activity.issue.code }}
+                                {% endif %}
+                            </td>
+                            <td>{{ activity.message }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
         </div>
         <div role="tabpanel" class="tab-pane" id="issues_pane">
             <div class="row">
-                  <div class="col-md-1">&nbsp;</div>
+                <div class="col-md-1">&nbsp;</div>
             </div>
             <table class="table table-striped">
                 <colgroup>

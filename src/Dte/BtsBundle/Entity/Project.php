@@ -177,11 +177,9 @@ class Project
      */
     public function addMember(User $member)
     {
-        if ($this->members->contains($member)) {
-            return;
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
         }
-
-        $this->members->add($member);
 
         return $this;
     }

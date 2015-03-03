@@ -4,7 +4,6 @@ namespace Dte\BtsBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Dte\BtsBundle\Entity\Comment;
 use Dte\BtsBundle\Entity\Issue;

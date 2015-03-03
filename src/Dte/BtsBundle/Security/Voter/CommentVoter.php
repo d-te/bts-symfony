@@ -44,7 +44,7 @@ class CommentVoter extends AbstractRoleHierarchyVoter
      */
     private function getObjectClass($object)
     {
-        $calss = '';
+        $class = '';
 
         if (is_object($object)) {
             $class = get_class($object);

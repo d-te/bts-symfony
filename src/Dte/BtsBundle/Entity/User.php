@@ -55,7 +55,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="avatar", type="string", length=255, nullable=false)
+     * @ORM\Column(name="avatar", type="string", length=255, nullable=true)
      * @Assert\Url()
      * @Assert\Length(max = 255)
      */

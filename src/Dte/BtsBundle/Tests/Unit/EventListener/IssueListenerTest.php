@@ -134,7 +134,7 @@ class IssueListenerTest extends \PHPUnit_Framework_TestCase
     {
         $issue = new Issue();
 
-        $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+        $args = $this->getMockBuilder('Doctrine\ORM\Event\PreUpdateEventArgs')
             ->disableOriginalConstructor()
             ->setMethods(array('getEntity', 'hasChangedField'))
             ->getMock();
@@ -166,7 +166,7 @@ class IssueListenerTest extends \PHPUnit_Framework_TestCase
     {
         $issue = new Issue();
 
-        $args = $this->getMockBuilder('Doctrine\ORM\Event\LifecycleEventArgs')
+        $args = $this->getMockBuilder('Doctrine\ORM\Event\PreUpdateEventArgs')
             ->disableOriginalConstructor()
             ->setMethods(array('getEntity', 'hasChangedField'))
             ->getMock();

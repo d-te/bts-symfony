@@ -289,7 +289,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     public function eraseCredentials()
     {
-        $this->password = null;
     }
 
     /**

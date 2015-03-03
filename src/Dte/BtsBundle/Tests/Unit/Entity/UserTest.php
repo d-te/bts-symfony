@@ -201,16 +201,4 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(0, $user->getRoles());
     }
-
-    public function testEraseCredentials()
-    {
-        $user = new User();
-        $user->setPassword('password');
-
-        $this->assertEquals('password', $user->getPassword());
-
-        $user->eraseCredentials();
-
-        $this->assertEquals(null, $user->getPassword());
-    }
 }
